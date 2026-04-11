@@ -1,13 +1,28 @@
-import 'bootstrap/dist/css/bootstrap.min.css'; 
-import NavScroll from './components/nav'; 
-import Menucarousel from './components/menucaro';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+// 1. IMPORT HALAMAN USER (Perhatikan tambahan /user/ di sini)
+import Home from './pages/user/Home';
+import DetailFilm from './pages/user/DetailFilm';
+
+// 2. IMPORT HALAMAN ADMIN (Sesuai folder admin kamu)
+import ListFilm from './pages/admin/ListFilm';
+import AddFilm from './pages/admin/AddFilm';
+import EditFilm from './pages/admin/EditFilm';
 
 function App() {
   return (
-    <div>
-      < NavScroll/>
-      < Menucarousel/>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        {/* RUTE UNTUK HALAMAN USER */}
+        <Route path="/" element={<Home />} />
+        <Route path="/movie/:id" element={<DetailFilm />} />
+
+        {/* RUTE UNTUK HALAMAN ADMIN */}
+        <Route path="/admin" element={<ListFilm />} />
+        <Route path="/admin/add" element={<AddFilm />} />
+        <Route path="/admin/edit/:id" element={<EditFilm />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
