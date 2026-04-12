@@ -1,10 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// 1. IMPORT HALAMAN USER (Perhatikan tambahan /user/ di sini)
 import Home from './pages/user/Home';
 import DetailFilm from './pages/user/DetailFilm';
-
-// 2. IMPORT HALAMAN ADMIN (Sesuai folder admin kamu)
 import ListFilm from './pages/admin/ListFilm';
 import AddFilm from './pages/admin/Addfilm';
 import EditFilm from './pages/admin/EditFilm';
