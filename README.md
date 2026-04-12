@@ -1,5 +1,6 @@
-langkah satu lakukan instalasi pada folder fronetend dan backend
-fronend
+lakukan instalasi pada folder frontend dan backend
+
+frontend
 npm install axios react-router-dom bootstrap react-bootstrap bootstrap-icons 
 
 backend
