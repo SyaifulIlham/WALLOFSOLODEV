@@ -17,9 +17,5 @@ const filmRoutes = require('./routes/api');
 app.use('/', filmRoutes);
 
 app.listen(port, () => {
-<<<<<<< HEAD
   console.log(`Soloflixx server berjalan di http://localhost:${port}`);
-=======
-  console.log(`CineGo server berjalan di http://localhost:${port}`);
->>>>>>> ed3bb03b2a5a86f1cdb6a39c2735f129f05e0355
 });
