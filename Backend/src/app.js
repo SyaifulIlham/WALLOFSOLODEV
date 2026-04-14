@@ -1,20 +1,21 @@
 const express = require('express');
-const cors = require('cors'); // Pastikan ini ada
+const cors = require('cors');
 const app = express();
 const port = 3000;
 
-// KONFIGURASI CORS SUPER TERBUKA
+// MIDDLEWARE
 app.use(cors({
-    origin: '*', // Mengizinkan semua frontend mengakses ini
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Mengizinkan aksi CRUD
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
-
 app.use(express.json());
 
-// Pastikan path ini sesuai dengan letak folder routes kamu ya
-// Jika api.js ada di dalam folder src/routes/, ubah jadi require('./src/routes/api')
-const filmRoutes = require('./routes/api'); 
+// ROUTES
+const filmRoutes = require('./routes/api');
+const authRoutes = require('./routes/auth');
+
 app.use('/', filmRoutes);
+app.use('/auth', authRoutes);
 
 app.listen(port, () => {
   console.log(`Soloflixx server berjalan di http://localhost:${port}`);
