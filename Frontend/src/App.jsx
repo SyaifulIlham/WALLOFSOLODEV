@@ -5,6 +5,9 @@ import DetailFilm from './pages/user/DetailFilm';
 import ListFilm from './pages/admin/ListFilm';
 import AddFilm from './pages/admin/Addfilm';
 import EditFilm from './pages/admin/EditFilm';
+import Register from './pages/user/Register';
+
+
 
 function App() {
   return (
@@ -13,6 +16,7 @@ function App() {
         {/* RUTE UNTUK HALAMAN USER */}
         <Route path="/" element={<Home />} />
         <Route path="/movie/:id" element={<DetailFilm />} />
+        <Route path="/register" element={<Register />} />
 
         {/* RUTE UNTUK HALAMAN ADMIN */}
         <Route path="/admin" element={<ListFilm />} />
