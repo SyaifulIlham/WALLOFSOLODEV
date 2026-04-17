@@ -46,8 +46,8 @@ function NavScroll() {
               className="search-custom bg-dark text-white border-secondary shadow-none"
               aria-label="Search"
             />
-            {/* Tombol Login diarahkan ke /admin */}
-            <Button as={Link} to="/admin" variant="danger" className="px-4 fw-bold rounded-pill btn-login shadow-sm">
+            {/* Tombol Login diarahkan ke /register */}
+            <Button as={Link} to="/register" variant="danger" className="px-4 fw-bold rounded-pill btn-login shadow-sm">
               Login
             </Button>
           </Form>
