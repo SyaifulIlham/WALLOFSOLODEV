@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import Navbar from '../../components/nav'; 
-import MenuCaro from '../../components/menucaro';
+import MainLayout from '../../layouts/MainLayout';
+// import MenuCaro from '../../components/menucaro';
 
 const Home = () => {
     const [films, setFilms] = useState([]);
@@ -24,12 +24,10 @@ const Home = () => {
     const akanDatang = films.filter(f => f.status === 'Akan Datang');
 
     return (
-        <div style={{ backgroundColor: '#0a0b0d', minHeight: '100vh', color: '#fff' }}>
-            <Navbar />
-            
-            <div className="shadow-lg mb-5">
+        <MainLayout>
+            {/* <div className="shadow-lg mb-5">
                 <MenuCaro />
-            </div>
+            </div> */}
 
             <div className="container py-4">
                 
@@ -128,7 +126,7 @@ const Home = () => {
                     #sedang-tayang, #akan-datang { scroll-margin-top: 90px; } 
                 `}
             </style>
-        </div>
+        </MainLayout>
     );
 };
 

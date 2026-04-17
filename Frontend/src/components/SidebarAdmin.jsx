@@ -42,10 +42,14 @@ const SidebarAdmin = ({ activeMenu }) => {
             </div>
 
             <ul className="nav flex-column gap-2 mb-auto">
-                {/* HANYA ADA CATALOG FILM SEKARANG */}
                 <li className="nav-item">
-                    <Link to="/admin" className={`text-danger nav-link rounded-3 px-3 py-2 d-flex align-items-center gap-3 ${activeMenu === 'Catalog' || activeMenu === 'add' ? 'admin-menu-active' : 'admin-menu'}`}>
+                    <Link to="/admin" className={`text-danger nav-link rounded-3 px-3 py-2 d-flex align-items-center gap-3 ${activeMenu === 'catalog' || activeMenu === 'add' ? 'admin-menu-active' : 'admin-menu'}`}>
                         <span style={{ fontSize: '1.2rem' }}>•</span> Film
+                    </Link>
+                </li>
+                <li className="nav-item">
+                    <Link to="/admin/schedules" className={`text-danger nav-link rounded-3 px-3 py-2 d-flex align-items-center gap-3 ${activeMenu === 'schedule' ? 'admin-menu-active' : 'admin-menu'}`}>
+                        <span style={{ fontSize: '1.2rem' }}>•</span> Jadwal
                     </Link>
                 </li>
                 <li className="nav-item">

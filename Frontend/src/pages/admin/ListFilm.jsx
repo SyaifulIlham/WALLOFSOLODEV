@@ -50,6 +50,9 @@ const ListFilm = () => {
                         <div className="input-group" style={{ width: '250px' }}>
                             <input type="text" className="form-control shadow-none border-0 text-white px-3 py-2" placeholder="Find movie..." style={{ backgroundColor: '#151f30', borderRadius: '8px' }} />
                         </div>
+                        <Link to="/admin/schedules" className="btn fw-bold d-flex align-items-center gap-2 shadow-sm" style={{ backgroundColor: '#0dcaf0', color: '#050505', borderRadius: '8px', padding: '8px 20px' }}>
+                            Jadwal Film
+                        </Link>
                         <Link to="/admin/add" className="btn fw-bold d-flex align-items-center gap-2 shadow-sm btn-add-movie" style={{ backgroundColor: '#2f80ed', color: '#fff', borderRadius: '8px', padding: '8px 20px' }}>
                             <span style={{ fontSize: '1.2rem', lineHeight: '1' }}>+</span> Tambah Film
                         </Link>

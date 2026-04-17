@@ -12,11 +12,9 @@ app.use(cors({
 app.use(express.json());
 
 // ROUTES
-const filmRoutes = require('./routes/api');
-const authRoutes = require('./routes/auth');
+const apiRoutes = require('./routes/api');
 
-app.use('/', filmRoutes);
-app.use('/auth', authRoutes);
+app.use('/', apiRoutes);
 
 // 404 handler for unknown routes
 app.use((req, res, next) => {
