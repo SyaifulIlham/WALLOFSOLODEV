@@ -93,7 +93,7 @@ const Register = () => {
                         marginBottom: '16px',
                         lineHeight: '1.2'
                     }} className="sidebar-title">
-                        Selamat Datang di Platform Streaming Terbaik
+                        Selamat Datang di SoloFlixx
                     </h2>
 
                     <p style={{
@@ -102,7 +102,7 @@ const Register = () => {
                         marginBottom: '30px',
                         lineHeight: '1.5'
                     }} className="sidebar-subtitle">
-                        Nikmati pengalaman menonton film dan serial TV dengan kualitas premium
+                        Platform Website untuk memesan tiket bioskop secara online dengan mudah dan cepat
                     </p>
 
                     {/* Features */}
@@ -120,7 +120,7 @@ const Register = () => {
                                 fontSize: '12px',
                                 fontWeight: 'bold'
                             }}>✓</div>
-                            <span>Akses ribuan film dan serial TV</span>
+                            <span>Pesan tiket tanpa perlu antri di loket</span>
                         </div>
 
                         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '15px', color: '#fff' }} className="feature-item">
@@ -136,7 +136,7 @@ const Register = () => {
                                 fontSize: '12px',
                                 fontWeight: 'bold'
                             }}>✓</div>
-                            <span>Tonton dimana saja, kapan saja</span>
+                            <span>pesan tiket dimana saja, kapan saja</span>
                         </div>
 
                         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '15px', color: '#fff' }} className="feature-item">
@@ -152,7 +152,7 @@ const Register = () => {
                                 fontSize: '12px',
                                 fontWeight: 'bold'
                             }}>✓</div>
-                            <span>Kualitas HD tanpa batas</span>
+                            <span>Pesan Cepat realtime</span>
                         </div>
 
                         <div style={{ display: 'flex', alignItems: 'center', color: '#fff' }} className="feature-item">
@@ -168,7 +168,7 @@ const Register = () => {
                                 fontSize: '12px',
                                 fontWeight: 'bold'
                             }}>✓</div>
-                            <span>Update film terbaru setiap hari</span>
+                            <span>Update informasi tiket secara real-time</span>
                         </div>
                     </div>
 
@@ -249,7 +249,7 @@ const Register = () => {
                             fontSize: '0.95rem',
                             margin: 0
                         }}>
-                            Bergabunglah dan mulai menonton film favoritmu
+                            Daftar sekarang untuk melakukan pemesanan tiket dengan mudah dan cepat!
                         </p>
                     </div>
 

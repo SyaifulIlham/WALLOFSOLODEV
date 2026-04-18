@@ -1,10 +1,30 @@
 const { ErrorHandler } = require('../utils/ErrorHandler');
 const ScheduleModel = require('../models/Schedulemodel');
 
+const formatDate = (dateString) => {
+  let str;
+  if (dateString instanceof Date) {
+    str = dateString.toISOString().split('T')[0]; // Get YYYY-MM-DD
+  } else if (typeof dateString === 'string') {
+    str = dateString;
+  } else {
+    return dateString;
+  }
+  const parts = str.split('-');
+  if (parts.length === 3) {
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+  }
+  return str;
+};
+
 const getAllSchedules = async (req, res, next) => {
   try {
     const [rows] = await ScheduleModel.getAllSchedules();
-    res.json({ success: true, data: rows });
+    const formattedRows = rows.map(row => ({
+      ...row,
+      tanggal_tayang: formatDate(row.tanggal_tayang)
+    }));
+    res.json({ success: true, data: formattedRows });
   } catch (err) {
     next(new ErrorHandler(500, err.message || 'Server error'));
   }
@@ -16,7 +36,11 @@ const getScheduleById = async (req, res, next) => {
     if (rows.length === 0) {
       return next(new ErrorHandler(404, 'Jadwal tidak ditemukan'));
     }
-    res.json({ success: true, data: rows[0] });
+    const formattedData = {
+      ...rows[0],
+      tanggal_tayang: formatDate(rows[0].tanggal_tayang)
+    };
+    res.json({ success: true, data: formattedData });
   } catch (err) {
     next(new ErrorHandler(500, err.message || 'Server error'));
   }
@@ -25,7 +49,11 @@ const getScheduleById = async (req, res, next) => {
 const getSchedulesByFilm = async (req, res, next) => {
   try {
     const [rows] = await ScheduleModel.getSchedulesByFilm(req.params.id);
-    res.json({ success: true, data: rows });
+    const formattedRows = rows.map(row => ({
+      ...row,
+      tanggal_tayang: formatDate(row.tanggal_tayang)
+    }));
+    res.json({ success: true, data: formattedRows });
   } catch (err) {
     next(new ErrorHandler(500, err.message || 'Server error'));
   }

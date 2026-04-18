@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import MainLayout from '../../layouts/MainLayout';
-// import MenuCaro from '../../components/menucaro';
 
 const Home = () => {
     const [films, setFilms] = useState([]);
@@ -25,9 +24,6 @@ const Home = () => {
 
     return (
         <MainLayout>
-            {/* <div className="shadow-lg mb-5">
-                <MenuCaro />
-            </div> */}
 
             <div className="container py-4">
                 
