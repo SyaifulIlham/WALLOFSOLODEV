@@ -1,7 +1,18 @@
 {
+  "name": "project-fullstack",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "backend": "cd Backend && npm start",
+    "frontend": "cd Frontend && npm run dev",
+    "dev": "npx concurrently \"npm run backend\" \"npm run frontend\""
+  },
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }

@@ -15,10 +15,10 @@ const addFilm = async ({ judul_film, id_kategori, genre, durasi, deskripsi, post
   );
 };
 
-const updateFilm = async ({ judul_film, id_kategori, genre, durasi, deskripsi, poster, status, idFilm }) => {
+const updateFilm = async ({ judul_film, id_kategori, genre, durasi, deskripsi, poster, status, id_film }) => {
   return await db.query(
     'UPDATE films SET judul_film = ?, id_kategori = ?, genre = ?, durasi = ?, deskripsi = ?, poster = ?, status = ? WHERE id_film = ?',
-    [judul_film, id_kategori, genre, durasi, deskripsi, poster, status, idFilm]
+    [judul_film, id_kategori, genre, durasi, deskripsi, poster, status, id_film]
   );
 };
 
