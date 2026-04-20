@@ -12,6 +12,7 @@ Jalankan Migration:
 
 Bash
 npx knex migrate:latest
+
 Jalankan Seeder:
 
 Bash
