@@ -96,18 +96,13 @@ function NavScroll() {
         <Navbar.Collapse id="navbarScroll" className={isMobileMenuOpen ? 'show' : ''}>
           <Nav className="me-auto my-2 my-lg-0 gap-lg-3" navbarScroll>
 
-            {/* Navigation Links with active states */}
+            {/* --- INI YANG DIUBAH: HANYA ADA MENU FILM --- */}
             <Nav.Link
-              href="/#sedang-tayang"
-              className={`text-light nav-custom-hover ${isActive('sedang-tayang')}`}
+              as={Link}
+              to="/movies"
+              className={`text-light nav-custom-hover ${location.pathname === '/movies' ? 'active' : ''}`}
             >
-              Sedang Tayang
-            </Nav.Link>
-            <Nav.Link
-              href="/#akan-datang"
-              className={`text-light nav-custom-hover ${isActive('akan-datang')}`}
-            >
-              Akan Datang
+              Film
             </Nav.Link>
 
             <NavDropdown
@@ -139,7 +134,7 @@ function NavScroll() {
             </Nav.Link>
           </Nav>
 
-          {/* Search Bar & Login Button */}
+          {/* Search Bar & Login Button (TETAP SAMA) */}
           <Form className="d-flex align-items-center mt-3 mt-lg-0 gap-3" onSubmit={handleSearch}>
             <div className="search-container">
               <Form.Control
@@ -163,7 +158,7 @@ function NavScroll() {
         </Navbar.Collapse>
       </Container>
 
-      {/* Enhanced CSS */}
+      {/* Enhanced CSS (TETAP SAMA) */}
       <style>
         {`
           .navbar-transition {
