@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import Navbar from '../../components/nav'; 
-import MenuCaro from '../../components/menucaro';
+import MainLayout from '../../layouts/MainLayout';
 
 const Home = () => {
     const [films, setFilms] = useState([]);
@@ -24,12 +23,10 @@ const Home = () => {
     const akanDatang = films.filter(f => f.status === 'Akan Datang');
 
     return (
-        <div style={{ backgroundColor: '#0a0b0d', minHeight: '100vh', color: '#fff' }}>
-            <Navbar />
+        <MainLayout>
             
-            <div className="shadow-lg mb-5">
-                <MenuCaro />
-            </div>
+            {/* --- INI SOLUSINYA: Spasi kosong biar konten gak ketutup Navbar --- */}
+            <div style={{ height: '100px' }}></div> 
 
             <div className="container py-4">
                 
@@ -37,7 +34,7 @@ const Home = () => {
                 <div id="sedang-tayang" className="mb-5 pt-3">
                     <div className="d-flex align-items-center mb-4">
                         <div style={{ width: '5px', height: '30px', backgroundColor: '#dc3545', marginRight: '15px', borderRadius: '5px' }}></div>
-                        <h3 className="fw-bold m-0 text-uppercase" style={{ letterSpacing: '1px' }}>Sedang Tayang</h3>
+                        <h3 className="fw-bold m-0 text-uppercase text-white" style={{ letterSpacing: '1px' }}>Sedang Tayang</h3>
                     </div>
 
                     <div className="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4">
@@ -51,8 +48,8 @@ const Home = () => {
                                                 <img src={f.poster} className="w-100 h-100 object-fit-cover" alt={f.judul_film} />
                                                 <div className="overlay-grad"></div>
                                             </div>
-                                            {/* Hanya Judul Film yang ditampilkan */}
-                                            <h6 className="fw-bold text-uppercase mb-1" style={{ fontSize: '0.95rem', lineHeight: '1.4' }}>
+                                            {/* Judul Film */}
+                                            <h6 className="fw-bold text-uppercase mb-1 text-white" style={{ fontSize: '0.95rem', lineHeight: '1.4' }}>
                                                 {f.judul_film}
                                             </h6>
                                         </div>
@@ -71,7 +68,7 @@ const Home = () => {
                 <div id="akan-datang" className="mb-5 pt-3">
                     <div className="d-flex align-items-center mb-4">
                         <div style={{ width: '5px', height: '30px', backgroundColor: '#0dcaf0', marginRight: '15px', borderRadius: '5px' }}></div>
-                        <h3 className="fw-bold m-0 text-uppercase" style={{ letterSpacing: '1px' }}>Akan Datang</h3>
+                        <h3 className="fw-bold m-0 text-uppercase text-white" style={{ letterSpacing: '1px' }}>Akan Datang</h3>
                     </div>
 
                     <div className="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4">
@@ -128,7 +125,7 @@ const Home = () => {
                     #sedang-tayang, #akan-datang { scroll-margin-top: 90px; } 
                 `}
             </style>
-        </div>
+        </MainLayout>
     );
 };
 
