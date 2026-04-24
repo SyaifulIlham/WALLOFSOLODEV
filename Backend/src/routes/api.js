@@ -17,8 +17,8 @@ router.put('/films/:id', validateUpdateFilm, filmController.updateFilm);
 // Rute untuk mengambil nama Admin
 router.get('/admins', filmController.getAdmin);
 
-// Rute auth di-merge ke api.js
 router.post('/register', validateRegister, authController.registerUser);
+router.post('/login/user', validateLogin, authController.loginUser); // Tambahkan ini
 router.post('/login/admin', validateLogin, authController.loginAdmin);
 
 // Rute jadwal film
