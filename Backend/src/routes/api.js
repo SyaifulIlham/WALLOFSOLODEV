@@ -18,7 +18,7 @@ router.put('/films/:id', validateUpdateFilm, filmController.updateFilm);
 router.get('/admins', filmController.getAdmin);
 
 router.post('/register', validateRegister, authController.registerUser);
-router.post('/login/user', validateLogin, authController.loginUser); // Tambahkan ini
+router.post('/login/user', validateLogin, authController.loginUser); 
 router.post('/login/admin', validateLogin, authController.loginAdmin);
 
 // Rute jadwal film

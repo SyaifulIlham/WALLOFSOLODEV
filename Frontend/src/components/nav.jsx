@@ -150,10 +150,10 @@ function NavScroll() {
               </button>
             </div>
 
-            <Button as={Link} to="/register" variant="danger" className="px-4 fw-bold rounded-pill btn-login shadow-sm">
-              <FaUser className="me-2" />
-              Login
-            </Button>
+          <Button as={Link} to="/login" variant="danger" className="px-4 fw-bold rounded-pill btn-login shadow-sm">
+            <FaUser className="me-2" />
+            Login
+          </Button>
           </Form>
         </Navbar.Collapse>
       </Container>

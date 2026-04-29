@@ -1,8 +1,9 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken'); 
+const jwt = require('jsonwebtoken'); // Tambahkan ini
 const { ErrorHandler } = require('../utils/ErrorHandler');
 const AuthModel = require('../models/Authmodel');
 
+// Fungsi pembantu untuk generate token
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET || 'secret_key_fallback', {
     expiresIn: process.env.JWT_EXPIRES_IN || '1d',
@@ -27,6 +28,7 @@ const registerUser = async (req, res, next) => {
   }
 };
 
+// --- TUGAS MINGGU 2: LOGIN USER ---
 const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
   try {
@@ -73,14 +75,23 @@ const loginAdmin = async (req, res, next) => {
     // Jika masih plain text (untuk sementara), biarkan === tapi disarankan di-hash juga
     const isMatch = password === admin.password; 
     
+    
+    // Gunakan bcrypt.compare jika password admin di DB sudah di-hash
+    // Jika masih plain text (untuk sementara), biarkan === tapi disarankan di-hash juga
+    const isMatch = password === admin.password; 
+    
     if (!isMatch) {
       return next(new ErrorHandler(401, 'Username atau password salah!'));
     }
 
     const token = signToken(admin.id_admin);
 
+    const token = signToken(admin.id_admin);
+
     res.status(200).json({
       success: true,
+      message: 'Login Admin berhasil!',
+      token,
       message: 'Login Admin berhasil!',
       token,
       data: { id_admin: admin.id_admin, username: admin.username }
@@ -92,6 +103,7 @@ const loginAdmin = async (req, res, next) => {
 
 module.exports = {
   registerUser,
+  loginUser,
   loginUser,
   loginAdmin,
 };

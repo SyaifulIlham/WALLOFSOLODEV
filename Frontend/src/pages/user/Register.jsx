@@ -22,7 +22,7 @@ const Register = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            await axios.post('http://localhost:3000/auth/register', form);
+            await axios.post('http://localhost:3000/register', form);
             alert('Registrasi berhasil! Silakan login.');
             navigate('/login');
         } catch (err) {

@@ -11,6 +11,7 @@ import ListSchedule from './pages/admin/ListSchedule';
 import AddSchedule from './pages/admin/AddSchedule';
 import EditSchedule from './pages/admin/EditSchedule';
 import Register from './pages/user/Register';
+import Login from './pages/user/Login';
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
         <Route path="/movies" element={<Movies />} /> {/* <--- INI DITAMBAHIN */}
         <Route path="/movie/:id" element={<DetailFilm />} />
         <Route path="/register" element={<Register />} />
+
+        {/* TAMBAHKAN BARIS INI */}
+        <Route path="/login" element={<Login />} />
 
         {/* RUTE UNTUK HALAMAN ADMIN */}
         <Route path="/admin" element={<DashboardAdmin />} />
