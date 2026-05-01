@@ -40,7 +40,7 @@ const SidebarAdmin = ({ activeMenu }) => {
                 </div>
             </div>
 
-            <nav className="sidebar-nav" style={{ display: 'flex', flexDirection: 'column', gap: '20px', paddingTop: '10px'}}>
+            <nav className="sidebar-nav" style={{ display: 'flex', flexDirection: 'column', gap: '20px', paddingTop: '10px' }}>
                 <Link to="/admin" className={`menu-link ${activeMenu === 'catalog' ? 'active' : ''}`}>
                     <span className="menu-dot" /> Dashboard
                 </Link>
@@ -49,6 +49,9 @@ const SidebarAdmin = ({ activeMenu }) => {
                 </Link>
                 <Link to="/admin/schedules" className={`menu-link ${activeMenu === 'schedule' ? 'active' : ''}`}>
                     <span className="menu-dot" /> Jadwal
+                </Link>
+                <Link to="/admin/seats" className={`menu-link ${activeMenu === 'seats' ? 'active' : ''}`}>
+                    <span className="menu-dot" /> Seats
                 </Link>
                 <div className="menu-link disabled">
                     <span className="menu-dot" /> Users

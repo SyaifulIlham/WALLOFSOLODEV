@@ -5,6 +5,7 @@ const router = express.Router();
 const filmController = require('../controllers/filmController');
 const authController = require('../controllers/AuthController');
 const scheduleController = require('../controllers/ScheduleController');
+const SeatsController = require('../controllers/SeatsController');
 const { validateCreateFilm, validateUpdateFilm, validateRegister, validateLogin } = require('../utils/Validator');
 
 // Rute untuk mengelola Film
@@ -28,5 +29,17 @@ router.post('/schedules', scheduleController.createSchedule);
 router.put('/schedules/:id', scheduleController.updateSchedule);
 router.delete('/schedules/:id', scheduleController.deleteSchedule);
 router.get('/films/:id/schedules', scheduleController.getSchedulesByFilm);
+
+// Rute kursi
+router.get('/seats', SeatsController.getAllSeats);
+router.get('/seats/:id', SeatsController.getSeatById);
+router.get('/seats/:id/seats', SeatsController.getSeatsBySchedule);
+router.post('/seats', SeatsController.createSeat);          
+router.post('/seats/generate', SeatsController.generateSeats);
+router.put('/seats/:id', SeatsController.updateSeat);       
+router.delete('/seats/:id', SeatsController.deleteSeat);    
+router.put('/seats/:id/status', SeatsController.updateSeatStatus);
+router.delete('/seats', SeatsController.deleteAllSeats)
+
 
 module.exports = router;
