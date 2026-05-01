@@ -29,3 +29,4 @@ app.use(errorMiddleware);
 app.listen(port, () => {
   console.log(`Soloflixx server berjalan di http://localhost:${port}`);
 });
+
