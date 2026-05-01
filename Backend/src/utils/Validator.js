@@ -14,7 +14,8 @@ const validateFilmPayload = (body) => {
   if (!isNonEmptyString(body.genre)) {
     errors.push('Genre wajib diisi');
   }
-  if (!isNonEmptyString(body.durasi)) {
+  // ✅ FIX: durasi bisa number (dari DB) atau string (dari input) — pakai isNumeric
+  if (!isNumeric(body.durasi) || String(body.durasi).trim() === '') {
     errors.push('Durasi wajib diisi');
   }
   if (!isNonEmptyString(body.deskripsi)) {
