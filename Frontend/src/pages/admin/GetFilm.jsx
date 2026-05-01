@@ -41,9 +41,9 @@ const GetFilm = () => {
 
     return (
         <AdminLayout activeMenu="films">
-            <div className="container-fluid">
-                <div style={{ padding: '24px', borderRadius: '24px', background: '#111827', border: '1px solid rgba(148, 163, 184, 0.12)' }}>
-                    <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="container-fluid width-100%">
+                <div style={{ padding: '24px', borderRadius: '24px', background: '#111827', border: '1px solid rgba(148, 163, 184, 0.12)', width: '100%' }}>
+                    <div className="d-flex justify-content-between align-items-center mb-4 width-100%">
                         <div>
                             <h2 style={{ margin: 0, fontSize: '1.3rem', color: '#f8fafc' }}>Katalog Film</h2>
                             <p style={{ margin: '8px 0 0', color: '#94a3b8' }}>Ubah, lihat, atau hapus film dari daftar katalog.</p>

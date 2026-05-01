@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './pages/user/Home';
+import Movies from './pages/user/Movies'; // <--- INI DITAMBAHIN
 import DetailFilm from './pages/user/DetailFilm';
 import DashboardAdmin from './pages/admin/dashboardadmin';
 import ListFilm from './pages/admin/GetFilm';
@@ -10,6 +11,7 @@ import ListSchedule from './pages/admin/ListSchedule';
 import AddSchedule from './pages/admin/AddSchedule';
 import EditSchedule from './pages/admin/EditSchedule';
 import Register from './pages/user/Register';
+import Login from './pages/user/Login';
 import ManageSeats from './pages/admin/ManageSeats';
 import SeatPicker from './pages/user/SeatPicker';
 
@@ -19,8 +21,12 @@ function App() {
       <Routes>
         {/* RUTE UNTUK HALAMAN USER */}
         <Route path="/" element={<Home />} />
+        <Route path="/movies" element={<Movies />} /> {/* <--- INI DITAMBAHIN */}
         <Route path="/movie/:id" element={<DetailFilm />} />
         <Route path="/register" element={<Register />} />
+
+        {/* TAMBAHKAN BARIS INI */}
+        <Route path="/login" element={<Login />} />
         <Route path="/pesan/:id" element={<SeatPicker />} />
 
         {/* RUTE UNTUK HALAMAN ADMIN */}
