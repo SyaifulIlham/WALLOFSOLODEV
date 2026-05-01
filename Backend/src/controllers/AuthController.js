@@ -78,7 +78,7 @@ const loginAdmin = async (req, res, next) => {
     
     // Gunakan bcrypt.compare jika password admin di DB sudah di-hash
     // Jika masih plain text (untuk sementara), biarkan === tapi disarankan di-hash juga
-    const isMatch = password === admin.password; 
+  
     
     if (!isMatch) {
       return next(new ErrorHandler(401, 'Username atau password salah!'));
@@ -86,7 +86,6 @@ const loginAdmin = async (req, res, next) => {
 
     const token = signToken(admin.id_admin);
 
-    const token = signToken(admin.id_admin);
 
     res.status(200).json({
       success: true,

@@ -1,7 +1,6 @@
 const { ErrorHandler } = require('../utils/ErrorHandler');
 const FilmModel = require('../models/Filmmodel');
 
-// 1. GET ALL FILMS
 const getAllFilms = async (req, res, next) => {
   try {
     const [rows] = await FilmModel.getAllFilms();
@@ -12,10 +11,9 @@ const getAllFilms = async (req, res, next) => {
   }
 };
 
-// 2. POST FILM (Tambah Film)
 const addFilm = async (req, res, next) => {
   try {
-    const { judul_film, id_kategori, genre, durasi, deskripsi, poster, status } = req.body;
+    const { judul_film, id_kategori, genre, durasi, deskripsi, poster, trailer_url, status } = req.body;
     const values = {
       judul_film,
       id_kategori: id_kategori || 1,
@@ -23,6 +21,7 @@ const addFilm = async (req, res, next) => {
       durasi,
       deskripsi,
       poster,
+      trailer_url: trailer_url || null,
       created_by: 1,
       status: status || 'Sedang Tayang'
     };
@@ -40,7 +39,6 @@ const addFilm = async (req, res, next) => {
   }
 };
 
-// 3. DELETE FILM
 const deleteFilm = async (req, res, next) => {
   try {
     const idFilm = req.params.id;
@@ -56,7 +54,6 @@ const deleteFilm = async (req, res, next) => {
   }
 };
 
-// 4. GET FILM BY ID
 const getFilmById = async (req, res, next) => {
   try {
     const [rows] = await FilmModel.getFilmById(req.params.id);
@@ -70,10 +67,9 @@ const getFilmById = async (req, res, next) => {
   }
 };
 
-// 5. PUT FILM (Update Film)
 const updateFilm = async (req, res, next) => {
   try {
-    const { judul_film, id_kategori, genre, durasi, deskripsi, poster, status } = req.body;
+    const { judul_film, id_kategori, genre, durasi, deskripsi, poster, trailer_url, status } = req.body;
     const idFilm = req.params.id;
 
     const values = {
@@ -84,6 +80,7 @@ const updateFilm = async (req, res, next) => {
       durasi,
       deskripsi,
       poster,
+      trailer_url: trailer_url || null,
       status
     };
 
@@ -99,7 +96,6 @@ const updateFilm = async (req, res, next) => {
   }
 };
 
-// 6. GET ADMIN
 const getAdmin = async (req, res, next) => {
   try {
     const [rows] = await FilmModel.getAdmin();
@@ -114,7 +110,6 @@ const getAdmin = async (req, res, next) => {
   }
 };
 
-// Export semua fungsinya
 module.exports = {
   getAllFilms,
   addFilm,
