@@ -4,7 +4,8 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
     const [form, setForm] = useState({
-        email: '',
+        // TUGAS MINGGU 3: Properti 'email' diganti menjadi 'identifier' (atau 'usernameOrEmail')
+        identifier: '', 
         password: ''
     });
     const [error, setError] = useState('');
@@ -20,19 +21,23 @@ const Login = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            // Memanggil endpoint login yang kita buat di Minggu 2
-            const response = await axios.post('http://localhost:5000/api/login/user', form);
+            // Pastikan backend Anda menerima field 'identifier' atau sesuaikan payload-nya di sini
+            const payload = {
+                identifier: form.identifier, // Kirim ke backend
+                password: form.password
+            };
+
+            const response = await axios.post('http://localhost:3000/api/login/user', payload);
             
             if (response.data.success) {
-                // TUGAS MINGGU 3: Simpan JWT ke localStorage
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('user', JSON.stringify(response.data.data));
 
                 alert('Login Berhasil!');
-                navigate('/'); // Redirect ke home
+                navigate('/'); 
             }
         } catch (err) {
-            setError(err.response?.data?.message || 'Login gagal, periksa email/password.');
+            setError(err.response?.data?.message || 'Login gagal, periksa email/username atau password.');
         } finally {
             setLoading(false);
         }
@@ -41,7 +46,6 @@ const Login = () => {
     return (
         <div style={{ backgroundColor: '#0a0b0d', minHeight: '100vh', fontFamily: 'Inter, sans-serif', display: 'flex' }} className="login-layout">
             
-            {/* Left Sidebar (Copy dari Register agar identik) */}
             <div className="sidebar-section" style={{
                 flex: '1',
                 background: 'linear-gradient(135deg, #1a1c22 0%, #0a0b0d 100%)',
@@ -61,7 +65,6 @@ const Login = () => {
                 </div>
             </div>
 
-            {/* Right Form Section */}
             <div className="form-section" style={{ flex: '1.2', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px' }}>
                 <div className="form-container" style={{ width: '100%', maxWidth: '440px', padding: '40px', backgroundColor: '#111318', borderRadius: '16px', border: '1px solid #1f2636', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
                     
@@ -77,14 +80,15 @@ const Login = () => {
                     )}
 
                     <form onSubmit={handleSubmit}>
+                        {/* INPUT EMAIL / USERNAME */}
                         <div style={{ marginBottom: '20px' }}>
-                            <label style={labelStyle}>Email Address</label>
+                            <label style={labelStyle}>Email or Username</label>
                             <input 
-                                type="email" 
-                                name="email"
-                                placeholder="name@company.com"
+                                type="text" // Diubah dari 'email' ke 'text' agar bisa menerima username
+                                name="identifier"
+                                placeholder="Email or username"
                                 style={inputStyle}
-                                value={form.email}
+                                value={form.identifier}
                                 onChange={handleChange}
                                 required
                             />
@@ -137,7 +141,6 @@ const Login = () => {
                 </div>
             </div>
 
-            {/* Reusable CSS */}
             <style>
                 {`
                     @media (max-width: 968px) {
@@ -150,7 +153,6 @@ const Login = () => {
     );
 };
 
-// Styling Object agar sama dengan Register.jsx
 const labelStyle = {
     display: 'block',
     color: '#a1a1aa',

@@ -5,7 +5,7 @@ const AuthModel = require('../models/Authmodel');
 
 // Fungsi pembantu untuk generate token
 const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'secret_key_fallback', {
+  return jwt.sign({ id }, process.env.JWT_SECRET || 'syahrul_secret_key', {
     expiresIn: process.env.JWT_EXPIRES_IN || '1d',
   });
 };
@@ -39,7 +39,7 @@ const loginUser = async (req, res, next) => {
     }
 
     const user = userRows[0];
-
+    
     // 2. Validasi password pakai bcrypt
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -69,22 +69,13 @@ const loginAdmin = async (req, res, next) => {
       return next(new ErrorHandler(401, 'Username atau password salah!'));
     }
 
-    const admin = adminRows[0];
+    const admin = adminRows[0];  
     
-    // Gunakan bcrypt.compare jika password admin di DB sudah di-hash
-    // Jika masih plain text (untuk sementara), biarkan === tapi disarankan di-hash juga
-    const isMatch = password === admin.password; 
-    
-    
-    // Gunakan bcrypt.compare jika password admin di DB sudah di-hash
-    // Jika masih plain text (untuk sementara), biarkan === tapi disarankan di-hash juga
     const isMatch = password === admin.password; 
     
     if (!isMatch) {
       return next(new ErrorHandler(401, 'Username atau password salah!'));
     }
-
-    const token = signToken(admin.id_admin);
 
     const token = signToken(admin.id_admin);
 
@@ -103,7 +94,6 @@ const loginAdmin = async (req, res, next) => {
 
 module.exports = {
   registerUser,
-  loginUser,
   loginUser,
   loginAdmin,
 };

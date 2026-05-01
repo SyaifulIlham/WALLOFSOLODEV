@@ -6,8 +6,9 @@ const port = 3000;
 
 // MIDDLEWARE
 app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
+    credentials: true 
 }));
 app.use(express.json());
 
@@ -15,7 +16,6 @@ app.use(express.json());
 const apiRoutes = require('./routes/api');
 
 app.use('/', apiRoutes);
-
 // 404 handler for unknown routes
 app.use((req, res, next) => {
   const error = new Error('Route tidak ditemukan');
