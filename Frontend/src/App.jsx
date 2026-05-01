@@ -10,7 +10,8 @@ import ListSchedule from './pages/admin/ListSchedule';
 import AddSchedule from './pages/admin/AddSchedule';
 import EditSchedule from './pages/admin/EditSchedule';
 import Register from './pages/user/Register';
-
+import ManageSeats from './pages/admin/ManageSeats';
+import SeatPicker from './pages/user/SeatPicker';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/movie/:id" element={<DetailFilm />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/pesan/:id" element={<SeatPicker />} />
 
         {/* RUTE UNTUK HALAMAN ADMIN */}
         <Route path="/admin" element={<DashboardAdmin />} />
@@ -29,6 +31,7 @@ function App() {
         <Route path="/admin/schedules" element={<ListSchedule />} />
         <Route path="/admin/schedules/add" element={<AddSchedule />} />
         <Route path="/admin/schedules/edit/:id" element={<EditSchedule />} />
+        <Route path="/admin/seats" element={<ManageSeats />} />
       </Routes>
     </BrowserRouter>
   );
