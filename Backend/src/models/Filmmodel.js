@@ -8,17 +8,17 @@ const getFilmById = async (id) => {
   return await db.query('SELECT * FROM films WHERE id_film = ?', [id]);
 };
 
-const addFilm = async ({ judul_film, id_kategori, genre, durasi, deskripsi, poster, created_by, status }) => {
+const addFilm = async ({ judul_film, id_kategori, genre, durasi, deskripsi, poster, trailer_url, created_by, status }) => {
   return await db.query(
-    'INSERT INTO films (judul_film, id_kategori, genre, durasi, deskripsi, poster, created_by, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-    [judul_film, id_kategori, genre, durasi, deskripsi, poster, created_by, status]
+    'INSERT INTO films (judul_film, id_kategori, genre, durasi, deskripsi, poster, trailer_url, created_by, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [judul_film, id_kategori, genre, durasi, deskripsi, poster, trailer_url || null, created_by, status]
   );
 };
 
-const updateFilm = async ({ judul_film, id_kategori, genre, durasi, deskripsi, poster, status, id_film }) => {
+const updateFilm = async ({ judul_film, id_kategori, genre, durasi, deskripsi, poster, trailer_url, status, id_film }) => {
   return await db.query(
-    'UPDATE films SET judul_film = ?, id_kategori = ?, genre = ?, durasi = ?, deskripsi = ?, poster = ?, status = ? WHERE id_film = ?',
-    [judul_film, id_kategori, genre, durasi, deskripsi, poster, status, id_film]
+    'UPDATE films SET judul_film = ?, id_kategori = ?, genre = ?, durasi = ?, deskripsi = ?, poster = ?, trailer_url = ?, status = ? WHERE id_film = ?',
+    [judul_film, id_kategori, genre, durasi, deskripsi, poster, trailer_url || null, status, id_film]
   );
 };
 

@@ -1,3 +1,4 @@
+// Frontend/src/layouts/AdminLayout.jsx
 import React from 'react';
 import SidebarAdmin from '../components/SidebarAdmin';
 
@@ -10,6 +11,8 @@ const AdminLayout = ({ children, activeMenu }) => {
                 </div>
                 <main style={{
                     marginLeft: '280px',
+                    flex: 1,          // ← tambah ini
+                    width: 'calc(100vw - 280px)',  // ← tambah ini
                     padding: '32px 36px',
                     minHeight: '100vh',
                     overflowY: 'auto',
