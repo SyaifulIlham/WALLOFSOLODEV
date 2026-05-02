@@ -1,13 +1,31 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken'); // Tambahkan ini
+const jwt = require('jsonwebtoken');
 const { ErrorHandler } = require('../utils/ErrorHandler');
 const AuthModel = require('../models/Authmodel');
 
-// Fungsi pembantu untuk generate token
 const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'syahrul_secret_key', {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET tidak dikonfigurasi di environment!');
+  }
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || '1d',
   });
+};
+
+const getuser = async (req, res, next) => {
+  try {
+    const users = await AuthModel.findAllUsers();
+    if (users.length === 0) {
+      return next(new ErrorHandler(404, 'Tidak ada pengguna yang ditemukan!'));
+    }
+    res.status(200).json({
+      success: true,
+      data: users,
+      message: 'Daftar pengguna berhasil ditemukan dari database',
+    });
+  } catch (err) {
+    next(new ErrorHandler(500, err.message || 'Server error'));
+  }
 };
 
 const registerUser = async (req, res, next) => {
@@ -28,28 +46,23 @@ const registerUser = async (req, res, next) => {
   }
 };
 
-// --- TUGAS MINGGU 2: LOGIN USER ---
 const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
   try {
-    // 1. Cek apakah user ada
     const userRows = await AuthModel.findUserByEmail(email);
     if (userRows.length === 0) {
       return next(new ErrorHandler(401, 'Email atau password salah!'));
     }
 
     const user = userRows[0];
-    
-    // 2. Validasi password pakai bcrypt
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return next(new ErrorHandler(401, 'Email atau password salah!'));
     }
 
-    // 3. Generate JWT Token
     const token = signToken(user.id_user);
 
-    // 4. Kirim Response
     res.status(200).json({
       success: true,
       message: 'Login berhasil!',
@@ -60,7 +73,19 @@ const loginUser = async (req, res, next) => {
     next(new ErrorHandler(500, err.message || 'Server error'));
   }
 };
-
+const getAdmin = async (req, res, next) => {
+  try {
+    const [rows] = await FilmModel.getAdmin();
+    if (rows.length > 0) {
+      res.json({ success: true, data: rows[0] });
+    } else {
+      res.json({ success: false, message: 'Admin tidak ditemukan' });
+    }
+  } catch (error) {
+    console.error('Error fetching admin:', error);
+    next(new ErrorHandler(500, 'Server error'));
+  }
+};
 const loginAdmin = async (req, res, next) => {
   const { username, password } = req.body;
   try {
@@ -69,10 +94,10 @@ const loginAdmin = async (req, res, next) => {
       return next(new ErrorHandler(401, 'Username atau password salah!'));
     }
 
-    const admin = adminRows[0];  
-    
-    const isMatch = password === admin.password; 
-    
+    const admin = adminRows[0];
+
+    // Plain text comparison — gunakan ini jika password di DB belum di-hash
+    const isMatch = password === admin.password;
     if (!isMatch) {
       return next(new ErrorHandler(401, 'Username atau password salah!'));
     }
@@ -83,8 +108,6 @@ const loginAdmin = async (req, res, next) => {
       success: true,
       message: 'Login Admin berhasil!',
       token,
-      message: 'Login Admin berhasil!',
-      token,
       data: { id_admin: admin.id_admin, username: admin.username }
     });
   } catch (err) {
@@ -92,8 +115,4 @@ const loginAdmin = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  registerUser,
-  loginUser,
-  loginAdmin,
-};
+module.exports = { registerUser, loginUser, loginAdmin, getuser , getAdmin};

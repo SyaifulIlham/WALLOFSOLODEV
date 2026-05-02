@@ -75,7 +75,26 @@ const validateRegister = (req, res, next) => {
   next();
 };
 
-const validateLogin = (req, res, next) => {
+// Validator untuk login USER — pakai email & password
+const validateLoginUser = (req, res, next) => {
+  const { email, password } = req.body;
+  const errors = [];
+
+  if (!isNonEmptyString(email) || !isValidEmail(email)) {
+    errors.push('Email tidak valid');
+  }
+  if (!isNonEmptyString(password)) {
+    errors.push('Password wajib diisi');
+  }
+
+  if (errors.length) {
+    return next(new ErrorHandler(400, errors.join(', ')));
+  }
+  next();
+};
+
+// Validator untuk login ADMIN — pakai username & password
+const validateLoginAdmin = (req, res, next) => {
   const { username, password } = req.body;
   const errors = [];
 
@@ -96,5 +115,6 @@ module.exports = {
   validateCreateFilm,
   validateUpdateFilm,
   validateRegister,
-  validateLogin,
+  validateLoginUser,
+  validateLoginAdmin,
 };
