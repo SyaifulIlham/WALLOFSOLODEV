@@ -112,10 +112,49 @@ const validateLoginAdmin = (req, res, next) => {
   next();
 };
 
+const validateCreateTransaksi = (req, res, next) => {
+  const { id_user, tikets } = req.body;
+  const errors = [];
+
+  if (!isNumeric(id_user)) {
+    errors.push('id_user wajib diisi dan harus berupa angka');
+  }
+  if (!Array.isArray(tikets) || tikets.length === 0) {
+    errors.push('tikets wajib diisi dan tidak boleh kosong');
+  } else {
+    tikets.forEach((tiket, i) => {
+      if (!isNumeric(tiket.id_film))    errors.push(`Tiket ke-${i + 1}: id_film wajib diisi`);
+      if (!isNumeric(tiket.id_seat))    errors.push(`Tiket ke-${i + 1}: id_seat wajib diisi`);
+      if (!isNonEmptyString(tiket.jadwal_tayang)) errors.push(`Tiket ke-${i + 1}: jadwal_tayang wajib diisi`);
+      if (!isNumeric(tiket.harga))      errors.push(`Tiket ke-${i + 1}: harga wajib diisi`);
+    });
+  }
+
+  if (errors.length) return next(new ErrorHandler(400, errors.join(', ')));
+  next();
+};
+
+const validateUpdateStatusTransaksi = (req, res, next) => {
+  const { status_pembayaran } = req.body;
+  if (!['pending', 'berhasil'].includes(status_pembayaran)) {
+    return next(new ErrorHandler(400, 'status_pembayaran harus pending atau berhasil'));
+  }
+  next();
+};
+const validateDeletetransaksi = (req, res, next) => {
+  if (!isNumeric(req.params.id) || parseInt(req.params.id) <= 0) {
+    return next(new ErrorHandler(400, 'ID tidak valid'));
+  }
+  next();
+};
+
 module.exports = {
   validateCreateFilm,
   validateUpdateFilm,
   validateRegister,
   validateLoginUser,
   validateLoginAdmin,
+  validateCreateTransaksi,
+  validateUpdateStatusTransaksi,
+  validateDeletetransaksi,
 };

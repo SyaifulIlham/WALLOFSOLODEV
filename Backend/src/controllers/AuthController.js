@@ -73,14 +73,14 @@ const loginUser = async (req, res, next) => {
     next(new ErrorHandler(500, err.message || 'Server error'));
   }
 };
+// ✅ BENAR - pakai AuthModel
 const getAdmin = async (req, res, next) => {
   try {
-    const [rows] = await FilmModel.getAdmin();
-    if (rows.length > 0) {
-      res.json({ success: true, data: rows[0] });
-    } else {
-      res.json({ success: false, message: 'Admin tidak ditemukan' });
+    const admins = await AuthModel.findAllAdmins();
+    if (admins.length === 0) {
+      return res.json({ success: false, message: 'Admin tidak ditemukan' });
     }
+    res.status(200).json({ success: true, data: admins });
   } catch (error) {
     console.error('Error fetching admin:', error);
     next(new ErrorHandler(500, 'Server error'));

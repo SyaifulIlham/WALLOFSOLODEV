@@ -15,6 +15,10 @@ const createUser = async ({ nama, email, password, no_hp }) => {
   return result;
 };
 
+const findAllAdmins = async () => {
+  const [rows] = await db.query('SELECT * FROM admins');
+  return rows;
+};
 const findAdminByUsername = async (username) => {
   const [rows] = await db.query('SELECT * FROM admins WHERE username = ?', [username]);
   return rows;
@@ -25,4 +29,5 @@ module.exports = {
   createUser,
   findAdminByUsername,
   findAllUsers,
+  findAllAdmins
 };

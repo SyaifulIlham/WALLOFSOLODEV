@@ -5,12 +5,16 @@ const filmController = require('../controllers/filmController');
 const authController = require('../controllers/AuthController');
 const scheduleController = require('../controllers/ScheduleController');
 const SeatsController = require('../controllers/SeatsController');
+const TransaksiController = require('../controllers/TransaksiController');
 const {
   validateCreateFilm,
   validateUpdateFilm,
   validateRegister,
   validateLoginUser,   // FIX: validator khusus user (pakai email)
-  validateLoginAdmin,  // FIX: validator khusus admin (pakai username)
+  validateLoginAdmin,
+  validateCreateTransaksi,
+  validateUpdateStatusTransaksi,
+  validateDeletetransaksi,
 } = require('../utils/Validator');
 
 // Rute untuk mengelola Film
@@ -48,5 +52,12 @@ router.put('/seats/:id', SeatsController.updateSeat);
 router.delete('/seats/:id', SeatsController.deleteSeat);    
 router.put('/seats/:id/status', SeatsController.updateSeatStatus);
 router.delete('/seats', SeatsController.deleteAllSeats);
+
+router.get('/transaksi', TransaksiController.getAllTransaksi);
+router.get('/transaksi/:id', TransaksiController.getTransaksiById);
+router.post('/transaksi', validateCreateTransaksi, TransaksiController.createTransaksi);
+router.put('/transaksi/:id/status', validateUpdateStatusTransaksi, TransaksiController.updateStatusPembayaran);
+router.delete('/transaksi/:id', validateDeletetransaksi, TransaksiController.deleteTransaksi);
+router.get('/users/:id_user/transaksi', TransaksiController.getTransaksiByUser);
 
 module.exports = router;
