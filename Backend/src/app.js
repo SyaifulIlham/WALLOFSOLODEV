@@ -1,13 +1,15 @@
 const express = require('express');
+require('dotenv').config();
 const cors = require('cors');
 const { errorMiddleware } = require('./utils/ErrorHandler');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // MIDDLEWARE
 app.use(cors({
     origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    credentials: true
 }));
 app.use(express.json());
 
@@ -15,7 +17,6 @@ app.use(express.json());
 const apiRoutes = require('./routes/api');
 
 app.use('/', apiRoutes);
-
 // 404 handler for unknown routes
 app.use((req, res, next) => {
   const error = new Error('Route tidak ditemukan');
@@ -29,3 +30,4 @@ app.use(errorMiddleware);
 app.listen(port, () => {
   console.log(`Soloflixx server berjalan di http://localhost:${port}`);
 });
+

@@ -113,8 +113,7 @@ const ListSchedule = () => {
                         <div className="col-3">Film</div>
                         <div className="col-2">Tanggal</div>
                         <div className="col-2">Jam</div>
-                        <div className="col-2">Harga</div>
-                        <div className="col-2 text-end">Aksi</div>
+                        <div className="col-2 text-center">Aksi</div>
                     </div>
 
                     <div className="d-flex flex-column gap-3">
@@ -125,7 +124,6 @@ const ListSchedule = () => {
                                     <div className="col-3 text-white fw-semibold">{schedule.judul_film || `Film ${schedule.id_film}`}</div>
                                     <div className="col-2 text-slate-300">{schedule.tanggal_tayang}</div>
                                     <div className="col-2 text-slate-300">{schedule.jam_tayang}</div>
-                                    <div className="col-2 text-slate-300">Rp {Number(schedule.harga_tiket).toLocaleString('id-ID')}</div>
                                     <div className="col-2 text-end d-flex justify-content-end gap-2">
                                         <Link to={`/admin/schedules/edit/${schedule.id_jadwal}`} className="action-btn" style={{ backgroundColor: 'rgba(59, 130, 246, 0.12)', color: '#60a5fa' }}>Edit</Link>
                                         <button onClick={() => deleteSchedule(schedule.id_jadwal)} className="action-btn" style={{ backgroundColor: 'rgba(248, 113, 113, 0.12)', color: '#fb7185' }}>Hapus</button>
