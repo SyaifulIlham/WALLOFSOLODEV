@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
-    const [role, setRole] = useState('user'); // 'user' atau 'admin'
+    const [role, setRole] = useState('user'); 
     const [form, setForm] = useState({ identifier: '', password: '' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -27,11 +27,9 @@ const Login = () => {
             let payload, endpoint;
 
             if (role === 'admin') {
-                // Admin pakai username + password → /login/admin
                 endpoint = 'http://localhost:3000/login/admin';
                 payload = { username: form.identifier, password: form.password };
             } else {
-                // User pakai email + password → /login/user
                 endpoint = 'http://localhost:3000/login/user';
                 payload = { email: form.identifier, password: form.password };
             }
