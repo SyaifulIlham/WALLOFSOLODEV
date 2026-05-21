@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+import BASE_URL from '../../api';
 import Navbar from '../../components/nav';
 
-const API = 'http://localhost:3000';
 
 const SeatPicker = () => {
     const { id }                        = useParams(); // id_film
@@ -22,15 +22,15 @@ const SeatPicker = () => {
         const fetchAll = async () => {
             try {
                 const [seatsRes, filmRes] = await Promise.all([
-                    axios.get(`${API}/seats`),
-                    axios.get(`${API}/films/${id}`),
+                    axios.get(`${BASE_URL}/seats`),
+                    axios.get(`${BASE_URL}/films/${id}`),
                 ]);
                 setSeats(seatsRes.data.data || []);
                 setFilm(filmRes.data.data);
 
                 // Fetch jadwal jika ada id jadwal
                 if (jadwalId) {
-                    const jadwalRes = await axios.get(`${API}/films/${id}/schedules`);
+                    const jadwalRes = await axios.get(`${BASE_URL}/films/${id}/schedules`);
                     const found = (jadwalRes.data.data || []).find(j => j.id_jadwal == jadwalId);
                     if (found) setJadwal(found);
                 }

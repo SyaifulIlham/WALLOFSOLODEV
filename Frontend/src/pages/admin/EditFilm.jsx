@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import BASE_URL from '../../api';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import SidebarAdmin from '../../components/SidebarAdmin';
 
@@ -21,7 +22,7 @@ const EditFilm = () => {
     useEffect(() => {
         const getFilmById = async () => {
             try {
-                const res = await axios.get(`http://localhost:3000/films/${id}`);
+                const res = await axios.get(`${BASE_URL}/films/${id}`);
                 setFilm(res.data.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -37,7 +38,7 @@ const EditFilm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`http://localhost:3000/films/${id}`, film);
+            await axios.put(`${BASE_URL}/films/${id}`, film);
             alert('Perubahan Berhasil Disimpan!');
             navigate('/admin/Getfilms');
         } catch (error) {

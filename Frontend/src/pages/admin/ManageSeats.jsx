@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import axios from 'axios';
+import BASE_URL from '../../api';
 import AdminLayout from '../../layouts/AdminLayout';
 
-const API = 'http://localhost:3000';
 
 const ManageSeats = () => {
     const [seats, setSeats]           = useState([]);
@@ -23,7 +23,7 @@ const ManageSeats = () => {
     // ── Fetch ──────────────────────────────────────────────────────────────────
     const fetchSeats = async () => {
         try {
-            const res = await axios.get(`${API}/seats`);
+            const res = await axios.get(`${BASE_URL}/seats`);
             setSeats(res.data.data || []);
         } catch (err) {
             showToast('Gagal memuat data kursi', 'error');
@@ -77,10 +77,10 @@ const ManageSeats = () => {
         if (!form.nomor_kursi || !form.baris) return showToast('Nomor kursi dan baris wajib diisi', 'error');
         try {
             if (editSeat) {
-                await axios.put(`${API}/seats/${editSeat.id_seat}`, form);
+                await axios.put(`${BASE_URL}/seats/${editSeat.id_seat}`, form);
                 showToast('Kursi berhasil diupdate');
             } else {
-                await axios.post(`${API}/seats`, form);
+                await axios.post(`${BASE_URL}/seats`, form);
                 showToast('Kursi berhasil ditambahkan');
             }
             setShowModal(false);
@@ -93,7 +93,7 @@ const ManageSeats = () => {
     const toggleStatus = async (seat) => {
         const newStatus = seat.status === 'tersedia' ? 'dipesan' : 'tersedia';
         try {
-            await axios.put(`${API}/seats/${seat.id_seat}`, { ...seat, status: newStatus });
+            await axios.put(`${BASE_URL}/seats/${seat.id_seat}`, { ...seat, status: newStatus });
             setSeats(prev => prev.map(s => s.id_seat === seat.id_seat ? { ...s, status: newStatus } : s));
         } catch {
             showToast('Gagal mengubah status', 'error');
@@ -103,7 +103,7 @@ const ManageSeats = () => {
     const deleteSeat = async (id) => {
         if (!window.confirm('Hapus kursi ini?')) return;
         try {
-            await axios.delete(`${API}/seats/${id}`);
+            await axios.delete(`${BASE_URL}/seats/${id}`);
             setSeats(prev => prev.filter(s => s.id_seat !== id));
             showToast('Kursi berhasil dihapus');
         } catch {
@@ -114,7 +114,7 @@ const ManageSeats = () => {
     const deleteAll = async () => {
         if (!window.confirm('Hapus SEMUA kursi? Tindakan ini tidak bisa dibatalkan.')) return;
         try {
-            await axios.delete(`${API}/seats`);
+            await axios.delete(`${BASE_URL}/seats`);
             setSeats([]);
             showToast('Semua kursi berhasil dihapus');
         } catch {
@@ -124,7 +124,7 @@ const ManageSeats = () => {
 
     const handleGenerate = async () => {
         try {
-            const res = await axios.post(`${API}/seats/generate`, {
+            const res = await axios.post(`${BASE_URL}/seats/generate`, {
                 ...genForm,
                 jumlah_per_baris: parseInt(genForm.jumlah_per_baris),
             });
@@ -181,7 +181,7 @@ const ManageSeats = () => {
                     <div className="d-flex justify-content-between align-items-start mb-4 flex-wrap" style={{ gap: 12 }}>
                         <div>
                             <h2 className="m-0 text-white" style={{ fontSize: '1.3rem' }}>Manajemen Kursi</h2>
-                            <p className="m-0 mt-2 text-muted small">Kelola kursi bioskop — tambah, edit, hapus, dan ubah status.</p>
+                            <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '8px 0 0' }}>Kelola kursi bioskop — tambah, edit, hapus, dan ubah status.</p>
                         </div>
                         <div className="d-flex gap-2 flex-wrap">
                             <button onClick={() => setShowGenerate(true)} className="btn" style={{ padding: '12px 20px', borderRadius: 14, backgroundColor: 'rgba(168,85,247,0.15)', color: '#c084fc', border: '1px solid rgba(168,85,247,0.3)', fontWeight: 700, cursor: 'pointer' }}>

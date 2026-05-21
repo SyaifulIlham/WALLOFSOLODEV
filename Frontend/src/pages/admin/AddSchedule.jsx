@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import BASE_URL from '../../api';
 import { useNavigate, Link } from 'react-router-dom';
 import SidebarAdmin from '../../components/SidebarAdmin';
 
@@ -17,7 +18,7 @@ const AddSchedule = () => {
   useEffect(() => {
     const fetchFilms = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/films');
+        const res = await axios.get(`${BASE_URL}/films`);
         setFilms(res.data.data || []);
       } catch (err) {
         console.error('Error fetching films:', err);
@@ -40,7 +41,7 @@ const AddSchedule = () => {
     }
 
     try {
-      await axios.post('http://localhost:3000/schedules', {
+      await axios.post(`${BASE_URL}/schedules`, {
         ...schedule,
         harga_tiket: Number(schedule.harga_tiket)
       });
