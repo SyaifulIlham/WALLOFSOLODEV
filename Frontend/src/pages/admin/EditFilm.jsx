@@ -46,17 +46,17 @@ const EditFilm = () => {
     };
 
     return (
-        <div className="d-flex" style={{ backgroundColor: '#131722', minHeight: '100vh', color: '#fff', fontFamily: 'Inter, sans-serif' }}>
+        <div className="d-flex bg-dark-primary" style={{ minHeight: '100vh', color: '#fff', fontFamily: 'Inter, sans-serif' }}>
             <SidebarAdmin activeMenu="catalog" />
 
-            <div className="flex-grow-1" style={{ backgroundColor: '#0d1119', padding: '40px 50px', overflowY: 'auto' }}>
+            <div className="flex-grow-1 bg-dark-secondary p-5">
                 <div className="mx-auto" style={{ maxWidth: '950px' }}>
                     <div className="mb-4 text-center">
                         <h2 className="fw-bold m-0 text-white">Edit Film</h2>
                         <p className="text-secondary mt-1">Perbarui informasi film pilihan Anda di katalog SoloFlixx.</p>
                     </div>
 
-                    <div className="shadow-lg" style={{ backgroundColor: '#151f30', borderRadius: '12px', padding: '40px', border: '1px solid #1f2636' }}>
+                    <div className="shadow-lg bg-dark-tertiary rounded-3 p-5" style={{ border: '1px solid #1f2636' }}>
                         <form onSubmit={handleSubmit}>
                             <div className="row g-5 align-items-start">
 

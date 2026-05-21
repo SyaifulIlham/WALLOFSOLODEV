@@ -97,14 +97,6 @@ function NavScroll() {
           <Nav className="me-auto my-2 my-lg-0 gap-lg-3" navbarScroll>
 
             {/* --- INI YANG DIUBAH: HANYA ADA MENU FILM --- */}
-            <Nav.Link
-              as={Link}
-              to="/movies"
-              className={`text-light nav-custom-hover ${location.pathname === '/movies' ? 'active' : ''}`}
-            >
-              Film
-            </Nav.Link>
-
             <NavDropdown
               menuVariant="dark"
               title={<span className="text-light nav-custom-hover">Kota</span>}
@@ -134,22 +126,7 @@ function NavScroll() {
             </Nav.Link>
           </Nav>
 
-          {/* Search Bar & Login Button (TETAP SAMA) */}
           <Form className="d-flex align-items-center mt-3 mt-lg-0 gap-3" onSubmit={handleSearch}>
-            <div className="search-container">
-              <Form.Control
-                type="search"
-                placeholder="Cari film atau bioskop..."
-                className="search-custom bg-dark text-white border-secondary shadow-none"
-                aria-label="Search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <button type="submit" className="search-btn">
-                <FaSearch />
-              </button>
-            </div>
-
           <Button as={Link} to="/login" variant="danger" className="px-4 fw-bold rounded-pill btn-login shadow-sm">
             <FaUser className="me-2" />
             Login

@@ -42,37 +42,28 @@ const TrailerModal = ({ trailerUrl, filmTitle, onClose }) => {
   }, [onClose]);
 
   return (
-    <div
-      onClick={handleBackdropClick}
-      style={{
-        position: 'fixed', inset: 0,
-        backgroundColor: 'rgba(0,0,0,0.92)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        zIndex: 9999, padding: '20px',
-      }}
-    >
+    <div className="modal-dark" onClick={handleBackdropClick}>
       <div style={{ position: 'relative', width: '100%', maxWidth: '900px' }}>
         {/* Tombol Close */}
         <button
           onClick={onClose}
+          className="btn btn-link text-white p-2"
           style={{
             position: 'absolute', top: '-48px', right: '0',
-            background: 'none', border: 'none', color: '#fff',
-            fontSize: '2rem', cursor: 'pointer', lineHeight: 1,
-            padding: '4px 8px', borderRadius: '6px',
+            fontSize: '2rem', lineHeight: 1,
           }}
         >
           ✕
         </button>
 
-        <p style={{ color: '#aaa', fontSize: '0.85rem', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+        <p className="mb-3" style={{ color: '#aaa', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
           🎬 Trailer — {filmTitle}
         </p>
 
         {/* Video Container 16:9 */}
-        <div style={{
+        <div className="rounded-3" style={{
           position: 'relative', paddingBottom: '56.25%', height: 0,
-          overflow: 'hidden', borderRadius: '12px', backgroundColor: '#000',
+          overflow: 'hidden', backgroundColor: '#000',
           boxShadow: '0 25px 60px rgba(0,0,0,0.8)',
         }}>
           {trailerType === 'youtube' ? (
@@ -97,13 +88,9 @@ const TrailerModal = ({ trailerUrl, filmTitle, onClose }) => {
           )}
 
           {/* Fallback jika video error */}
-          <div style={{
-            display: 'none', position: 'absolute', inset: 0,
-            alignItems: 'center', justifyContent: 'center',
-            flexDirection: 'column', gap: '12px', color: '#aaa',
-          }}>
+          <div className="d-none position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center gap-3" style={{ color: '#aaa' }}>
             <span style={{ fontSize: '3rem' }}>⚠️</span>
-            <p style={{ margin: 0 }}>Trailer tidak dapat diputar.</p>
+            <p className="m-0">Trailer tidak dapat diputar.</p>
             <a href={trailerUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#0dcaf0', fontSize: '0.9rem' }}>
               Buka di tab baru →
             </a>
@@ -122,6 +109,32 @@ const DetailFilm = () => {
   const [scheduleError, setScheduleError] = useState(null);
   const [activeTab, setActiveTab] = useState('jadwal');
   const [showTrailer, setShowTrailer] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  // Fungsi untuk mengubah format tanggal dari DD-MM-YYYY ke comparable format
+  const parseDate = (dateStr) => {
+    if (!dateStr) return null;
+    const [day, month, year] = dateStr.split('-');
+    return new Date(year, month - 1, day);
+  };
+
+  // Fungsi untuk format tanggal ke DD MMM YYYY
+  const formatDisplayDate = (dateStr) => {
+    if (!dateStr) return '';
+    const date = parseDate(dateStr);
+    if (!date) return dateStr;
+    const options = { day: 'numeric', month: 'short', year: 'numeric' };
+    return date.toLocaleDateString('id-ID', options);
+  };
+
+  // Fungsi untuk mendapatkan hari dalam bahasa Indonesia
+  const getDayName = (dateStr) => {
+    if (!dateStr) return '';
+    const date = parseDate(dateStr);
+    if (!date) return '';
+    const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    return days[date.getDay()];
+  };
 
   useEffect(() => {
     const fetchFilmDetail = async () => {
@@ -136,7 +149,13 @@ const DetailFilm = () => {
     const fetchFilmSchedules = async () => {
       try {
         const res = await axios.get(`http://localhost:3000/films/${id}/schedules`);
-        setSchedules(res.data.data || []);
+        const data = res.data.data || [];
+        setSchedules(data);
+        
+        // Set tanggal pertama sebagai default
+        if (data.length > 0) {
+          setSelectedDate(data[0].tanggal_tayang);
+        }
       } catch (error) {
         console.error("Error fetching schedules:", error);
         setScheduleError('Tidak dapat memuat jadwal saat ini.');
@@ -149,9 +168,23 @@ const DetailFilm = () => {
     fetchFilmSchedules();
   }, [id]);
 
+  // Dapatkan daftar tanggal unik dari jadwal
+  const uniqueDates = schedules.length > 0 
+    ? [...new Set(schedules.map(s => s.tanggal_tayang))].sort((a, b) => {
+        const dateA = parseDate(a);
+        const dateB = parseDate(b);
+        return dateA - dateB;
+      })
+    : [];
+
+  // Filter jadwal berdasarkan tanggal yang dipilih
+  const filteredSchedules = selectedDate 
+    ? schedules.filter(s => s.tanggal_tayang === selectedDate)
+    : [];
+
   if (!film) {
     return (
-      <div style={{ backgroundColor: '#0a0b0d', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div className="d-flex align-items-center justify-content-center" style={{ backgroundColor: '#0a0b0d', minHeight: '100vh' }}>
         <div className="spinner-border text-danger" role="status"></div>
       </div>
     );
@@ -165,8 +198,8 @@ const DetailFilm = () => {
       <div style={{ height: '100px' }}></div>
 
       {/* Breadcrumb */}
-      <div className="container text-start" style={{ padding: '0 15px' }}>
-        <p style={{ color: '#aaa', fontSize: '0.9rem' }}>
+      <div className="container text-start">
+        <p className="mb-3" style={{ color: '#aaa', fontSize: '0.9rem' }}>
           <Link to="/" className="text-decoration-none hover-white" style={{ color: '#aaa' }}>Beranda</Link>
           <span className="mx-2">/</span>
           <Link to="/movies" className="text-decoration-none hover-white" style={{ color: '#aaa' }}>Film</Link>
@@ -267,7 +300,7 @@ const DetailFilm = () => {
             {activeTab === 'jadwal' && (
               <div className="mt-4">
                 <h5 className="fw-bold text-white mb-1">Jadwal Tayang</h5>
-                <p className="text-secondary mb-3">Lihat jam tayang dan harga tiket untuk film ini.</p>
+                <p className="text-secondary mb-4">Lihat jam tayang dan harga tiket untuk film ini.</p>
 
                 {scheduleLoading ? (
                   <div className="text-secondary py-4">Memuat jadwal...</div>
@@ -276,23 +309,89 @@ const DetailFilm = () => {
                 ) : schedules.length === 0 ? (
                   <div className="text-secondary py-4">Belum ada jadwal tayang untuk film ini.</div>
                 ) : (
-                  <div className="row row-cols-1 row-cols-md-2 g-4">
-                    {schedules.map((schedule) => (
-                      <div key={schedule.id_jadwal} className="col">
-                        <div className="p-4 rounded-4" style={{ backgroundColor: '#11161f', border: '1px solid rgba(255,255,255,0.08)' }}>
-                          <div className="d-flex justify-content-between align-items-start mb-3">
-                            <div>
-                              <h6 className="text-white fw-bold mb-2">{schedule.tanggal_tayang}</h6>
-                              <p className="text-secondary mb-1">Jam tayang</p>
-                              <p className="text-white fw-semibold" style={{ fontSize: '1.1rem' }}>{schedule.jam_tayang}</p>
+                  <div>
+                    {/* Pilihan Tanggal */}
+                    <div className="mb-5">
+                      <p className="text-secondary mb-3">Pilih Tanggal Tayang:</p>
+                      <div className="d-flex flex-wrap gap-2">
+                        {uniqueDates.map((date) => (
+                          <button
+                            key={date}
+                            onClick={() => setSelectedDate(date)}
+                            className={`px-3 py-2 rounded-3 fw-semibold border`}
+                            style={{
+                              backgroundColor: selectedDate === date ? '#0dcaf0' : 'transparent',
+                              color: selectedDate === date ? '#000' : '#fff',
+                              border: selectedDate === date ? '1px solid #0dcaf0' : '1px solid rgba(255,255,255,0.2)',
+                              cursor: 'pointer',
+                              transition: 'all 0.2s ease',
+                              fontSize: '0.95rem'
+                            }}
+                            onMouseEnter={e => {
+                              if (selectedDate !== date) {
+                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)';
+                                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)';
+                              }
+                            }}
+                            onMouseLeave={e => {
+                              if (selectedDate !== date) {
+                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
+                                e.currentTarget.style.backgroundColor = 'transparent';
+                              }
+                            }}
+                          >
+                            <div className="text-uppercase" style={{ fontSize: '0.75rem', letterSpacing: '0.5px' }}>
+                              {getDayName(date)}
                             </div>
-                            <span className="badge rounded-pill" style={{ backgroundColor: '#0dcaf0', color: '#050505', fontWeight: '700' }}>
-                              Rp {Number(schedule.harga_tiket).toLocaleString('id-ID')}
-                            </span>
-                          </div>
-                        </div>
+                            <div>{formatDisplayDate(date)}</div>
+                          </button>
+                        ))}
                       </div>
-                    ))}
+                    </div>
+
+                    {/* Jadwal untuk Tanggal Terpilih */}
+                    {filteredSchedules.length === 0 ? (
+                      <div className="text-secondary py-4 text-center">
+                        <p className="mb-0">Tidak ada jadwal tayang pada tanggal yang dipilih.</p>
+                      </div>
+                    ) : (
+                      <div className="row row-cols-1 row-cols-md-2 g-4">
+                        {filteredSchedules.map((schedule) => (
+                          <div key={schedule.id_jadwal} className="col">
+                            <div className="p-4 rounded-4" style={{ backgroundColor: '#11161f', border: '1px solid rgba(255,255,255,0.08)', transition: 'all 0.3s ease' }}
+                              onMouseEnter={e => {
+                                e.currentTarget.style.backgroundColor = '#141a23';
+                                e.currentTarget.style.borderColor = 'rgba(13,202,240,0.3)';
+                                e.currentTarget.style.boxShadow = '0 0 20px rgba(13,202,240,0.1)';
+                              }}
+                              onMouseLeave={e => {
+                                e.currentTarget.style.backgroundColor = '#11161f';
+                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                                e.currentTarget.style.boxShadow = 'none';
+                              }}
+                            >
+                              <div className="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                  <h6 className="text-white fw-bold mb-2">{schedule.tanggal_tayang}</h6>
+                                  <p className="text-secondary mb-1" style={{ fontSize: '0.9rem' }}>Jam tayang</p>
+                                  <p className="text-white fw-semibold" style={{ fontSize: '1.3rem' }}>{schedule.jam_tayang}</p>
+                                </div>
+                                <span className="badge rounded-pill" style={{ backgroundColor: '#0dcaf0', color: '#050505', fontWeight: '700', padding: '0.6rem 0.8rem', fontSize: '0.9rem' }}>
+                                  Rp {Number(schedule.harga_tiket).toLocaleString('id-ID')}
+                                </span>
+                              </div>
+                              <Link
+                                to={`/pesan/${id}?jadwal=${schedule.id_jadwal}`}
+                                className="btn btn-primary w-100 fw-bold"
+                                style={{ marginTop: '12px' }}
+                              >
+                                🎫 Pesan Tiket
+                              </Link>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

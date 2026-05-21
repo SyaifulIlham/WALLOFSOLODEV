@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/custom.css';
 import Home from './pages/user/Home';
-import Movies from './pages/user/Movies'; // <--- INI DITAMBAHIN
+import Movies from './pages/user/Movies'; 
 import DetailFilm from './pages/user/DetailFilm';
 import DashboardAdmin from './pages/admin/dashboardadmin';
 import ListFilm from './pages/admin/GetFilm';

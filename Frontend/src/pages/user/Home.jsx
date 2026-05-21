@@ -84,7 +84,7 @@ const PromoBanners = () => (
 ───────────────────────────────────────────── */
 const categories = [
     { icon: '🎭', label: 'Bioskop' },
-    { icon: '🎬', label: 'Film' },
+    { icon: '🎬', label: 'Film', link: '/movies' },
     { icon: '🍿', label: 'Snack' },
     { icon: '🎟️', label: 'Promo' },
 ];
@@ -158,10 +158,19 @@ const Home = () => {
 
                         <div className="sf-cats">
                             {categories.map((c, i) => (
-                                <button key={i} className="sf-cat">
-                                    <span className="sf-cat__icon">{c.icon}</span>
-                                    <span className="sf-cat__label">{c.label}</span>
-                                </button>
+                                c.link
+                                    ? (
+                                        <Link key={i} to={c.link} className="sf-cat">
+                                            <span className="sf-cat__icon">{c.icon}</span>
+                                            <span className="sf-cat__label">{c.label}</span>
+                                        </Link>
+                                    )
+                                    : (
+                                        <button key={i} className="sf-cat">
+                                            <span className="sf-cat__icon">{c.icon}</span>
+                                            <span className="sf-cat__label">{c.label}</span>
+                                        </button>
+                                    )
                             ))}
                         </div>
                     </div>

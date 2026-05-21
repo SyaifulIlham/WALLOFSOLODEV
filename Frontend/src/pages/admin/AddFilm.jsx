@@ -34,17 +34,17 @@ const AddFilm = () => {
     };
 
     return (
-        <div className="d-flex" style={{ backgroundColor: '#131722', minHeight: '100vh', color: '#fff', fontFamily: 'Inter, sans-serif' }}>
+        <div className="d-flex bg-dark-primary" style={{ minHeight: '100vh', color: '#fff', fontFamily: 'Inter, sans-serif' }}>
             <SidebarAdmin activeMenu="add" />
 
-            <div className="flex-grow-1" style={{ backgroundColor: '#0d1119', padding: '40px 50px', overflowY: 'auto' }}>
+            <div className="flex-grow-1 bg-dark-secondary p-5">
                 <div className="mx-auto" style={{ maxWidth: '850px' }}>
                     <div className="mb-4 text-center">
                         <h2 className="fw-bold m-0 text-white">Tambah Film Baru</h2>
                         <p className="text-secondary mt-1">Masukkan detail film untuk ditambahkan ke katalog SoloFlixx.</p>
                     </div>
 
-                    <div className="shadow-lg" style={{ backgroundColor: '#151f30', borderRadius: '12px', padding: '40px', border: '1px solid #1f2636' }}>
+                    <div className="shadow-lg bg-dark-tertiary rounded-3 p-5" style={{ border: '1px solid #1f2636' }}>
                         <form onSubmit={handleSubmit}>
                             <div className="row g-4">
                                 <div className="col-md-12">
@@ -71,7 +71,7 @@ const AddFilm = () => {
                                 <div className="col-md-12">
                                     <label className="form-label admin-label">
                                         URL Trailer
-                                        <span style={{ color: '#4a5568', fontSize: '0.75rem', marginLeft: '8px', fontWeight: 'normal', textTransform: 'none' }}>
+                                        <span className="text-muted small" style={{ marginLeft: '8px', fontWeight: 'normal', textTransform: 'none' }}>
                                             (opsional — bisa link MP4 atau YouTube)
                                         </span>
                                     </label>
@@ -83,7 +83,7 @@ const AddFilm = () => {
                                         onChange={handleChange}
                                     />
                                     {film.trailer_url && (
-                                        <small style={{ color: '#2f80ed', marginTop: '6px', display: 'block' }}>
+                                        <small className="mt-2 d-block text-primary">
                                             {film.trailer_url.includes('youtube') || film.trailer_url.includes('youtu.be')
                                                 ? '📺 Terdeteksi: Link YouTube'
                                                 : '🎬 Terdeteksi: Link Video MP4'}
@@ -106,10 +106,10 @@ const AddFilm = () => {
                             </div>
 
                             <div className="d-flex justify-content-center gap-3 mt-5 border-top pt-4">
-                                <button type="submit" className="btn fw-bold px-5" style={{ backgroundColor: '#2f80ed', color: '#fff', borderRadius: '8px' }}>
+                                <button type="submit" className="btn fw-bold px-5 btn-primary-dark">
                                     Simpan Film
                                 </button>
-                                <Link to="/admin" className="btn fw-bold px-5" style={{ backgroundColor: '#1a2639', color: '#a1a1aa', border: '1px solid #2a364a', borderRadius: '8px' }}>
+                                <Link to="/admin" className="btn fw-bold px-5 btn-secondary-dark">
                                     Batal
                                 </Link>
                             </div>

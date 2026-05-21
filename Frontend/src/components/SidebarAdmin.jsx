@@ -23,24 +23,24 @@ const SidebarAdmin = ({ activeMenu }) => {
     return (
         <aside className="sidebar-admin" style={{ width: '280px', height: '100vh', backgroundColor: '#0f1726', borderRight: '1px solid rgba(255,255,255,0.07)', padding: '32px 24px', overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
             <div className="sidebar-brand mb-5">
-                <h3 style={{ margin: 0, letterSpacing: '1px', fontWeight: 700 }}>
+                <h3 className="m-0" style={{ letterSpacing: '1px', fontWeight: 700 }}>
                     <span style={{ color: '#60a5fa' }}>Solo</span>
                     <span style={{ color: '#ec4899' }}>Flixx</span>
-                    <small style={{ display: 'block', fontSize: '0.72rem', color: '#94a3b8', marginTop: '6px' }}>Admin Control</small>
+                    <small className="d-block" style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '6px' }}>Admin Control</small>
                 </h3>
             </div>
 
-            <div className="sidebar-profile d-flex align-items-center gap-3 mb-6" style={{ padding: '15px', borderRadius: '18px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <div style={{ width: '48px', height: '48px', borderRadius: '16px', backgroundColor: '#1e293b', display: 'grid', placeItems: 'center', color: '#93c5fd', fontWeight: 700, fontSize: '1.1rem' }}>
+            <div className="sidebar-profile d-flex align-items-center gap-3 mb-6 p-3 rounded-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div className="avatar-circle" style={{ width: '48px', height: '48px', borderRadius: '16px', backgroundColor: '#1e293b', color: '#93c5fd', fontWeight: 700, fontSize: '1.1rem' }}>
                     {adminName.charAt(0)}
                 </div>
                 <div>
                     <div style={{ fontSize: '0.92rem', color: '#f8fafc', fontWeight: 700 }}>{adminName}</div>
-                    <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Administrator</div>
+                    <div className="small" style={{ color: '#94a3b8' }}>Administrator</div>
                 </div>
             </div>
 
-            <nav className="sidebar-nav" style={{ display: 'flex', flexDirection: 'column', gap: '20px', paddingTop: '10px' }}>
+            <nav className="sidebar-nav d-flex flex-column gap-3 pt-2" style={{ gap: '20px' }}>
                 <Link to="/admin" className={`menu-link ${activeMenu === 'catalog' ? 'active' : ''}`}>
                     <span className="menu-dot" /> Dashboard
                 </Link>
@@ -62,9 +62,9 @@ const SidebarAdmin = ({ activeMenu }) => {
             </nav>
 
             <div className="sidebar-footer mt-auto" style={{ marginTop: '36px' }}>
-                <div style={{ padding: '18px 20px', borderRadius: '18px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginBottom: '10px' }}>Need quick help?</div>
-                    <Link to="/" className="help-link">Back to Website</Link>
+                <div className="p-4 rounded-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div className="small text-muted mb-3">Need quick help?</div>
+                    <Link to="/" className="btn btn-primary w-100 btn-sm">Back to Website</Link>
                 </div>
             </div>
 

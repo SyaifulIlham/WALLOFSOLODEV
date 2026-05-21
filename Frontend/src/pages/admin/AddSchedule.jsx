@@ -52,17 +52,17 @@ const AddSchedule = () => {
   };
 
   return (
-    <div className="d-flex" style={{ backgroundColor: '#131722', minHeight: '100vh', color: '#fff', fontFamily: 'Inter, sans-serif' }}>
+    <div className="d-flex bg-dark-primary" style={{ minHeight: '100vh', color: '#fff', fontFamily: 'Inter, sans-serif' }}>
       <SidebarAdmin activeMenu="schedule" />
 
-      <div className="flex-grow-1" style={{ backgroundColor: '#0d1119', padding: '40px 50px', overflowY: 'auto' }}>
+      <div className="flex-grow-1 bg-dark-secondary p-5">
         <div className="mx-auto" style={{ maxWidth: '850px' }}>
           <div className="mb-4 text-center">
             <h2 className="fw-bold m-0 text-white">Tambah Jadwal</h2>
             <p className="text-secondary mt-1">Buat jadwal baru untuk film yang akan tayang.</p>
           </div>
 
-          <div className="shadow-lg" style={{ backgroundColor: '#151f30', borderRadius: '12px', padding: '40px', border: '1px solid #1f2636' }}>
+          <div className="shadow-lg bg-dark-tertiary rounded-3 p-5" style={{ border: '1px solid #1f2636' }}>
             <form onSubmit={handleSubmit}>
               <div className="row g-4">
                 <div className="col-md-12">
@@ -97,11 +97,11 @@ const AddSchedule = () => {
                 )}
               </div>
 
-              <div className="d-flex justify-content-center gap-3 mt-5 border-top pt-4" style={{ borderColor: '#1f2636 !important' }}>
-                <Link to="/admin/schedules" className="btn fw-bold px-5" style={{ backgroundColor: '#1a2639', color: '#a1a1aa', border: '1px solid #2a364a', borderRadius: '8px' }}>
+              <div className="d-flex justify-content-center gap-3 mt-5 border-top pt-4 border-dark-subtle">
+                <Link to="/admin/schedules" className="btn fw-bold px-5 btn-secondary-dark">
                   Batal
                 </Link>
-                <button type="submit" className="btn fw-bold px-5" style={{ backgroundColor: '#2f80ed', color: '#fff', borderRadius: '8px' }}>
+                <button type="submit" className="btn fw-bold px-5 btn-primary-dark">
                   Simpan Jadwal
                 </button>
               </div>

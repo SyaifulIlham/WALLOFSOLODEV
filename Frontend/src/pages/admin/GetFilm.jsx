@@ -44,21 +44,15 @@ const GetFilm = () => {
     return (
         <AdminLayout activeMenu="films">
             <div className="container-fluid">
-                <div style={{ padding: '24px', borderRadius: '24px', background: '#111827', border: '1px solid rgba(148, 163, 184, 0.12)', width: '100%' }}>
+                <div className="p-5 rounded-4" style={{ background: '#111827', border: '1px solid rgba(148, 163, 184, 0.12)', width: '100%' }}>
                     
                     {/* Header */}
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <div>
-                            <h2 style={{ margin: 0, fontSize: '1.3rem', color: '#f8fafc' }}>Katalog Film</h2>
-                            <p style={{ margin: '8px 0 0', color: '#94a3b8' }}>Ubah, lihat, atau hapus film dari daftar katalog.</p>
+                            <h2 className="m-0 text-white" style={{ fontSize: '1.3rem' }}>Katalog Film</h2>
+                            <p className="m-0 mt-2 text-muted small">Ubah, lihat, atau hapus film dari daftar katalog.</p>
                         </div>
-                        <Link to="/admin/add" style={{
-                            borderRadius: '16px',
-                            backgroundColor: '#2563eb',
-                            color: '#fff',
-                            padding: '14px 24px',
-                            textDecoration: 'none',
-                            fontWeight: 700,
+                        <Link to="/admin/add" className="btn btn-primary fw-bold" style={{
                             boxShadow: '0 16px 40px rgba(37, 99, 235, 0.18)'
                         }}>
                             + Tambah Film
@@ -72,21 +66,18 @@ const GetFilm = () => {
                             placeholder="Cari film berdasarkan judul atau genre..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
+                            className="form-control"
                             style={{
-                                width: '100%',
-                                padding: '12px 18px',
                                 borderRadius: '12px',
                                 border: '1px solid rgba(148, 163, 184, 0.2)',
                                 backgroundColor: '#0f1726',
                                 color: '#f8fafc',
-                                fontSize: '0.9rem',
-                                outline: 'none',
                             }}
                         />
                     </div>
 
                     {/* Header tabel */}
-                    <div className="row px-4 mb-3 text-uppercase fw-bold" style={{ color: '#94a3b8', fontSize: '0.75rem', letterSpacing: '1px' }}>
+                    <div className="row px-4 mb-3 text-uppercase fw-bold small" style={{ color: '#94a3b8', letterSpacing: '1px' }}>
                         <div className="col-1">No</div>
                         <div className="col-4">Film</div>
                         <div className="col-2">Genre</div>

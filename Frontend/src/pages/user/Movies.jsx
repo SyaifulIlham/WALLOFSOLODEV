@@ -30,7 +30,7 @@ const Movies = () => {
             <div className="container py-4 text-start"> 
                 
                 {/* --- BREADCRUMB (Beranda Bisa Diklik) --- */}
-                <p className="text-secondary mb-3" style={{ fontSize: '0.9rem' }}>
+                <p className="text-secondary mb-3 small">
                     <Link to="/" className="text-secondary text-decoration-none hover-white">Beranda</Link> 
                     <span className="mx-2">/</span> 
                     <span className="text-white fw-bold">Film</span>
@@ -61,9 +61,9 @@ const Movies = () => {
                     {displayedFilms.length > 0 ? (
                         displayedFilms.map(f => (
                             <div className="col" key={f.id_film}>
-                                <Link to={`/movie/${f.id_film}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <Link to={`/movie/${f.id_film}`} className="text-decoration-none text-inherit">
                                     <div className="film-card">
-                                        <div className="img-container mb-3 position-relative shadow-sm" style={{ overflow: 'hidden', aspectRatio: '2/3', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                        <div className="img-container mb-3 position-relative shadow-sm rounded-3" style={{ overflow: 'hidden', aspectRatio: '2/3', border: '1px solid rgba(255,255,255,0.1)' }}>
                                             <img 
                                                 src={f.poster} 
                                                 className="w-100 h-100 object-fit-cover" 
@@ -72,7 +72,7 @@ const Movies = () => {
                                             />
                                             <div className="overlay-grad"></div>
                                         </div>
-                                        <h6 className="fw-bold text-uppercase mb-1" style={{ fontSize: '0.9rem', lineHeight: '1.4', color: 'white' }}>
+                                        <h6 className="fw-bold text-uppercase mb-1 text-white" style={{ fontSize: '0.9rem', lineHeight: '1.4' }}>
                                             {f.judul_film}
                                         </h6>
                                     </div>
