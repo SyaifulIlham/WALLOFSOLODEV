@@ -1,0 +1,203 @@
+/* ============================================
+   CUSTOM UTILITY CLASSES FOR BOOTSTRAP 5
+   ============================================ */
+
+/* Dark Theme Colors - Custom utility classes */
+.bg-dark-primary {
+  background-color: #131722;
+}
+
+.bg-dark-secondary {
+  background-color: #0d1119;
+}
+
+.bg-dark-tertiary {
+  background-color: #151f30;
+}
+
+.bg-dark-card {
+  background-color: #0f1726;
+}
+
+.bg-dark-input {
+  background-color: #060b18;
+}
+
+.bg-dark-base {
+  background-color: #050505;
+}
+
+.border-dark-subtle {
+  border-color: #1f2636 !important;
+}
+
+.text-muted-custom {
+  color: #a1a1aa;
+}
+
+/* Responsive padding for hero sections */
+.p-hero {
+  padding: 40px 50px;
+}
+
+@media (max-width: 768px) {
+  .p-hero {
+    padding: 20px 16px;
+  }
+}
+
+/* Avatar circle with grid placement */
+.avatar-circle {
+  display: grid;
+  place-items: center;
+}
+
+/* Seat picker styles */
+.seat-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  transition: all 0.15s;
+  user-select: none;
+  cursor: pointer;
+}
+
+.seat-box.booked {
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+}
+
+.seat-box.available {
+  background-color: rgba(30, 58, 138, 0.8);
+  border: 2px solid #1e40af;
+  color: #93c5fd;
+}
+
+.seat-box.selected {
+  background-color: rgba(56, 189, 248, 0.35);
+  border: 2px solid #38bdf8;
+  color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+}
+
+/* Gradient backgrounds */
+.bg-gradient-dark {
+  background: linear-gradient(135deg, #0d1526, #111e36);
+}
+
+.bg-gradient-screen {
+  background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.4), transparent);
+}
+
+/* Film card styling */
+.film-card {
+  transition: all 0.3s ease;
+}
+
+.film-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Overlay gradients */
+.overlay-grad::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+}
+
+/* Modal/Backdrop */
+.modal-dark {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+/* Fixed bottom panel */
+.fixed-bottom-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(6, 11, 24, 0.95);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  z-index: 100;
+}
+
+/* Custom button colors */
+.btn-primary-dark {
+  background-color: #2f80ed;
+  color: #fff;
+  border-radius: 8px;
+}
+
+.btn-primary-dark:hover {
+  background-color: #1f6ad8;
+}
+
+.btn-secondary-dark {
+  background-color: #1a2639;
+  color: #a1a1aa;
+  border: 1px solid #2a364a;
+  border-radius: 8px;
+}
+
+.btn-secondary-dark:hover {
+  background-color: #222f45;
+  color: #c5c5cc;
+}
+
+/* Tab styling */
+.tab-xxi {
+  background-color: transparent;
+  color: #6c757d;
+  border: 1px solid #333;
+}
+
+.tab-xxi.active {
+  background-color: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+.tab-xxi:hover {
+  color: #fff;
+  border-color: #555;
+}
+
+/* Smooth transitions */
+.transition-all {
+  transition: all 0.3s ease;
+}
+
+/* Spacing utilities for custom sizes */
+.gap-32 {
+  gap: 32px;
+}
+
+.gap-6 {
+  gap: 6px;
+}

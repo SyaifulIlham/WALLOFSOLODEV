@@ -48,13 +48,13 @@ const ListSchedule = () => {
 
     return (
         <AdminLayout activeMenu="schedule">
-            <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-                <header style={{ marginBottom: '32px' }}>
+            <div className="container-xl">
+                <header className="mb-5">
                     <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
                         <div>
-                            <p style={{ margin: 0, color: '#7c8da3', letterSpacing: '1px', textTransform: 'uppercase', fontSize: '0.8rem' }}>Jadwal Admin</p>
-                            <h1 style={{ margin: '12px 0', fontSize: '2.2rem', lineHeight: 1.05, color: '#f8fafc' }}>Kelola Jadwal Tayang</h1>
-                            <p style={{ margin: 0, color: '#cbd5e1', maxWidth: '720px' }}>Pantau dan ubah jadwal tayang, harga tiket, dan detail pertunjukan dengan tampilan yang lebih jelas.</p>
+                            <p className="m-0 text-muted small" style={{ letterSpacing: '1px', textTransform: 'uppercase' }}>Jadwal Admin</p>
+                            <h1 className="my-3 text-white" style={{ fontSize: '2.2rem', lineHeight: 1.05 }}>Kelola Jadwal Tayang</h1>
+                            <p className="m-0 text-secondary" style={{ maxWidth: '720px' }}>Pantau dan ubah jadwal tayang, harga tiket, dan detail pertunjukan dengan tampilan yang lebih jelas.</p>
                         </div>
                         <div className="d-flex flex-wrap gap-3 align-items-center">
                             <input
@@ -62,22 +62,16 @@ const ListSchedule = () => {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 placeholder="Cari judul film, tanggal, atau jam..."
+                                className="form-control"
                                 style={{
                                     minWidth: '240px',
                                     borderRadius: '16px',
                                     border: '1px solid rgba(148, 163, 184, 0.2)',
-                                    padding: '14px 16px',
                                     backgroundColor: '#0e1630',
                                     color: '#e2e8f0'
                                 }}
                             />
-                            <Link to="/admin/schedules/add" style={{
-                                borderRadius: '16px',
-                                backgroundColor: '#2563eb',
-                                color: '#fff',
-                                padding: '14px 24px',
-                                textDecoration: 'none',
-                                fontWeight: 700,
+                            <Link to="/admin/schedules/add" className="btn btn-primary fw-bold" style={{
                                 boxShadow: '0 16px 40px rgba(37, 99, 235, 0.18)'
                             }}>
                                 + Tambah Jadwal
@@ -86,15 +80,17 @@ const ListSchedule = () => {
                     </div>
                 </header>
 
-                <section style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '20px', marginBottom: '32px' }}>
+                <section className="row g-4 mb-5">
                     {[
                         { label: 'Total Jadwal', value: stats.totalSchedules, accent: '#38bdf8' },
                         { label: 'Tayang Hari Ini', value: stats.todaySchedules, accent: '#22c55e' },
                         { label: 'Harga Rata-rata', value: `Rp ${Math.round(stats.averagePrice).toLocaleString('id-ID')}`, accent: '#f97316' }
                     ].map((card) => (
-                        <div key={card.label} style={{ padding: '24px', borderRadius: '24px', background: '#111827', border: '1px solid rgba(148, 163, 184, 0.12)' }}>
-                            <span style={{ display: 'block', marginBottom: '10px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.75rem' }}>{card.label}</span>
-                            <strong style={{ fontSize: '2rem', color: '#fff' }}>{card.value}</strong>
+                        <div key={card.label} className="col-md-4">
+                            <div className="p-5 rounded-4" style={{ background: '#111827', border: '1px solid rgba(148, 163, 184, 0.12)' }}>
+                                <span className="d-block mb-3 text-muted small" style={{ textTransform: 'uppercase', letterSpacing: '1px' }}>{card.label}</span>
+                                <strong className="text-white" style={{ fontSize: '2rem' }}>{card.value}</strong>
+                            </div>
                         </div>
                     ))}
                 </section>

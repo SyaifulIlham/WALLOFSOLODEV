@@ -146,7 +146,7 @@ const ManageSeats = () => {
 
                 {/* ── Toast ── */}
                 {toast && (
-                    <div style={{
+                    <div className="alert" role="alert" style={{
                         position: 'fixed', top: 24, right: 24, zIndex: 9999,
                         padding: '12px 20px', borderRadius: 12, fontWeight: 600, fontSize: '0.9rem',
                         backgroundColor: toast.type === 'error' ? '#ef4444' : '#22c55e',
@@ -175,22 +175,22 @@ const ManageSeats = () => {
                     .view-btn { padding:8px 16px; border-radius:10px; border:none; font-weight:600; font-size:0.82rem; cursor:pointer; transition:all .2s; }
                 `}</style>
 
-                <div style={{ padding: '24px', borderRadius: '24px', background: '#111827', border: '1px solid rgba(148,163,184,0.12)' }}>
+                <div className="p-5 rounded-4" style={{ background: '#111827', border: '1px solid rgba(148,163,184,0.12)' }}>
 
                     {/* Header */}
-                    <div className="d-flex justify-content-between align-items-start mb-4" style={{ flexWrap: 'wrap', gap: 12 }}>
+                    <div className="d-flex justify-content-between align-items-start mb-4 flex-wrap" style={{ gap: 12 }}>
                         <div>
-                            <h2 style={{ margin: 0, fontSize: '1.3rem', color: '#f8fafc' }}>Manajemen Kursi</h2>
-                            <p style={{ margin: '6px 0 0', color: '#94a3b8' }}>Kelola kursi bioskop — tambah, edit, hapus, dan ubah status.</p>
+                            <h2 className="m-0 text-white" style={{ fontSize: '1.3rem' }}>Manajemen Kursi</h2>
+                            <p className="m-0 mt-2 text-muted small">Kelola kursi bioskop — tambah, edit, hapus, dan ubah status.</p>
                         </div>
-                        <div className="d-flex gap-2" style={{ flexWrap: 'wrap' }}>
-                            <button onClick={() => setShowGenerate(true)} style={{ padding: '12px 20px', borderRadius: 14, backgroundColor: 'rgba(168,85,247,0.15)', color: '#c084fc', border: '1px solid rgba(168,85,247,0.3)', fontWeight: 700, cursor: 'pointer' }}>
+                        <div className="d-flex gap-2 flex-wrap">
+                            <button onClick={() => setShowGenerate(true)} className="btn" style={{ padding: '12px 20px', borderRadius: 14, backgroundColor: 'rgba(168,85,247,0.15)', color: '#c084fc', border: '1px solid rgba(168,85,247,0.3)', fontWeight: 700, cursor: 'pointer' }}>
                                 ⚡ Generate
                             </button>
-                            <button onClick={deleteAll} style={{ padding: '12px 20px', borderRadius: 14, backgroundColor: 'rgba(239,68,68,0.12)', color: '#f87171', border: '1px solid rgba(239,68,68,0.25)', fontWeight: 700, cursor: 'pointer' }}>
+                            <button onClick={deleteAll} className="btn" style={{ padding: '12px 20px', borderRadius: 14, backgroundColor: 'rgba(239,68,68,0.12)', color: '#f87171', border: '1px solid rgba(239,68,68,0.25)', fontWeight: 700, cursor: 'pointer' }}>
                                 🗑 Reset Semua
                             </button>
-                            <button onClick={openAdd} style={{ padding: '12px 20px', borderRadius: 14, backgroundColor: '#2563eb', color: '#fff', border: 'none', fontWeight: 700, cursor: 'pointer', boxShadow: '0 8px 24px rgba(37,99,235,0.2)' }}>
+                            <button onClick={openAdd} className="btn btn-primary fw-bold" style={{ padding: '12px 20px', borderRadius: 14, boxShadow: '0 8px 24px rgba(37,99,235,0.2)' }}>
                                 + Tambah Kursi
                             </button>
                         </div>

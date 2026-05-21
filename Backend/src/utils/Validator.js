@@ -14,7 +14,8 @@ const validateFilmPayload = (body) => {
   if (!isNonEmptyString(body.genre)) {
     errors.push('Genre wajib diisi');
   }
-  if (!isNonEmptyString(body.durasi)) {
+  // ✅ FIX: durasi bisa number (dari DB) atau string (dari input) — pakai isNumeric
+  if (!isNumeric(body.durasi) || String(body.durasi).trim() === '') {
     errors.push('Durasi wajib diisi');
   }
   if (!isNonEmptyString(body.deskripsi)) {
@@ -75,7 +76,26 @@ const validateRegister = (req, res, next) => {
   next();
 };
 
-const validateLogin = (req, res, next) => {
+// Validator untuk login USER — pakai email & password
+const validateLoginUser = (req, res, next) => {
+  const { email, password } = req.body;
+  const errors = [];
+
+  if (!isNonEmptyString(email) || !isValidEmail(email)) {
+    errors.push('Email tidak valid');
+  }
+  if (!isNonEmptyString(password)) {
+    errors.push('Password wajib diisi');
+  }
+
+  if (errors.length) {
+    return next(new ErrorHandler(400, errors.join(', ')));
+  }
+  next();
+};
+
+// Validator untuk login ADMIN — pakai username & password
+const validateLoginAdmin = (req, res, next) => {
   const { username, password } = req.body;
   const errors = [];
 
@@ -92,9 +112,49 @@ const validateLogin = (req, res, next) => {
   next();
 };
 
+const validateCreateTransaksi = (req, res, next) => {
+  const { id_user, tikets } = req.body;
+  const errors = [];
+
+  if (!isNumeric(id_user)) {
+    errors.push('id_user wajib diisi dan harus berupa angka');
+  }
+  if (!Array.isArray(tikets) || tikets.length === 0) {
+    errors.push('tikets wajib diisi dan tidak boleh kosong');
+  } else {
+    tikets.forEach((tiket, i) => {
+      if (!isNumeric(tiket.id_film))    errors.push(`Tiket ke-${i + 1}: id_film wajib diisi`);
+      if (!isNumeric(tiket.id_seat))    errors.push(`Tiket ke-${i + 1}: id_seat wajib diisi`);
+      if (!isNonEmptyString(tiket.jadwal_tayang)) errors.push(`Tiket ke-${i + 1}: jadwal_tayang wajib diisi`);
+      if (!isNumeric(tiket.harga))      errors.push(`Tiket ke-${i + 1}: harga wajib diisi`);
+    });
+  }
+
+  if (errors.length) return next(new ErrorHandler(400, errors.join(', ')));
+  next();
+};
+
+const validateUpdateStatusTransaksi = (req, res, next) => {
+  const { status_pembayaran } = req.body;
+  if (!['pending', 'berhasil'].includes(status_pembayaran)) {
+    return next(new ErrorHandler(400, 'status_pembayaran harus pending atau berhasil'));
+  }
+  next();
+};
+const validateDeletetransaksi = (req, res, next) => {
+  if (!isNumeric(req.params.id) || parseInt(req.params.id) <= 0) {
+    return next(new ErrorHandler(400, 'ID tidak valid'));
+  }
+  next();
+};
+
 module.exports = {
   validateCreateFilm,
   validateUpdateFilm,
   validateRegister,
-  validateLogin,
+  validateLoginUser,
+  validateLoginAdmin,
+  validateCreateTransaksi,
+  validateUpdateStatusTransaksi,
+  validateDeletetransaksi,
 };

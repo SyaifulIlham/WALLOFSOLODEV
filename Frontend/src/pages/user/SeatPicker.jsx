@@ -139,7 +139,7 @@ const SeatPicker = () => {
     );
 
     if (loading) return (
-        <div style={{ backgroundColor: '#060b18', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="d-flex align-items-center justify-content-center" style={{ backgroundColor: '#060b18', minHeight: '100vh' }}>
             <div className="spinner-border text-primary" role="status" />
         </div>
     );
@@ -148,16 +148,16 @@ const SeatPicker = () => {
         <div style={{ backgroundColor: '#060b18', minHeight: '100vh', color: '#fff', fontFamily: "'Inter', sans-serif" }}>
             <Navbar />
 
-            <div className="container" style={{ padding: '36px 16px 80px' }}>
+            <div className="container py-5 px-3" style={{ paddingBottom: '80px' }}>
 
                 {/* Header film */}
                 {film && (
                     <div className="d-flex align-items-center gap-3 mb-4">
-                        <img src={film.poster} alt={film.judul_film} style={{ width: 48, height: 68, objectFit: 'cover', borderRadius: 8 }} onError={e => { e.target.onerror = null; e.target.src = 'https://placehold.co/48x68/111/333?text=?'; }} />
+                        <img src={film.poster} alt={film.judul_film} className="rounded" style={{ width: 48, height: 68, objectFit: 'cover' }} onError={e => { e.target.onerror = null; e.target.src = 'https://placehold.co/48x68/111/333?text=?'; }} />
                         <div>
-                            <h5 style={{ margin: 0, fontWeight: 700, color: '#f1f5f9' }}>{film.judul_film}</h5>
+                            <h5 className="m-0 fw-bold" style={{ color: '#f1f5f9' }}>{film.judul_film}</h5>
                             {jadwal && (
-                                <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.85rem' }}>
+                                <p className="m-0 text-muted small">
                                     {new Date(jadwal.tanggal_tayang).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} · {jadwal.jam_tayang} · Rp {hargaPerKursi.toLocaleString('id-ID')} / kursi
                                 </p>
                             )}
@@ -166,10 +166,10 @@ const SeatPicker = () => {
                 )}
 
                 {/* Grid kursi */}
-                <div style={{ background: 'linear-gradient(135deg, #0d1526, #111e36)', borderRadius: 24, padding: '32px 24px', border: '1px solid rgba(255,255,255,0.07)' }}>
+                <div className="bg-gradient-dark rounded-4 p-5" style={{ border: '1px solid rgba(255,255,255,0.07)' }}>
 
                     {/* Legend */}
-                    <div className="d-flex gap-4 justify-content-center mb-5">
+                    <div className="d-flex gap-5 justify-content-center mb-5 flex-wrap">
                         {[
                             { label: 'Available', bg: 'rgba(30,58,138,0.8)',    border: '#1e40af',  color: '#93c5fd' },
                             { label: 'Reserved',  bg: 'rgba(255,255,255,0.08)', border: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.3)' },
@@ -193,38 +193,24 @@ const SeatPicker = () => {
                     </div>
 
                     {/* Layar bioskop */}
-                    <div style={{ marginTop: 40, textAlign: 'center' }}>
-                        <div style={{
-                            display: 'inline-block',
-                            width: '60%', height: 6,
-                            background: 'linear-gradient(90deg, transparent, rgba(148,163,184,0.4), transparent)',
-                            borderRadius: 4,
-                            marginBottom: 6,
-                        }} />
-                        <p style={{ color: '#475569', fontSize: '0.78rem', letterSpacing: '3px', margin: 0 }}>MOVIE SCREEN</p>
+                    <div className="text-center mt-5">
+                        <div className="bg-gradient-screen d-inline-block rounded mb-2" style={{ width: '60%', height: '6px' }} />
+                        <p className="m-0 text-muted" style={{ fontSize: '0.78rem', letterSpacing: '3px', textTransform: 'uppercase' }}>Movie Screen</p>
                     </div>
                 </div>
 
                 {/* Panel bawah — ringkasan & tombol */}
                 {selected.length > 0 && (
-                    <div style={{
-                        position: 'fixed', bottom: 0, left: 0, right: 0,
-                        background: 'rgba(6,11,24,0.95)',
-                        backdropFilter: 'blur(12px)',
-                        borderTop: '1px solid rgba(255,255,255,0.08)',
-                        padding: '16px 24px',
-                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                        flexWrap: 'wrap', gap: 12, zIndex: 100,
-                    }}>
+                    <div className="fixed-bottom-panel">
                         <div>
-                            <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>Kursi dipilih</p>
-                            <p style={{ margin: 0, color: '#f1f5f9', fontWeight: 700, fontSize: '1rem' }}>
+                            <p className="m-0 text-muted small">Kursi dipilih</p>
+                            <p className="m-0 text-white fw-bold" style={{ fontSize: '1rem' }}>
                                 {selectedSeats.map(s => s.nomor_kursi).join(', ')}
                             </p>
                         </div>
                         <div style={{ textAlign: 'right' }}>
-                            <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>Total Harga</p>
-                            <p style={{ margin: 0, color: '#38bdf8', fontWeight: 800, fontSize: '1.2rem' }}>
+                            <p className="m-0 text-muted small">Total Harga</p>
+                            <p className="m-0 fw-bold" style={{ color: '#38bdf8', fontSize: '1.2rem' }}>
                                 Rp {totalHarga.toLocaleString('id-ID')}
                             </p>
                         </div>
@@ -233,11 +219,10 @@ const SeatPicker = () => {
                                 // Nanti bisa navigate ke halaman pembayaran
                                 alert(`Kursi dipilih: ${selectedSeats.map(s => s.nomor_kursi).join(', ')}\nTotal: Rp ${totalHarga.toLocaleString('id-ID')}`);
                             }}
+                            className="btn btn-primary fw-bold px-5"
                             style={{
-                                backgroundColor: '#2563eb', color: '#fff',
-                                border: 'none', padding: '14px 32px',
-                                borderRadius: 14, fontWeight: 700, fontSize: '1rem',
-                                cursor: 'pointer', boxShadow: '0 8px 24px rgba(37,99,235,0.3)',
+                                backgroundColor: '#2563eb',
+                                boxShadow: '0 8px 24px rgba(37,99,235,0.3)',
                             }}
                         >
                             Lanjut Bayar →

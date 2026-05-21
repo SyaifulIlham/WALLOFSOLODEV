@@ -1,5 +1,9 @@
 const db = require('../config/connect');
 
+const findAllUsers = async () => {
+  const [rows] = await db.query('SELECT * FROM users');
+  return rows;
+};
 const findUserByEmail = async (email) => {
   const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
   return rows;
@@ -11,6 +15,10 @@ const createUser = async ({ nama, email, password, no_hp }) => {
   return result;
 };
 
+const findAllAdmins = async () => {
+  const [rows] = await db.query('SELECT * FROM admins');
+  return rows;
+};
 const findAdminByUsername = async (username) => {
   const [rows] = await db.query('SELECT * FROM admins WHERE username = ?', [username]);
   return rows;
@@ -20,4 +28,6 @@ module.exports = {
   findUserByEmail,
   createUser,
   findAdminByUsername,
+  findAllUsers,
+  findAllAdmins
 };

@@ -55,13 +55,13 @@ const ListFilm = () => {
 
     return (
         <AdminLayout activeMenu="catalog">
-            <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-                <header style={{ marginBottom: '38px' }}>
+            <div className="container-xl">
+                <header className="mb-5">
                     <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
                         <div>
-                            <p style={{ margin: 0, color: '#7c8da3', letterSpacing: '1px', textTransform: 'uppercase', fontSize: '0.8rem' }}>Admin Dashboard</p>
-                            <h1 style={{ margin: '12px 0', fontSize: '2.5rem', lineHeight: 1.05, color: '#f8fafc' }}>Data Film & Jadwal di SoloFlixx</h1>
-                            <p style={{ margin: 0, color: '#cbd5e1', maxWidth: '760px' }}>Kelola katalog film, pantau jadwal tayang, dan kontrol konten dengan tampilan yang lebih modern dan mudah dipahami.</p>
+                            <p className="m-0 text-muted" style={{ letterSpacing: '1px', textTransform: 'uppercase', fontSize: '0.8rem' }}>Admin Dashboard</p>
+                            <h1 className="my-3 text-white" style={{ fontSize: '2.5rem', lineHeight: 1.05 }}>Data Film & Jadwal di SoloFlixx</h1>
+                            <p className="m-0 text-secondary" style={{ maxWidth: '760px' }}>Kelola katalog film, pantau jadwal tayang, dan kontrol konten dengan tampilan yang lebih modern dan mudah dipahami.</p>
                         </div>
                         <div className="d-flex flex-wrap gap-3 align-items-center">
                             <input
@@ -69,11 +69,11 @@ const ListFilm = () => {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 placeholder="Cari judul atau genre..."
+                                className="form-control"
                                 style={{
                                     minWidth: '240px',
                                     borderRadius: '16px',
                                     border: '1px solid rgba(148, 163, 184, 0.2)',
-                                    padding: '14px 16px',
                                     backgroundColor: '#0e1630',
                                     color: '#e2e8f0'
                                 }}
@@ -82,18 +82,20 @@ const ListFilm = () => {
                     </div>
                 </header>
 
-                <section className="dashboard-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '20px', marginBottom: '36px' }}>
+                <section className="row g-4 mb-5">
                     {[
                         { label: 'Total Film', value: stats.totalFilms, accent: '#6366f1' },
                         { label: 'Sedang Tayang', value: stats.showing, accent: '#14b8a6' },
                         { label: 'Akan Datang', value: stats.upcoming, accent: '#f97316' },
                         { label: 'Total Jadwal', value: stats.totalSchedules, accent: '#38bdf8' }
                     ].map((card) => (
-                        <div key={card.label} style={{ padding: '24px', borderRadius: '24px', background: '#111827', border: '1px solid rgba(148, 163, 184, 0.12)' }}>
-                            <span style={{ display: 'block', marginBottom: '10px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.75rem' }}>{card.label}</span>
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
-                                <strong style={{ fontSize: '2rem', color: '#fff' }}>{card.value}</strong>
-                                <span style={{ width: '10px', height: '10px', backgroundColor: card.accent, borderRadius: '999px' }} />
+                        <div key={card.label} className="col-md-6 col-lg-3">
+                            <div className="p-5 rounded-4" style={{ background: '#111827', border: '1px solid rgba(148, 163, 184, 0.12)' }}>
+                                <span className="d-block mb-3 text-muted small" style={{ textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.75rem' }}>{card.label}</span>
+                                <div className="d-flex align-items-center justify-content-between gap-3">
+                                    <strong className="text-white" style={{ fontSize: '2rem' }}>{card.value}</strong>
+                                    <span className="rounded-circle" style={{ width: '10px', height: '10px', backgroundColor: card.accent }} />
+                                </div>
                             </div>
                         </div>
                     ))}
