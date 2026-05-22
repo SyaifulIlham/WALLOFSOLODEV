@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import BASE_URL from '../../api';
 import Navbar from '../../components/nav';
 
 const getYouTubeEmbedUrl = (url) => {
@@ -139,7 +140,7 @@ const DetailFilm = () => {
   useEffect(() => {
     const fetchFilmDetail = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/films/${id}`);
+        const res = await axios.get(`${BASE_URL}/films/${id}`);
         setFilm(res.data.data);
       } catch (error) {
         console.error("Error fetching detail:", error);
@@ -148,7 +149,7 @@ const DetailFilm = () => {
 
     const fetchFilmSchedules = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/films/${id}/schedules`);
+        const res = await axios.get(`${BASE_URL}/films/${id}/schedules`);
         const data = res.data.data || [];
         setSchedules(data);
         

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
+import BASE_URL from '../../api';
 import { Link } from 'react-router-dom';
 import AdminLayout from '../../layouts/AdminLayout';
 
@@ -10,7 +11,7 @@ const ListSchedule = () => {
     useEffect(() => {
         const fetchSchedules = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/schedules');
+                const res = await axios.get(`${BASE_URL}/schedules`);
                 setSchedules(res.data.data || []);
             } catch (error) {
                 console.error('Error fetching schedules:', error);
@@ -24,7 +25,7 @@ const ListSchedule = () => {
         if (!window.confirm('Yakin ingin menghapus jadwal ini?')) return;
 
         try {
-            await axios.delete(`http://localhost:3000/schedules/${id}`);
+            await axios.delete(`${BASE_URL}/schedules/${id}`);
             setSchedules((current) => current.filter((item) => item.id_jadwal !== id));
         } catch (error) {
             console.error('Error deleting schedule:', error);
@@ -52,9 +53,9 @@ const ListSchedule = () => {
                 <header className="mb-5">
                     <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
                         <div>
-                            <p className="m-0 text-muted small" style={{ letterSpacing: '1px', textTransform: 'uppercase' }}>Jadwal Admin</p>
+                            <p style={{ letterSpacing: '1px', textTransform: 'uppercase', fontSize: '0.8rem', color: '#94a3b8', margin: 0 }}>Jadwal Admin</p>
                             <h1 className="my-3 text-white" style={{ fontSize: '2.2rem', lineHeight: 1.05 }}>Kelola Jadwal Tayang</h1>
-                            <p className="m-0 text-secondary" style={{ maxWidth: '720px' }}>Pantau dan ubah jadwal tayang, harga tiket, dan detail pertunjukan dengan tampilan yang lebih jelas.</p>
+                            <p style={{ maxWidth: '720px', color: '#94a3b8', margin: 0 }}>Pantau dan ubah jadwal tayang, harga tiket, dan detail pertunjukan dengan tampilan yang lebih jelas.</p>
                         </div>
                         <div className="d-flex flex-wrap gap-3 align-items-center">
                             <input
@@ -88,7 +89,7 @@ const ListSchedule = () => {
                     ].map((card) => (
                         <div key={card.label} className="col-md-4">
                             <div className="p-5 rounded-4" style={{ background: '#111827', border: '1px solid rgba(148, 163, 184, 0.12)' }}>
-                                <span className="d-block mb-3 text-muted small" style={{ textTransform: 'uppercase', letterSpacing: '1px' }}>{card.label}</span>
+                                <span style={{ display: 'block', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.75rem', color: '#cbd5e1' }}>{card.label}</span>
                                 <strong className="text-white" style={{ fontSize: '2rem' }}>{card.value}</strong>
                             </div>
                         </div>
