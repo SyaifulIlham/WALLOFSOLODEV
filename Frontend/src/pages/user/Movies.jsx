@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import MainLayout from '../../layouts/MainLayout';
+import { base_url } from '../../config';
 
 const Movies = () => {
     const [films, setFilms] = useState([]);
@@ -10,7 +11,7 @@ const Movies = () => {
     useEffect(() => {
         const fetchFilms = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/films');
+                const res = await axios.get(`${base_url}/films`);
                 setFilms(res.data.data);
             } catch (error) {
                 console.error("Error fetching data:", error);

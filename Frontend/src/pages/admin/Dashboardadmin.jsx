@@ -59,7 +59,7 @@ const ListFilm = () => {
                 <header className="mb-5">
                     <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
                         <div>
-                            <p className="m-0 text-muted" style={{ letterSpacing: '1px', textTransform: 'uppercase', fontSize: '0.8rem' }}>Admin Dashboard</p>
+                            <p className="m-0 text-muted" style={{ letterSpacing: '1px', textTransform: 'uppercase', fontSize: '0.8rem', color: '#2465c1' }}>Admin Dashboard</p>
                             <h1 className="my-3 text-white" style={{ fontSize: '2.5rem', lineHeight: 1.05 }}>Data Film & Jadwal di SoloFlixx</h1>
                             <p className="m-0 text-secondary" style={{ maxWidth: '760px' }}>Kelola katalog film, pantau jadwal tayang, dan kontrol konten dengan tampilan yang lebih modern dan mudah dipahami.</p>
                         </div>
