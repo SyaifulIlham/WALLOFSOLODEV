@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import BASE_URL from '../api';
 import { Link } from 'react-router-dom';
 
 const SidebarAdmin = ({ activeMenu }) => {
@@ -8,7 +9,7 @@ const SidebarAdmin = ({ activeMenu }) => {
     useEffect(() => {
         const fetchAdmin = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/admins');
+                const res = await axios.get(`${BASE_URL}/admins`);
                 if (res.data.success && res.data.data) {
                     const name = res.data.data.username || 'Admin';
                     setAdminName(name.charAt(0).toUpperCase() + name.slice(1));
@@ -63,7 +64,7 @@ const SidebarAdmin = ({ activeMenu }) => {
 
             <div className="sidebar-footer mt-auto" style={{ marginTop: '36px' }}>
                 <div className="p-4 rounded-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <div className="small text-muted mb-3">Need quick help?</div>
+                    <div style={{ fontSize: '0.875rem', color: '#ffffff', marginBottom: '12px' }}>Need quick help?</div>
                     <Link to="/" className="btn btn-primary w-100 btn-sm">Back to Website</Link>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
+import BASE_URL from '../../api';
 import { Link } from 'react-router-dom';
 import AdminLayout from '../../layouts/AdminLayout';
 
@@ -12,25 +13,22 @@ const ListFilm = () => {
         const fetchData = async () => {
             try {
                 const [filmsRes, schedulesRes] = await Promise.all([
-                    axios.get('http://localhost:3000/films'),
-                    axios.get('http://localhost:3000/schedules')
+                    axios.get(`${BASE_URL}/films`),
+                    axios.get(`${BASE_URL}/schedules`)
                 ]);
-
                 setFilms(filmsRes.data.data || []);
                 setSchedules(schedulesRes.data.data || []);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
-
         fetchData();
     }, []);
 
     const deleteFilm = async (id) => {
         if (!window.confirm('Yakin ingin menghapus film ini?')) return;
-
         try {
-            await axios.delete(`http://localhost:3000/films/${id}`);
+            await axios.delete(`${BASE_URL}/films/${id}`);
             setFilms((current) => current.filter((film) => film.id_film !== id));
         } catch (error) {
             console.error('Error deleting data:', error);
@@ -59,9 +57,9 @@ const ListFilm = () => {
                 <header className="mb-5">
                     <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
                         <div>
-                            <p className="m-0 text-muted" style={{ letterSpacing: '1px', textTransform: 'uppercase', fontSize: '0.8rem', color: '#2465c1' }}>Admin Dashboard</p>
+                            <p className="admin-badge-label">Admin Dashboard</p>
                             <h1 className="my-3 text-white" style={{ fontSize: '2.5rem', lineHeight: 1.05 }}>Data Film & Jadwal di SoloFlixx</h1>
-                            <p className="m-0 text-secondary" style={{ maxWidth: '760px' }}>Kelola katalog film, pantau jadwal tayang, dan kontrol konten dengan tampilan yang lebih modern dan mudah dipahami.</p>
+                            <p className="admin-subtitle">Kelola katalog film, pantau jadwal tayang, dan kontrol konten dengan tampilan yang lebih modern dan mudah dipahami.</p>
                         </div>
                         <div className="d-flex flex-wrap gap-3 align-items-center">
                             <input
@@ -73,9 +71,9 @@ const ListFilm = () => {
                                 style={{
                                     minWidth: '240px',
                                     borderRadius: '16px',
-                                    border: '1px solid rgba(148, 163, 184, 0.2)',
-                                    backgroundColor: '#0e1630',
-                                    color: '#e2e8f0'
+                                    border: '1px solid rgb(255, 255, 255)',
+                                    backgroundColor: '#ffffff',
+                                    color: '#ffffff'
                                 }}
                             />
                         </div>
@@ -91,7 +89,7 @@ const ListFilm = () => {
                     ].map((card) => (
                         <div key={card.label} className="col-md-6 col-lg-3">
                             <div className="p-5 rounded-4" style={{ background: '#111827', border: '1px solid rgba(148, 163, 184, 0.12)' }}>
-                                <span className="d-block mb-3 text-muted small" style={{ textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.75rem' }}>{card.label}</span>
+                                <span className="admin-card-label">{card.label}</span>
                                 <div className="d-flex align-items-center justify-content-between gap-3">
                                     <strong className="text-white" style={{ fontSize: '2rem' }}>{card.value}</strong>
                                     <span className="rounded-circle" style={{ width: '10px', height: '10px', backgroundColor: card.accent }} />
@@ -106,7 +104,7 @@ const ListFilm = () => {
                         <div className="d-flex justify-content-between align-items-start mb-4">
                             <div>
                                 <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#f8fafc' }}>Film Terbaru</h2>
-                                <p style={{ margin: '8px 0 0', color: '#94a3b8' }}>Film terbaru di katalog berdasarkan data terakhir.</p>
+                                <p className="admin-subtitle" style={{ margin: '8px 0 0' }}>Film terbaru di katalog berdasarkan data terakhir.</p>
                             </div>
                             <span style={{ color: '#38bdf8', fontWeight: 700 }}>{filteredFilms.length} Film</span>
                         </div>
@@ -116,10 +114,10 @@ const ListFilm = () => {
                                     <img src={film.poster} alt={film.judul_film} style={{ width: '70px', height: '98px', objectFit: 'cover', borderRadius: '14px', border: '1px solid rgba(148, 163, 184, 0.12)' }} />
                                     <div style={{ minWidth: 0 }}>
                                         <div style={{ color: '#fff', fontWeight: 700, marginBottom: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{film.judul_film}</div>
-                                        <div style={{ color: '#94a3b8', fontSize: '0.9rem' }}>{film.genre || 'Genre kosong'}</div>
+                                        <div className="admin-subtitle" style={{ fontSize: '0.9rem' }}>{film.genre || 'Genre kosong'}</div>
                                         <div style={{ marginTop: '10px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                                             <span style={{ color: '#fff', background: 'rgba(59, 130, 246, 0.12)', padding: '6px 10px', borderRadius: '999px', fontSize: '0.78rem' }}>{film.status}</span>
-                                            <span style={{ color: '#94a3b8', fontSize: '0.78rem' }}>{film.durasi} menit</span>
+                                            <span className="admin-subtitle" style={{ fontSize: '0.78rem' }}>{film.durasi} menit</span>
                                         </div>
                                     </div>
                                 </div>
@@ -129,15 +127,39 @@ const ListFilm = () => {
 
                     <div style={{ padding: '24px', borderRadius: '24px', background: '#111827', border: '1px solid rgba(148, 163, 184, 0.12)' }}>
                         <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#f8fafc' }}>Pendapatan Potensial</h2>
-                        <p style={{ margin: '10px 0 20px', color: '#94a3b8' }}>Estimasi total dari harga tiket semua jadwal saat ini.</p>
+                        <p className="admin-subtitle" style={{ margin: '10px 0 20px' }}>Estimasi total dari harga tiket semua jadwal saat ini.</p>
                         <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#38bdf8' }}>Rp {stats.potentialRevenue.toLocaleString('id-ID')}</div>
-                        <div style={{ marginTop: '24px', color: '#cbd5e1' }}>
-                            <div style={{ marginBottom: '10px' }}><strong>{stats.totalSchedules}</strong> Jadwal aktif</div>
-                            <div><strong>{stats.upcoming}</strong> Film datang segera</div>
+                        <div className="admin-subtitle" style={{ marginTop: '24px' }}>
+                            <div style={{ marginBottom: '10px' }}><strong style={{ color: '#fff' }}>{stats.totalSchedules}</strong> Jadwal aktif</div>
+                            <div><strong style={{ color: '#fff' }}>{stats.upcoming}</strong> Film datang segera</div>
                         </div>
                     </div>
                 </section>
             </div>
+
+            {/* CSS override Bootstrap — taruh di sini biar pasti jalan */}
+            <style>{`
+                .admin-badge-label {
+                    color: #38bdf8 !important;
+                    letter-spacing: 1px !important;
+                    text-transform: uppercase !important;
+                    font-size: 0.8rem !important;
+                    font-weight: 600 !important;
+                    margin: 0 !important;
+                }
+                .admin-subtitle {
+                    color: #e2e8f0 !important;
+                    margin: 0;
+                }
+                .admin-card-label {
+                    display: block !important;
+                    margin-bottom: 12px !important;
+                    text-transform: uppercase !important;
+                    letter-spacing: 1px !important;
+                    font-size: 0.75rem !important;
+                    color: #e2e8f0 !important;
+                }
+            `}</style>
         </AdminLayout>
     );
 };

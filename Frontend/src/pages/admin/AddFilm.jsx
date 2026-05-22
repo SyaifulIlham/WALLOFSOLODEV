@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import BASE_URL from '../../api';
 import { useNavigate, Link } from 'react-router-dom';
 import SidebarAdmin from '../../components/SidebarAdmin';
 import { base_url } from '../../config';
@@ -26,7 +27,7 @@ const AddFilm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${base_url}/films`, film);
+            await axios.post(`${BASE_URL}/films`, film);
             alert('Film Berhasil Ditambahkan!');
             navigate('/admin/Getfilms');
         } catch (error) {

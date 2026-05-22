@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import BASE_URL from '../../api';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import SidebarAdmin from '../../components/SidebarAdmin';
 
@@ -19,8 +20,8 @@ const EditSchedule = () => {
     const fetchData = async () => {
       try {
         const [filmsRes, scheduleRes] = await Promise.all([
-          axios.get('http://localhost:3000/films'),
-          axios.get(`http://localhost:3000/schedules/${id}`)
+          axios.get(`${BASE_URL}/films`),
+          axios.get(`${BASE_URL}/schedules/${id}`)
         ]);
         setFilms(filmsRes.data.data || []);
         const data = scheduleRes.data.data || {};
@@ -51,7 +52,7 @@ const EditSchedule = () => {
     }
 
     try {
-      await axios.put(`http://localhost:3000/schedules/${id}`, {
+      await axios.put(`${BASE_URL}/schedules/${id}`, {
         ...schedule,
         harga_tiket: Number(schedule.harga_tiket)
       });

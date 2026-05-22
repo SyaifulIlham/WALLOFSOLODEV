@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import BASE_URL from '../../api';
 import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
@@ -27,10 +28,10 @@ const Login = () => {
             let payload, endpoint;
 
             if (role === 'admin') {
-                endpoint = 'http://localhost:3000/login/admin';
+                endpoint = `${BASE_URL}/login/admin`;
                 payload = { username: form.identifier, password: form.password };
             } else {
-                endpoint = 'http://localhost:3000/login/user';
+                endpoint = `${BASE_URL}/login/user`;
                 payload = { email: form.identifier, password: form.password };
             }
 
