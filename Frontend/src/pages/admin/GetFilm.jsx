@@ -1,6 +1,7 @@
 // Frontend/src/pages/admin/GetFilm.jsx
 import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
+import BASE_URL from '../../api';
 import { Link } from 'react-router-dom';
 import AdminLayout from "../../layouts/AdminLayout";
 
@@ -12,7 +13,7 @@ const GetFilm = () => {
     useEffect(() => {
         const fetchFilms = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/films');
+                const response = await axios.get(`${BASE_URL}/films`);
                 setFilms(response.data.data || []);
             } catch (error) {
                 console.error('Error fetching films:', error);
@@ -26,7 +27,7 @@ const GetFilm = () => {
     const deleteFilm = async (id) => {
         if (!window.confirm('Yakin ingin menghapus film ini?')) return;
         try {
-            await axios.delete(`http://localhost:3000/films/${id}`);
+            await axios.delete(`${BASE_URL}/films/${id}`);
             setFilms((current) => current.filter((film) => film.id_film !== id));
         } catch (error) {
             console.error('Error deleting film:', error);
@@ -50,10 +51,10 @@ const GetFilm = () => {
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <div>
                             <h2 className="m-0 text-white" style={{ fontSize: '1.3rem' }}>Katalog Film</h2>
-                            <p className="m-0 mt-2 text-muted small">Ubah, lihat, atau hapus film dari daftar katalog.</p>
+                            <p style={{ margin: '8px 0 0', color: '#e2e8f0', fontSize: '0.875rem' }}>Ubah, lihat, atau hapus film dari daftar katalog.</p>
                         </div>
                         <Link to="/admin/add" className="btn btn-primary fw-bold" style={{
-                            boxShadow: '0 16px 40px rgba(37, 99, 235, 0.18)'
+                            boxShadow: '0 16px 40px rgba(245, 245, 245, 0.18)'
                         }}>
                             + Tambah Film
                         </Link>

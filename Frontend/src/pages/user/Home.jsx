@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import axios from 'axios';
+import BASE_URL from '../../api';
 import { Link } from 'react-router-dom';
 import MainLayout from '../../layouts/MainLayout';
 
@@ -101,7 +102,7 @@ const Home = () => {
     const searchRef = useRef(null);
 
     useEffect(() => {
-        axios.get('http://localhost:3000/films')
+        axios.get(`${BASE_URL}/films`)
             .then(res => setFilms(res.data.data || []))
             .catch(() => setError('Gagal memuat data. Pastikan server berjalan.'))
             .finally(() => setLoading(false));

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import BASE_URL from '../../api';
 import { useNavigate, Link } from 'react-router-dom';
 
 const Register = () => {
@@ -22,7 +23,7 @@ const Register = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            await axios.post('http://localhost:3000/register', form);
+            await axios.post(`${BASE_URL}/register`, form);
             alert('Registrasi berhasil! Silakan login.');
             navigate('/login');
         } catch (err) {
