@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const jwt = require('jsonwebtoken');
 const { ErrorHandler } = require('../utils/ErrorHandler');
 const AuthModel = require('../models/Authmodel');
 
@@ -134,8 +133,6 @@ const loginAdmin = async (req, res, next) => {
     // Plain text comparison — gunakan ini jika password di DB belum di-hash
     const isMatch = password === admin.password;
 
-    const isMatch = password === admin.password;
-
     if (!isMatch) {
       return next(new ErrorHandler(401, 'Username atau password salah!'));
     }
@@ -157,9 +154,11 @@ const loginAdmin = async (req, res, next) => {
   }
 };
 
-module.exports = { registerUser, loginUser, loginAdmin, getuser , getAdmin};
+
 module.exports = {
   registerUser,
   loginUser,
-  loginAdmin
+  loginAdmin,
+  getuser,
+  getAdmin
 };
