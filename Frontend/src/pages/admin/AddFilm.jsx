@@ -3,18 +3,18 @@ import axios from 'axios';
 import BASE_URL from '../../api';
 import { useNavigate, Link } from 'react-router-dom';
 import SidebarAdmin from '../../components/SidebarAdmin';
-import { base_url } from '../../config';
+
 
 const AddFilm = () => {
     const [film, setFilm] = useState({
         judul_film: '',
-        id_kategori: '1',
+        id_kategori: '',
         genre: '',
         durasi: '',
         deskripsi: '',
         poster: '',
         trailer_url: '',
-        created_by: '1',
+        created_by: '',
         status: 'Sedang Tayang'
     });
 

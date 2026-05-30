@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import { FaSearch, FaUser, FaBars, FaTimes } from 'react-icons/fa';
 
 function NavScroll() {
-  const [searchQuery, setSearchQuery] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [cityMenuOpen, setCityMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const [loggedUserName, setLoggedUserName] = useState('');
   const location = useLocation();
 
   // Handle scroll effect
@@ -45,95 +39,121 @@ function NavScroll() {
     }
   }, [location]);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      // Navigate to search results or filter films
-      console.log('Searching for:', searchQuery);
-      // You can implement search navigation here
-    }
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen((prev) => !prev);
   };
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+  const toggleCityMenu = () => {
+    setCityMenuOpen((prev) => !prev);
   };
+
+  useEffect(() => {
+    const loadUserName = () => {
+      try {
+        const storedUser = sessionStorage.getItem('user');
+        const storedAdmin = sessionStorage.getItem('admin');
+        const role = sessionStorage.getItem('role');
+
+        if (role === 'admin' && storedAdmin) {
+          const adminData = JSON.parse(storedAdmin);
+          setLoggedUserName(adminData?.username || '');
+          return;
+        }
+
+        if (storedUser) {
+          const userData = JSON.parse(storedUser);
+          setLoggedUserName(userData?.nama || '');
+          return;
+        }
+
+        setLoggedUserName('');
+      } catch (error) {
+        setLoggedUserName('');
+      }
+    };
+
+    loadUserName();
+
+    const handleStorage = (event) => {
+      if (event.key === 'user' || event.key === 'admin' || event.key === 'role') {
+        loadUserName();
+      }
+    };
+
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
 
   const isActive = (section) => {
     return location.pathname === '/' && activeSection === section ? 'active' : '';
   };
 
   return (
-    <Navbar
-      expand="lg"
-      variant="dark"
-      fixed="top"
-      className={`navbar-transition ${isScrolled ? 'navbar-scrolled' : ''} ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}
+    <header
+      className={`site-header fixed-top ${isScrolled ? 'navbar-scrolled' : ''} ${isMobileMenuOpen ? 'mobile-open' : ''}`}
       style={{
         backgroundColor: isScrolled ? 'rgba(10, 11, 13, 0.95)' : '#0a0b0d',
         borderBottom: '1px solid rgba(255,255,255,0.05)',
         width: '100%',
         backdropFilter: 'blur(10px)',
-        transition: 'all 0.3s ease'
+        transition: 'all 0.3s ease',
+        zIndex: 1030,
       }}
     >
-      <Container fluid className="py-2 px-lg-4">
-        {/* Logo with animation */}
-        <Navbar.Brand as={Link} to="/" className="fw-bold fs-3 logo-animation" style={{ letterSpacing: '1px' }}>
+      <div className="container-fluid py-2 px-lg-4 d-flex align-items-center justify-content-between flex-wrap">
+        <Link to="/" className="navbar-brand fw-bold fs-3 logo-animation" style={{ letterSpacing: '1px' }}>
           <span style={{ color: '#dc3545' }}>Solo</span><span className="text-white">Flixx</span>
-        </Navbar.Brand>
+        </Link>
 
-        {/* Mobile menu toggle */}
-        <div className="d-lg-none">
-          <button
-            className="mobile-menu-toggle border-0 bg-transparent text-white"
-            onClick={toggleMobileMenu}
-            aria-label="Toggle navigation"
-          >
-            {isMobileMenuOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
-          </button>
-        </div>
+        <button
+          className="mobile-menu-toggle border-0 bg-transparent text-white d-lg-none"
+          onClick={toggleMobileMenu}
+          aria-label="Toggle navigation"
+        >
+          {isMobileMenuOpen ? '✕' : '☰'}
+        </button>
 
-        <Navbar.Collapse id="navbarScroll" className={isMobileMenuOpen ? 'show' : ''}>
-          <Nav className="me-auto my-2 my-lg-0 gap-lg-3" navbarScroll>
+        <div className={`site-nav-links d-lg-flex align-items-center ${isMobileMenuOpen ? 'show' : ''}`}>
+          <div className="nav-items d-flex align-items-center gap-3">
+            <div className={`nav-dropdown ${cityMenuOpen ? 'open' : ''}`}>
+              <button
+                type="button"
+                className="nav-link nav-custom-hover btn btn-link p-0 text-white"
+                onClick={toggleCityMenu}
+              >
+                Kota
+              </button>
+              <div className={`dropdown-menu ${cityMenuOpen ? 'show' : ''}`}>
+                <Link to="#jakarta" className="dropdown-item drop-hover city-item">
+                  <span className="city-icon">🏙️</span> Jakarta
+                </Link>
+                <Link to="#bandung" className="dropdown-item drop-hover city-item">
+                  <span className="city-icon">🏔️</span> Bandung
+                </Link>
+                <Link to="#surabaya" className="dropdown-item drop-hover city-item">
+                  <span className="city-icon">🌆</span> Surabaya
+                </Link>
+                <div className="dropdown-divider" />
+                <Link to="#all-cities" className="dropdown-item drop-hover view-all">
+                  🌍 Lihat Semua Kota
+                </Link>
+              </div>
+            </div>
 
-            {/* --- INI YANG DIUBAH: HANYA ADA MENU FILM --- */}
-            <NavDropdown
-              menuVariant="dark"
-              title={<span className="text-light nav-custom-hover">Kota</span>}
-              id="navbarScrollingDropdown"
-              className="nav-dropdown-custom"
-            >
-              <NavDropdown.Item href="#jakarta" className="drop-hover city-item">
-                <span className="city-icon">🏙️</span> Jakarta
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#bandung" className="drop-hover city-item">
-                <span className="city-icon">🏔️</span> Bandung
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#surabaya" className="drop-hover city-item">
-                <span className="city-icon">🌆</span> Surabaya
-              </NavDropdown.Item>
-              <NavDropdown.Divider style={{ borderColor: 'rgba(255,255,255,0.1)' }} />
-              <NavDropdown.Item href="#all-cities" className="drop-hover text-info view-all">
-                🌍 Lihat Semua Kota
-              </NavDropdown.Item>
-            </NavDropdown>
-
-            <Nav.Link
-              href="#promo"
-              className={`text-light nav-custom-hover ${isActive('promo')}`}
-            >
+            <Link to="#promo" className={`nav-link nav-custom-hover text-white ${isActive('promo')}`}>
               Promo
-            </Nav.Link>
-          </Nav>
+            </Link>
+          </div>
 
-          <Form className="d-flex align-items-center mt-3 mt-lg-0 gap-3" onSubmit={handleSearch}>
-          <Button as={Link} to="/login" variant="danger" className="px-4 fw-bold rounded-pill btn-login shadow-sm">
-            <FaUser className="me-2" />
-            Login
-          </Button>
-          </Form>
-        </Navbar.Collapse>
-      </Container>
+          <Link
+            to={loggedUserName ? '/' : '/login'}
+            className="btn btn-danger px-4 fw-bold rounded-pill btn-login shadow-sm d-inline-flex align-items-center"
+          >
+            <span className="me-2">👤</span>
+            {loggedUserName || 'Login'}
+          </Link>
+        </div>
+      </div>
 
       {/* Enhanced CSS (TETAP SAMA) */}
       <style>
@@ -192,13 +212,50 @@ function NavScroll() {
             border-radius: 1px;
           }
 
-          /* Dropdown Enhancements */
-          .nav-dropdown-custom .dropdown-menu {
-            border: 1px solid rgba(255,255,255,0.1);
+          .nav-dropdown {
+            position: relative;
+          }
+
+          .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 180px;
             background-color: rgba(10, 11, 13, 0.95);
+            border: 1px solid rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
             border-radius: 8px;
             margin-top: 8px;
+            z-index: 1050;
+            padding: 8px 0;
+          }
+
+          .dropdown-menu.show {
+            display: block;
+          }
+
+          .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            padding: 10px 16px;
+            color: #c9d1d9;
+            text-decoration: none;
+            transition: all 0.2s ease;
+          }
+
+          .dropdown-item:hover {
+            background-color: #dc3545;
+            color: #fff;
+            transform: translateX(2px);
+          }
+
+          .dropdown-divider {
+            height: 1px;
+            background-color: rgba(255,255,255,0.1);
+            margin: 4px 0;
           }
 
           .city-item {
@@ -216,58 +273,6 @@ function NavScroll() {
             font-weight: 600;
           }
 
-          .drop-hover {
-            color: #c9d1d9 !important;
-            transition: all 0.2s ease;
-          }
-
-          .drop-hover:hover {
-            background-color: #dc3545 !important;
-            color: white !important;
-            transform: translateX(5px);
-          }
-
-          /* Search Container */
-          .search-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-          }
-
-          .search-custom {
-            width: 250px;
-            padding-right: 40px;
-            transition: all 0.3s ease;
-          }
-
-          .search-custom:focus {
-            background-color: #161b22 !important;
-            border-color: #dc3545 !important;
-            color: white !important;
-            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
-            width: 280px;
-          }
-
-          .search-custom::placeholder {
-            color: #8b949e;
-          }
-
-          .search-btn {
-            position: absolute;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #8b949e;
-            cursor: pointer;
-            padding: 5px;
-            transition: color 0.3s ease;
-          }
-
-          .search-btn:hover {
-            color: #dc3545;
-          }
-
-          /* Login Button */
           .btn-login {
             transition: all 0.3s ease;
             border: none;
@@ -279,40 +284,41 @@ function NavScroll() {
             box-shadow: 0 5px 15px rgba(220,53,69,0.4) !important;
           }
 
-          /* Mobile Menu */
           @media (max-width: 991.98px) {
-            .navbar-collapse {
-              position: absolute;
-              top: 100%;
-              left: 0;
-              right: 0;
-              background-color: rgba(10, 11, 13, 0.95);
-              backdrop-filter: blur(10px);
-              border-top: 1px solid rgba(255,255,255,0.05);
-              padding: 20px;
-              transform: translateY(-100%);
-              opacity: 0;
-              visibility: hidden;
-              transition: all 0.3s ease;
+            .site-nav-links {
+              display: none;
+              flex-direction: column;
+              width: 100%;
+              padding: 16px 0;
             }
 
-            .navbar-collapse.show {
-              transform: translateY(0);
-              opacity: 1;
-              visibility: visible;
+            .site-nav-links.show {
+              display: flex;
+            }
+
+            .nav-items {
+              flex-direction: column;
+              width: 100%;
+              gap: 0.5rem;
             }
 
             .nav-custom-hover {
+              width: 100%;
               padding: 10px 0;
               border-bottom: 1px solid rgba(255,255,255,0.05);
             }
 
-            .search-custom {
-              width: 100% !important;
+            .nav-dropdown .dropdown-menu {
+              position: static;
+              border: none;
+              backdrop-filter: none;
+              background-color: transparent;
+              box-shadow: none;
+              padding: 0;
             }
 
-            .search-custom:focus {
-              width: 100% !important;
+            .dropdown-item {
+              padding-left: 0;
             }
           }
 
@@ -321,7 +327,7 @@ function NavScroll() {
           }
         `}
       </style>
-    </Navbar>
+    </header>
   );
 }
 

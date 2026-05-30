@@ -10,7 +10,7 @@ const {
   validateCreateFilm,
   validateUpdateFilm,
   validateRegister,
-  validateLoginUser,   // FIX: validator khusus user (pakai email)
+  validateLoginUser,   
   validateLoginAdmin,
   validateCreateTransaksi,
   validateUpdateStatusTransaksi,
@@ -59,5 +59,6 @@ router.post('/transaksi', validateCreateTransaksi, TransaksiController.createTra
 router.put('/transaksi/:id/status', validateUpdateStatusTransaksi, TransaksiController.updateStatusPembayaran);
 router.delete('/transaksi/:id', validateDeletetransaksi, TransaksiController.deleteTransaksi);
 router.get('/users/:id_user/transaksi', TransaksiController.getTransaksiByUser);
+
 
 module.exports = router;
