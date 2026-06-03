@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLogout } from '../utils/authUtils';
 
 function NavScroll() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -7,7 +8,9 @@ function NavScroll() {
   const [cityMenuOpen, setCityMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const [loggedUserName, setLoggedUserName] = useState('');
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const location = useLocation();
+  const handleLogout = useLogout();
 
   // Handle scroll effect
   useEffect(() => {
@@ -146,11 +149,61 @@ function NavScroll() {
           </div>
 
           <Link
-            to={loggedUserName ? '/' : '/login'}
+            to={loggedUserName ? '#' : '/login'}
+            onClick={(e) => loggedUserName && e.preventDefault()}
             className="btn btn-danger px-4 fw-bold rounded-pill btn-login shadow-sm d-inline-flex align-items-center"
+            style={{ position: 'relative' }}
+            onMouseEnter={() => loggedUserName && setUserMenuOpen(true)}
+            onMouseLeave={() => setUserMenuOpen(false)}
           >
             <span className="me-2">👤</span>
             {loggedUserName || 'Login'}
+            
+            {loggedUserName && (
+              <div 
+                className={`user-dropdown ${userMenuOpen ? 'show' : ''}`}
+                onMouseEnter={() => setUserMenuOpen(true)}
+                onMouseLeave={() => setUserMenuOpen(false)}
+                style={{
+                  position: 'absolute',
+                  top: '100%',
+                  right: 0,
+                  marginTop: '8px',
+                  backgroundColor: 'rgba(10, 11, 13, 0.95)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  borderRadius: '8px',
+                  backdropFilter: 'blur(10px)',
+                  display: userMenuOpen ? 'block' : 'none',
+                  minWidth: '180px',
+                  zIndex: 1050,
+                  padding: '8px 0'
+                }}
+              >
+                <button
+                  onClick={handleLogout}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    width: '100%',
+                    padding: '10px 16px',
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    color: '#c9d1d9',
+                    textDecoration: 'none',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    fontSize: '0.9rem',
+                    fontWeight: '500'
+                  }}
+                  onMouseEnter={(e) => e.target.style.backgroundColor = '#dc3545'}
+                  onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+                  className="user-dropdown-item"
+                >
+                  <span>🚪</span> Logout
+                </button>
+              </div>
+            )}
           </Link>
         </div>
       </div>
