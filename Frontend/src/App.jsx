@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/custom.css';
 import Home from './pages/user/Home';
-import Movies from './pages/user/Movies'; 
+import Movies from './pages/user/Movies';
 import DetailFilm from './pages/user/DetailFilm';
 import DashboardAdmin from './pages/admin/dashboardadmin';
 import ListFilm from './pages/admin/GetFilm';
@@ -16,6 +16,11 @@ import Login from './pages/user/Login';
 import ManageSeats from './pages/admin/ManageSeats';
 import SeatPicker from './pages/user/SeatPicker';
 import ProtectedRoute from './components/ProtectedRoute';
+import UserProtectedRoute from './components/UserProtectedRoute';
+import Checkout from './pages/user/Checkout';
+import ETicket  from './pages/user/ETicket';
+
+
 
 function App() {
   return (
@@ -26,10 +31,19 @@ function App() {
         <Route path="/movies" element={<Movies />} /> {/* <--- INI DITAMBAHIN */}
         <Route path="/movie/:id" element={<DetailFilm />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/eticket"  element={<ETicket />} />    
 
         {/* TAMBAHKAN BARIS INI */}
         <Route path="/login" element={<Login />} />
-        <Route path="/pesan/:id" element={<SeatPicker />} />
+        <Route
+          path="/pesan/:id"
+          element={
+            <UserProtectedRoute>
+              <SeatPicker />
+            </UserProtectedRoute>
+          }
+        />
 
         {/* RUTE UNTUK HALAMAN ADMIN */}
         <Route
