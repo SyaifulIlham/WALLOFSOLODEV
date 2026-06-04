@@ -1,6 +1,20 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './styles/custom.css';
+import Home from './pages/user/Home';
+import Movies from './pages/user/Movies';
+import DetailFilm from './pages/user/DetailFilm';
+import DashboardAdmin from './pages/admin/dashboardadmin';
+import ListFilm from './pages/admin/GetFilm';
+import AddFilm from './pages/admin/Addfilm';
+import EditFilm from './pages/admin/EditFilm';
+import ListSchedule from './pages/admin/ListSchedule';
+import AddSchedule from './pages/admin/AddSchedule';
+import EditSchedule from './pages/admin/EditSchedule';
+import Register from './pages/user/Register';
+import Login from './pages/user/Login';
+import ManageSeats from './pages/admin/ManageSeats';
+import SeatPicker from './pages/user/SeatPicker';
 
 const Home = lazy(() => import('./pages/user/Home'));
 const Movies = lazy(() => import('./pages/user/Movies'));
@@ -17,10 +31,34 @@ const Login = lazy(() => import('./pages/user/Login'));
 const ManageSeats = lazy(() => import('./pages/admin/ManageSeats'));
 const SeatPicker = lazy(() => import('./pages/user/SeatPicker'));
 import ProtectedRoute from './components/ProtectedRoute';
+import UserProtectedRoute from './components/UserProtectedRoute';
+import Checkout from './pages/user/Checkout';
+import ETicket  from './pages/user/ETicket';
+
+
 
 function App() {
   return (
     <BrowserRouter>
+      <Routes>
+        {/* RUTE UNTUK HALAMAN USER */}
+        <Route path="/" element={<Home />} />
+        <Route path="/movies" element={<Movies />} /> {/* <--- INI DITAMBAHIN */}
+        <Route path="/movie/:id" element={<DetailFilm />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/eticket"  element={<ETicket />} />    
+
+        {/* TAMBAHKAN BARIS INI */}
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/pesan/:id"
+          element={
+            <UserProtectedRoute>
+              <SeatPicker />
+            </UserProtectedRoute>
+          }
+        />
       <Suspense fallback={<div className="page-loading">Loading...</div>}>
         <Routes>
           {/* RUTE UNTUK HALAMAN USER */}
