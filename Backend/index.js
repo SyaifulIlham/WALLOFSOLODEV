@@ -12,7 +12,7 @@ app.use("/films", filmRoutes);
 
 // TEST
 app.get("/", (req, res) => {
-  res.send("API jalan bro 🚀");
+  res.send("API jalan bro");
 });
 
 app.listen(3000, () => {

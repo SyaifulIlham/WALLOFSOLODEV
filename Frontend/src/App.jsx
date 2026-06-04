@@ -1,5 +1,5 @@
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/custom.css';
 import Home from './pages/user/Home';
 import Movies from './pages/user/Movies';
@@ -15,6 +15,21 @@ import Register from './pages/user/Register';
 import Login from './pages/user/Login';
 import ManageSeats from './pages/admin/ManageSeats';
 import SeatPicker from './pages/user/SeatPicker';
+
+const Home = lazy(() => import('./pages/user/Home'));
+const Movies = lazy(() => import('./pages/user/Movies'));
+const DetailFilm = lazy(() => import('./pages/user/DetailFilm'));
+const DashboardAdmin = lazy(() => import('./pages/admin/dashboardadmin'));
+const ListFilm = lazy(() => import('./pages/admin/GetFilm'));
+const AddFilm = lazy(() => import('./pages/admin/Addfilm'));
+const EditFilm = lazy(() => import('./pages/admin/EditFilm'));
+const ListSchedule = lazy(() => import('./pages/admin/ListSchedule'));
+const AddSchedule = lazy(() => import('./pages/admin/AddSchedule'));
+const EditSchedule = lazy(() => import('./pages/admin/EditSchedule'));
+const Register = lazy(() => import('./pages/user/Register'));
+const Login = lazy(() => import('./pages/user/Login'));
+const ManageSeats = lazy(() => import('./pages/admin/ManageSeats'));
+const SeatPicker = lazy(() => import('./pages/user/SeatPicker'));
 import ProtectedRoute from './components/ProtectedRoute';
 import UserProtectedRoute from './components/UserProtectedRoute';
 import Checkout from './pages/user/Checkout';
@@ -44,6 +59,17 @@ function App() {
             </UserProtectedRoute>
           }
         />
+      <Suspense fallback={<div className="page-loading">Loading...</div>}>
+        <Routes>
+          {/* RUTE UNTUK HALAMAN USER */}
+          <Route path="/" element={<Home />} />
+          <Route path="/movies" element={<Movies />} /> {/* <--- INI DITAMBAHIN */}
+          <Route path="/movie/:id" element={<DetailFilm />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* TAMBAHKAN BARIS INI */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/pesan/:id" element={<SeatPicker />} />
 
         {/* RUTE UNTUK HALAMAN ADMIN */}
         <Route
@@ -111,6 +137,7 @@ function App() {
           }
         />
       </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }

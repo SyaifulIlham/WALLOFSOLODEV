@@ -22,7 +22,7 @@ const addFilm = async (req, res, next) => {
       deskripsi,
       poster,
       trailer_url: trailer_url || null,
-      created_by: 1,
+      created_by: req.user.id,
       status: status || 'Sedang Tayang'
     };
 

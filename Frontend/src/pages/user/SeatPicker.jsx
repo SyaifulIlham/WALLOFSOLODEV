@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
-import BASE_URL from '../../api';
+import BASE_URL from "../../api";
 import Navbar from '../../components/nav';
 
 const SeatPicker = () => {
