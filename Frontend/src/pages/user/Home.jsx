@@ -2,10 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import MainLayout from '../../layouts/MainLayout';
-<<<<<<< HEAD
 
-=======
->>>>>>> a2a4741a0955b009b774553572fd95e95c06dfd2
 /* ─────────────────────────────────────────────
    SKELETON CARD
 ───────────────────────────────────────────── */
