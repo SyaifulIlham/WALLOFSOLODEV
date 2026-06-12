@@ -111,6 +111,13 @@ function NavScroll() {
           <span style={{ color: '#dc3545' }}>Solo</span><span className="text-white">Flixx</span>
         </Link>
 
+        <Link
+          to="/riwayat"
+          className="text-light nav-custom-hover"
+        >
+          Riwayat
+        </Link>
+
         <button
           className="mobile-menu-toggle border-0 bg-transparent text-white d-lg-none"
           onClick={toggleMobileMenu}
@@ -134,9 +141,9 @@ function NavScroll() {
             <span className="me-2">{userRole === 'admin' ? '🛡️' : '👤'}</span>
             {loggedUserName || 'Login'}
             {userRole === 'admin' && <span className="badge bg-warning text-dark ms-2" style={{ fontSize: '0.65rem' }}>Admin</span>}
-            
+
             {loggedUserName && (
-              <div 
+              <div
                 className={`user-dropdown ${userMenuOpen ? 'show' : ''}`}
                 onMouseEnter={() => setUserMenuOpen(true)}
                 onMouseLeave={() => setUserMenuOpen(false)}
@@ -184,7 +191,7 @@ function NavScroll() {
         </div>
       </div>
 
-      {/* Enhanced CSS (TETAP SAMA) */}
+      {/* Enhanced CSS */}
       <style>
         {`
           .navbar-transition {

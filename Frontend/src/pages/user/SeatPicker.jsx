@@ -4,30 +4,51 @@ import axios from 'axios';
 import BASE_URL from "../../api";
 import Navbar from '../../components/nav';
 
-const SeatPicker = () => {
-    const { id } = useParams();
-    const [searchParams] = useSearchParams();
-    const jadwalId = searchParams.get('jadwal');
-    const navigate = useNavigate();
+const HOLD_DURATION = 10 * 60; // 10 menit dalam detik
 
-    const [seats, setSeats] = useState([]);
-    const [selected, setSelected] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [film, setFilm] = useState(null);
-    const [jadwal, setJadwal] = useState(null);
+const formatTanggalTayang = (dateStr) => {
+    if (!dateStr) return '-';
+    const parts = dateStr.split('-');
+    let date;
+    if (parts.length === 3 && parts[0].length === 2) {
+        date = new Date(parts[2], parts[1] - 1, parts[0]);
+    } else {
+        date = new Date(dateStr);
+    }
+    if (isNaN(date.getTime())) return dateStr;
+    return date.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+};
+
+const SeatPicker = () => {
+    const { id }             = useParams();
+    const [searchParams]     = useSearchParams();
+    const jadwalId           = searchParams.get('jadwal');
+    const navigate           = useNavigate();
+
+    const [seats, setSeats]         = useState([]);
+    const [selected, setSelected]   = useState([]);
+    const [loading, setLoading]     = useState(true);
+    const [film, setFilm]           = useState(null);
+    const [jadwal, setJadwal]       = useState(null);
 
     // ── Zoom ──────────────────────────────────────────────────────────────────
     const [zoom, setZoom] = useState(1);
     const MIN_ZOOM = 0.6, MAX_ZOOM = 1.8;
 
     // ── Drag-select ───────────────────────────────────────────────────────────
-    const [isDragging, setIsDragging] = useState(false);
-    const [dragMode, setDragMode] = useState(null);
-    const draggedSeats = useRef(new Set());
+    const [isDragging, setIsDragging]   = useState(false);
+    const [dragMode, setDragMode]       = useState(null);
+    const draggedSeats                  = useRef(new Set());
 
     // ── Tooltip ───────────────────────────────────────────────────────────────
     const [tooltip, setTooltip] = useState(null);
-    const tooltipRef = useRef(null);
+    const tooltipRef            = useRef(null);
+
+    // ── Countdown timer ───────────────────────────────────────────────────────
+    const [timeLeft, setTimeLeft] = useState(HOLD_DURATION);
+    const [timerActive, setTimerActive] = useState(false);
+    const [showExpiredModal, setShowExpiredModal] = useState(false);
+    const timerRef = useRef(null);
 
     // ── Fetch ─────────────────────────────────────────────────────────────────
     useEffect(() => {
@@ -71,13 +92,57 @@ const SeatPicker = () => {
     }, [seats]);
 
     const sortedRows = useMemo(() => Object.keys(seatsByRow).sort(), [seatsByRow]);
-    const leftRows = sortedRows.filter((_, i) => i % 2 === 0);
-    const rightRows = sortedRows.filter((_, i) => i % 2 === 1);
+    const leftRows   = sortedRows.filter((_, i) => i % 2 === 0);
+    const rightRows  = sortedRows.filter((_, i) => i % 2 === 1);
 
     // ── Harga ─────────────────────────────────────────────────────────────────
     const hargaPerKursi = jadwal ? Number(jadwal.harga_tiket) : 0;
-    const totalHarga = hargaPerKursi * selected.length;
+    const totalHarga    = hargaPerKursi * selected.length;
     const selectedSeats = seats.filter(s => selected.includes(s.id_seat));
+
+    // ── Countdown logic ───────────────────────────────────────────────────────
+    useEffect(() => {
+        if (selected.length > 0 && !timerActive) {
+            setTimerActive(true);
+            setTimeLeft(HOLD_DURATION);
+        }
+        if (selected.length === 0 && timerActive) {
+            setTimerActive(false);
+            setTimeLeft(HOLD_DURATION);
+            if (timerRef.current) clearInterval(timerRef.current);
+        }
+    }, [selected.length, timerActive]);
+
+    useEffect(() => {
+        if (!timerActive) return;
+        timerRef.current = setInterval(() => {
+            setTimeLeft(prev => {
+                if (prev <= 1) {
+                    clearInterval(timerRef.current);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+        return () => clearInterval(timerRef.current);
+    }, [timerActive]);
+
+    useEffect(() => {
+        if (timeLeft === 0 && timerActive) {
+            setSelected([]);
+            setTimerActive(false);
+            setTimeLeft(HOLD_DURATION);
+            setShowExpiredModal(true);
+        }
+    }, [timeLeft, timerActive]);
+
+    const formatTime = (seconds) => {
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
+        return `${m}:${s.toString().padStart(2, '0')}`;
+    };
+
+    const isUrgent = timeLeft <= 60;
 
     // ── Drag handlers ─────────────────────────────────────────────────────────
     const handleSeatMouseDown = useCallback((e, seat) => {
@@ -115,8 +180,8 @@ const SeatPicker = () => {
     }, []);
 
     // ── Zoom handlers ─────────────────────────────────────────────────────────
-    const zoomIn = () => setZoom(z => Math.min(z + 0.1, MAX_ZOOM));
-    const zoomOut = () => setZoom(z => Math.max(z - 0.1, MIN_ZOOM));
+    const zoomIn    = () => setZoom(z => Math.min(z + 0.1, MAX_ZOOM));
+    const zoomOut   = () => setZoom(z => Math.max(z - 0.1, MIN_ZOOM));
     const zoomReset = () => setZoom(1);
 
     const handleWheel = useCallback((e) => {
@@ -145,7 +210,7 @@ const SeatPicker = () => {
     // ── SeatBox ───────────────────────────────────────────────────────────────
     const SeatBox = ({ seat }) => {
         const isSelected = selected.includes(seat.id_seat);
-        const isBooked = seat.status === 'dipesan';
+        const isBooked   = seat.status === 'dipesan';
 
         let bg, border, color, cursor, shadow;
         if (isBooked) {
@@ -210,10 +275,16 @@ const SeatPicker = () => {
             <style>{`
                 @keyframes slideUp { from { opacity:0; transform:translateY(20px) } to { opacity:1; transform:translateY(0) } }
                 @keyframes fadeIn  { from { opacity:0 } to { opacity:1 } }
+                @keyframes pulse   { 0%, 100% { opacity:1 } 50% { opacity:0.4 } }
+                @keyframes popIn   { from { opacity:0; transform:scale(0.9) } to { opacity:1; transform:scale(1) } }
                 .zoom-btn { width:36px; height:36px; border-radius:10px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.06); color:#fff; font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .15s; }
                 .zoom-btn:hover { background:rgba(255,255,255,0.14); }
                 .bottom-panel { position:fixed; bottom:0; left:0; right:0; background:rgba(6,11,24,0.96); backdrop-filter:blur(14px); border-top:1px solid rgba(255,255,255,0.08); padding:14px 28px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; z-index:100; animation: slideUp .3s ease; }
                 .cancel-btn:hover { background:rgba(255,255,255,0.08) !important; }
+                .timer-badge { animation: fadeIn .3s ease; }
+                .timer-badge.urgent { animation: pulse 1s infinite; }
+                .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; z-index:9999; animation: fadeIn .2s ease; }
+                .modal-box { background:#0f172a; border:1px solid rgba(255,255,255,0.1); border-radius:20px; padding:32px; max-width:380px; text-align:center; animation: popIn .25s ease; }
             `}</style>
 
             <Navbar />
@@ -223,24 +294,44 @@ const SeatPicker = () => {
 
                 {/* Film header */}
                 {film && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24, animation: 'fadeIn .4s ease' }}>
-                        <img
-                            src={film.poster} alt={film.judul_film}
-                            style={{ width: 52, height: 74, objectFit: 'cover', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,0.5)' }}
-                            onError={e => { e.target.onerror = null; e.target.src = 'https://placehold.co/52x74/111/333?text=?'; }}
-                        />
-                        <div>
-                            <h5 style={{ margin: 0, fontWeight: 700, color: '#f1f5f9' }}>{film.judul_film}</h5>
-                            {jadwal ? (
-                                <p style={{ margin: 0, fontSize: '0.85rem', color: '#64748b' }}>
-                                    📅 {new Date(jadwal.tanggal_tayang).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
-                                    &nbsp;·&nbsp;🕐 {jadwal.jam_tayang}
-                                    &nbsp;·&nbsp;<span style={{ color: '#38bdf8', fontWeight: 600 }}>Rp {hargaPerKursi.toLocaleString('id-ID')}</span> / kursi
-                                </p>
-                            ) : (
-                                <p style={{ margin: 0, fontSize: '0.85rem', color: '#475569' }}>Pilih kursi untuk film ini</p>
-                            )}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, marginBottom: 24, animation: 'fadeIn .4s ease', flexWrap: 'wrap' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                            <img
+                                src={film.poster} alt={film.judul_film}
+                                style={{ width: 52, height: 74, objectFit: 'cover', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,0.5)' }}
+                                onError={e => { e.target.onerror = null; e.target.src = 'https://placehold.co/52x74/111/333?text=?'; }}
+                            />
+                            <div>
+                                <h5 style={{ margin: 0, fontWeight: 700, color: '#f1f5f9' }}>{film.judul_film}</h5>
+                                {jadwal ? (
+                                    <p style={{ margin: 0, fontSize: '0.85rem', color: '#64748b' }}>
+                                        📅 {new Date(jadwal.tanggal_tayang).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+                                        &nbsp;·&nbsp;🕐 {jadwal.jam_tayang?.slice(0, 5)}
+                                        &nbsp;·&nbsp;<span style={{ color: '#38bdf8', fontWeight: 600 }}>Rp {hargaPerKursi.toLocaleString('id-ID')}</span> / kursi
+                                    </p>
+                                ) : (
+                                    <p style={{ margin: 0, fontSize: '0.85rem', color: '#475569' }}>Pilih kursi untuk film ini</p>
+                                )}
+                            </div>
                         </div>
+
+                        {/* ── Countdown badge ── */}
+                        {timerActive && (
+                            <div className={`timer-badge ${isUrgent ? 'urgent' : ''}`} style={{
+                                display: 'flex', alignItems: 'center', gap: 10,
+                                padding: '10px 18px', borderRadius: 14,
+                                backgroundColor: isUrgent ? 'rgba(239,68,68,0.12)' : 'rgba(56,189,248,0.1)',
+                                border: `1px solid ${isUrgent ? 'rgba(239,68,68,0.3)' : 'rgba(56,189,248,0.25)'}`,
+                            }}>
+                                <span style={{ fontSize: '1.1rem' }}>{isUrgent ? '⏰' : '⏱️'}</span>
+                                <div>
+                                    <p style={{ margin: 0, fontSize: '0.7rem', color: '#64748b', letterSpacing: '0.5px' }}>Selesaikan dalam</p>
+                                    <p style={{ margin: 0, fontWeight: 800, fontSize: '1.1rem', color: isUrgent ? '#f87171' : '#38bdf8', fontFamily: 'monospace' }}>
+                                        {formatTime(timeLeft)}
+                                    </p>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
 
@@ -273,8 +364,8 @@ const SeatPicker = () => {
                     <div style={{ display: 'flex', gap: 32, justifyContent: 'center', marginBottom: 36, flexWrap: 'wrap' }}>
                         {[
                             { label: 'Available', bg: 'rgba(30,58,138,0.75)', border: '#1e40af' },
-                            { label: 'Reserved', bg: 'rgba(255,255,255,0.06)', border: 'rgba(255,255,255,0.12)' },
-                            { label: 'Selected', bg: 'rgba(56,189,248,0.3)', border: '#38bdf8' },
+                            { label: 'Reserved',  bg: 'rgba(255,255,255,0.06)', border: 'rgba(255,255,255,0.12)' },
+                            { label: 'Selected',  bg: 'rgba(56,189,248,0.3)',  border: '#38bdf8' },
                         ].map(l => (
                             <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                                 <div style={{ width: 20, height: 20, borderRadius: 5, backgroundColor: l.bg, border: `2px solid ${l.border}` }} />
@@ -335,10 +426,10 @@ const SeatPicker = () => {
                     <span style={{ margin: '0 6px', color: '#475569' }}>·</span>
                     <span style={{
                         color: tooltip.seat.status === 'dipesan' ? '#f87171' :
-                            selected.includes(tooltip.seat.id_seat) ? '#38bdf8' : '#4ade80'
+                               selected.includes(tooltip.seat.id_seat) ? '#38bdf8' : '#4ade80'
                     }}>
                         {tooltip.seat.status === 'dipesan' ? 'Dipesan' :
-                            selected.includes(tooltip.seat.id_seat) ? 'Dipilih' : 'Tersedia'}
+                         selected.includes(tooltip.seat.id_seat) ? 'Dipilih' : 'Tersedia'}
                     </span>
                     {tooltip.seat.status !== 'dipesan' && hargaPerKursi > 0 && (
                         <>
@@ -377,7 +468,6 @@ const SeatPicker = () => {
                         >
                             Batal
                         </button>
-
                         <button
                             onClick={() => navigate('/checkout', {
                                 state: {
@@ -388,10 +478,28 @@ const SeatPicker = () => {
                                     hargaPerKursi,
                                 }
                             })}
-                            
                             style={{ padding: '12px 28px', borderRadius: 12, border: 'none', background: '#2563eb', color: '#fff', cursor: 'pointer', fontWeight: 700, fontSize: '0.95rem', boxShadow: '0 8px 24px rgba(37,99,235,0.35)' }}
                         >
                             Lanjut Bayar →
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* ── Modal waktu habis ── */}
+            {showExpiredModal && (
+                <div className="modal-overlay" onClick={() => setShowExpiredModal(false)}>
+                    <div className="modal-box" onClick={e => e.stopPropagation()}>
+                        <div style={{ fontSize: '3rem', marginBottom: 12 }}>⏰</div>
+                        <h5 style={{ color: '#f1f5f9', fontWeight: 700, marginBottom: 8 }}>Waktu Habis</h5>
+                        <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: 24 }}>
+                            Pilihan kursimu sudah dilepas karena waktu reservasi habis. Silakan pilih kursi lagi.
+                        </p>
+                        <button
+                            onClick={() => setShowExpiredModal(false)}
+                            style={{ width: '100%', padding: '12px', borderRadius: 12, border: 'none', background: '#2563eb', color: '#fff', cursor: 'pointer', fontWeight: 700, fontSize: '0.92rem' }}
+                        >
+                            Pilih Kursi Lagi
                         </button>
                     </div>
                 </div>
