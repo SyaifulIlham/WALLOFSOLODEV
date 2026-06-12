@@ -227,17 +227,10 @@ function NavScroll() {
               </div>
             )}
           </Link>
-                  className="user-dropdown-item"
-                >
-                  <span>🚪</span> Logout
-                </button>
-              </div>
-            )}
-          </Link>
         </div>
       </div>
 
-      {/* Enhanced CSS (TETAP SAMA) */}
+      {/* Enhanced CSS */}
       <style>
         {`
           .navbar-transition {
