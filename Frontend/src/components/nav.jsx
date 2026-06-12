@@ -9,6 +9,7 @@ function NavScroll() {
   const [activeSection, setActiveSection] = useState('');
   const [loggedUserName, setLoggedUserName] = useState('');
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [userRole, setUserRole] = useState('');
   const location = useLocation();
   const handleLogout = useLogout();
 
@@ -56,6 +57,8 @@ function NavScroll() {
         const storedUser = sessionStorage.getItem('user');
         const storedAdmin = sessionStorage.getItem('admin');
         const role = sessionStorage.getItem('role');
+
+        setUserRole(role || '');
 
         if (role === 'admin' && storedAdmin) {
           const adminData = JSON.parse(storedAdmin);
@@ -146,6 +149,24 @@ function NavScroll() {
             <Link to="#promo" className={`nav-link nav-custom-hover text-white ${isActive('promo')}`}>
               Promo
             </Link>
+
+            {/* ADMIN MENU - Hanya tampil jika user adalah admin */}
+            {userRole === 'admin' && (
+              <>
+                <Link to="/admin" className="nav-link nav-custom-hover text-white">
+                  📊 Dashboard
+                </Link>
+                <Link to="/admin/films" className="nav-link nav-custom-hover text-white">
+                  🎬 Kelola Film
+                </Link>
+                <Link to="/admin/schedules" className="nav-link nav-custom-hover text-white">
+                  📅 Jadwal
+                </Link>
+                <Link to="/admin/seats" className="nav-link nav-custom-hover text-white">
+                  🎫 Kursi
+                </Link>
+              </>
+            )}
           </div>
 
           <Link
@@ -156,8 +177,9 @@ function NavScroll() {
             onMouseEnter={() => loggedUserName && setUserMenuOpen(true)}
             onMouseLeave={() => setUserMenuOpen(false)}
           >
-            <span className="me-2">👤</span>
+            <span className="me-2">{userRole === 'admin' ? '🛡️' : '👤'}</span>
             {loggedUserName || 'Login'}
+            {userRole === 'admin' && <span className="badge bg-warning text-dark ms-2" style={{ fontSize: '0.65rem' }}>Admin</span>}
             
             {loggedUserName && (
               <div 
@@ -198,6 +220,13 @@ function NavScroll() {
                   }}
                   onMouseEnter={(e) => e.target.style.backgroundColor = '#dc3545'}
                   onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+                  className="user-dropdown-item"
+                >
+                  <span>🚪</span> Logout
+                </button>
+              </div>
+            )}
+          </Link>
                   className="user-dropdown-item"
                 >
                   <span>🚪</span> Logout
