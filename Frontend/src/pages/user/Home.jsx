@@ -3,7 +3,6 @@ import axios from 'axios';
 import BASE_URL from '../../api';
 import { Link } from 'react-router-dom';
 import MainLayout from '../../layouts/MainLayout';
-import { base_url } from '../../config';
 /* ─────────────────────────────────────────────
    SKELETON CARD
 ───────────────────────────────────────────── */
@@ -24,16 +23,24 @@ const SkeletonCard = () => (
 ───────────────────────────────────────────── */
 const FilmCard = ({ film, index, variant = 'now' }) => {
     const isUp = variant === 'upcoming';
+    const [loaded, setLoaded] = useState(false);
     return (
         <div className="sf-film-col" style={{ animationDelay: `${index * 0.06}s` }}>
             <Link to={`/movie/${film.id_film}`} className="sf-card-link">
                 <div className="sf-card">
                     <div className="sf-card__poster-wrap">
+                        {!loaded && (
+                            <div className="sf-skel-poster sf-skel-anim" 
+                            style={{ position: 'absolute', inset: 0 }}/>
+                        )}
                         <img
                             src={film.poster}
                             alt={film.judul_film}
                             className="sf-card__poster"
                             loading="lazy"
+                            decoding="async"
+                            onLoad={() => setLoaded(true)}
+                            style={{ opacity: loaded ? 1 : 0, transition: 'opacity .3s' }}
                         />
                         {/* Nomor urut */}
                         <div className="sf-card__num">{index + 1}</div>
@@ -254,10 +261,8 @@ const Home = () => {
 
             {/* ══ STYLES ══ */}
             <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
                 .sf-root {
-                    font-family: 'Plus Jakarta Sans', sans-serif;
+                    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
                     background: #f0f4f8;
                     min-height: 100vh;
                     color: #1a1a2e;
@@ -290,7 +295,7 @@ const Home = () => {
                     width: 100%; padding: 15px 48px 15px 52px;
                     border: none; border-radius: 50px;
                     background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,.1);
-                    font-family: 'Plus Jakarta Sans', sans-serif;
+                    font-family: inherit;
                     font-size: 1rem; color: #1a1a2e; outline: none;
                     transition: box-shadow .2s;
                 }
@@ -381,7 +386,7 @@ const Home = () => {
                     display: flex; align-items: center; gap: 7px;
                     padding: 9px 20px; border-radius: 50px; border: none;
                     background: transparent;
-                    font-family: 'Plus Jakarta Sans', sans-serif;
+                    font-family: inherit;
                     font-size: .875rem; font-weight: 600; color: #64748b;
                     cursor: pointer; transition: all .2s; white-space: nowrap;
                 }
@@ -500,7 +505,7 @@ const Home = () => {
                 .sf-empty__btn {
                     background:#1a6fba; color:#fff; border:none;
                     padding:.6rem 1.6rem; border-radius:50px;
-                    font-family:'Plus Jakarta Sans',sans-serif;
+                    font-family: inherit;
                     font-weight:600; font-size:.88rem; cursor:pointer;
                     transition:background .2s;
                 }
@@ -513,7 +518,7 @@ const Home = () => {
                     justify-content:space-between; flex-wrap:wrap; gap:8px;
                 }
                 .sf-footer__brand {
-                    font-family:'Plus Jakarta Sans',sans-serif;
+                    font-family: inherit;
                     font-size:1.2rem; font-weight:700; color:#1a1a2e;
                 }
                 .sf-footer__copy { font-size:.78rem; color:#94a3b8; margin:0; }

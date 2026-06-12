@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import BASE_URL from '../api';
 import { Link } from 'react-router-dom';
+import { useLogout } from '../utils/authUtils';
 
 const SidebarAdmin = ({ activeMenu }) => {
     const [adminName, setAdminName] = useState('Admin');
+    const handleLogout = useLogout();
 
     useEffect(() => {
         const fetchAdmin = async () => {
@@ -62,11 +64,31 @@ const SidebarAdmin = ({ activeMenu }) => {
                 </div>
             </nav>
 
-            <div className="sidebar-footer mt-auto" style={{ marginTop: '36px' }}>
+            <div className="sidebar-footer mt-auto" style={{ marginTop: '36px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <div className="p-4 rounded-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                     <div style={{ fontSize: '0.875rem', color: '#ffffff', marginBottom: '12px' }}>Need quick help?</div>
                     <Link to="/" className="btn btn-primary w-100 btn-sm">Back to Website</Link>
                 </div>
+                <button 
+                    onClick={handleLogout}
+                    style={{
+                        padding: '10px 16px',
+                        borderRadius: '12px',
+                        backgroundColor: '#dc3545',
+                        color: '#fff',
+                        border: 'none',
+                        fontWeight: '600',
+                        fontSize: '0.875rem',
+                        cursor: 'pointer',
+                        transition: 'all 0.25s ease',
+                        width: '100%'
+                    }}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = '#e74c3c'}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = '#dc3545'}
+                    className="logout-btn"
+                >
+                    🚪 Logout
+                </button>
             </div>
 
             <style>

@@ -3,7 +3,6 @@ import axios from 'axios';
 import BASE_URL from '../../api';
 import { Link } from 'react-router-dom';
 import MainLayout from '../../layouts/MainLayout';
-import { base_url } from '../../config';
 
 const Movies = () => {
     const [films, setFilms] = useState([]);

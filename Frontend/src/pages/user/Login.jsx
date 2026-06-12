@@ -38,15 +38,16 @@ const Login = () => {
             const response = await axios.post(endpoint, payload);
 
             if (response.data.success) {
-                localStorage.setItem('token', response.data.token);
-                localStorage.setItem('role', role); // simpan role
+                // Simpan token dan role dari response backend
+                sessionStorage.setItem('token', response.data.token);
+                sessionStorage.setItem('role', response.data.role); // simpan role dari backend
 
-                if (role === 'admin') {
-                    localStorage.setItem('admin', JSON.stringify(response.data.data));
-                    navigate('/admin');
+                if (response.data.role === 'admin') {
+                    sessionStorage.setItem('admin', JSON.stringify(response.data.data));
+                    navigate('/admin', { replace: true });
                 } else {
-                    localStorage.setItem('user', JSON.stringify(response.data.data));
-                    navigate('/');
+                    sessionStorage.setItem('user', JSON.stringify(response.data.data));
+                    navigate('/', { replace: true });
                 }
             }
         } catch (err) {
