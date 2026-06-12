@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './styles/custom.css';
 import ProtectedRoute from './components/ProtectedRoute';
 import UserProtectedRoute from './components/UserProtectedRoute';
+import RiwayatTransaksi from './pages/user/RiwayatTransaksi';
 
 // Lazy load components
 const Home = lazy(() => import('./pages/user/Home'));
@@ -56,6 +57,15 @@ function App() {
             element={
               <UserProtectedRoute>
                 <ETicket />
+              </UserProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/riwayat"
+            element={
+              <UserProtectedRoute>
+                <RiwayatTransaksi />
               </UserProtectedRoute>
             }
           />
