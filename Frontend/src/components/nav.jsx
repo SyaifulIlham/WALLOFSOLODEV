@@ -227,13 +227,6 @@ function NavScroll() {
               </div>
             )}
           </Link>
-                  className="user-dropdown-item"
-                >
-                  <span>🚪</span> Logout
-                </button>
-              </div>
-            )}
-          </Link>
         </div>
       </div>
 
