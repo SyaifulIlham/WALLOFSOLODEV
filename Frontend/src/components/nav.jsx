@@ -24,7 +24,7 @@ function NavScroll() {
   // Handle active section based on scroll position
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['sedang-tayang', 'akan-datang', 'promo'];
+      const sections = ['sedang-tayang', 'akan-datang'];
       const current = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -118,34 +118,6 @@ function NavScroll() {
 
         <div className={`site-nav-links d-lg-flex align-items-center ${isMobileMenuOpen ? 'show' : ''}`}>
           <div className="nav-items d-flex align-items-center gap-3">
-            <div className={`nav-dropdown ${cityMenuOpen ? 'open' : ''}`}>
-              <button
-                type="button"
-                className="nav-link nav-custom-hover btn btn-link p-0 text-white"
-                onClick={toggleCityMenu}
-              >
-                Kota
-              </button>
-              <div className={`dropdown-menu ${cityMenuOpen ? 'show' : ''}`}>
-                <Link to="#jakarta" className="dropdown-item drop-hover city-item">
-                  <span className="city-icon">🏙️</span> Jakarta
-                </Link>
-                <Link to="#bandung" className="dropdown-item drop-hover city-item">
-                  <span className="city-icon">🏔️</span> Bandung
-                </Link>
-                <Link to="#surabaya" className="dropdown-item drop-hover city-item">
-                  <span className="city-icon">🌆</span> Surabaya
-                </Link>
-                <div className="dropdown-divider" />
-                <Link to="#all-cities" className="dropdown-item drop-hover view-all">
-                  🌍 Lihat Semua Kota
-                </Link>
-              </div>
-            </div>
-
-            <Link to="#promo" className={`nav-link nav-custom-hover text-white ${isActive('promo')}`}>
-              Promo
-            </Link>
           </div>
 
           <Link
