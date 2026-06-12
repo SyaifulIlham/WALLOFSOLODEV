@@ -1,9 +1,11 @@
 import { Navigate } from 'react-router-dom';
 
 const UserProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
+  const role = sessionStorage.getItem('role');
 
-  if (!token) {
+  // Only allow user role, block admin
+  if (!token || role !== 'user') {
     return <Navigate to="/login" replace />;
   }
 
