@@ -92,6 +92,7 @@ const loginUser = async (req, res, next) => {
       success: true,
       message: 'Login berhasil!',
       token,
+      role: 'user',
       data: {
         id: user.id_user,
         nama: user.nama,
@@ -140,14 +141,15 @@ const loginAdmin = async (req, res, next) => {
     const token = signToken(admin.id_admin);
 
     res.status(200).json({
-  success: true,
-  message: 'Login Admin berhasil!',
-  token,
-  data: {
-    id_admin: admin.id_admin,
-    username: admin.username
-  }
-});
+      success: true,
+      message: 'Login Admin berhasil!',
+      token,
+      role: 'admin',
+      data: {
+        id_admin: admin.id_admin,
+        username: admin.username
+      }
+    });
 
   } catch (err) {
     next(new ErrorHandler(500, err.message || 'Server error'));

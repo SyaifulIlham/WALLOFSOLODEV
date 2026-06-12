@@ -4,6 +4,7 @@ import './styles/custom.css';
 import ProtectedRoute from './components/ProtectedRoute';
 import UserProtectedRoute from './components/UserProtectedRoute';
 
+// Lazy load components
 const Home = lazy(() => import('./pages/user/Home'));
 const Movies = lazy(() => import('./pages/user/Movies'));
 const DetailFilm = lazy(() => import('./pages/user/DetailFilm'));
@@ -21,21 +22,19 @@ const SeatPicker = lazy(() => import('./pages/user/SeatPicker'));
 const Checkout = lazy(() => import('./pages/user/Checkout'));
 const ETicket = lazy(() => import('./pages/user/ETicket'));
 
-
-
 function App() {
   return (
     <BrowserRouter>
       <Suspense fallback={<div className="page-loading">Loading...</div>}>
         <Routes>
-          {/* RUTE UNTUK HALAMAN USER */}
+          {/* RUTE PUBLIC */}
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/movies" element={<Movies />} />
           <Route path="/movie/:id" element={<DetailFilm />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/eticket" element={<ETicket />} />
+
+          {/* RUTE USER TERPROTEKSI */}
           <Route
             path="/pesan/:id"
             element={
@@ -44,8 +43,24 @@ function App() {
               </UserProtectedRoute>
             }
           />
+          <Route
+            path="/checkout"
+            element={
+              <UserProtectedRoute>
+                <Checkout />
+              </UserProtectedRoute>
+            }
+          />
+          <Route
+            path="/eticket"
+            element={
+              <UserProtectedRoute>
+                <ETicket />
+              </UserProtectedRoute>
+            }
+          />
 
-          {/* RUTE UNTUK HALAMAN ADMIN */}
+          {/* RUTE ADMIN TERPROTEKSI */}
           <Route
             path="/admin"
             element={
@@ -59,6 +74,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AddFilm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/films"
+            element={
+              <ProtectedRoute>
+                <ListFilm />
               </ProtectedRoute>
             }
           />

@@ -9,6 +9,7 @@ function NavScroll() {
   const [activeSection, setActiveSection] = useState('');
   const [loggedUserName, setLoggedUserName] = useState('');
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [userRole, setUserRole] = useState('');
   const location = useLocation();
   const handleLogout = useLogout();
 
@@ -56,6 +57,8 @@ function NavScroll() {
         const storedUser = sessionStorage.getItem('user');
         const storedAdmin = sessionStorage.getItem('admin');
         const role = sessionStorage.getItem('role');
+
+        setUserRole(role || '');
 
         if (role === 'admin' && storedAdmin) {
           const adminData = JSON.parse(storedAdmin);
@@ -128,8 +131,9 @@ function NavScroll() {
             onMouseEnter={() => loggedUserName && setUserMenuOpen(true)}
             onMouseLeave={() => setUserMenuOpen(false)}
           >
-            <span className="me-2">👤</span>
+            <span className="me-2">{userRole === 'admin' ? '🛡️' : '👤'}</span>
             {loggedUserName || 'Login'}
+            {userRole === 'admin' && <span className="badge bg-warning text-dark ms-2" style={{ fontSize: '0.65rem' }}>Admin</span>}
             
             {loggedUserName && (
               <div 
