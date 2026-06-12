@@ -118,19 +118,16 @@ function NavScroll() {
               </NavDropdown.Item>
             </NavDropdown>
 
-            <Nav.Link
-              href="#promo"
-              className={`text-light nav-custom-hover ${isActive('promo')}`}
-            >
-              Promo
+            <Nav.Link as={Link} to="/riwayat" className="text-light nav-custom-hover">
+              Riwayat
             </Nav.Link>
           </Nav>
 
           <Form className="d-flex align-items-center mt-3 mt-lg-0 gap-3" onSubmit={handleSearch}>
-          <Button as={Link} to="/login" variant="danger" className="px-4 fw-bold rounded-pill btn-login shadow-sm">
-            <FaUser className="me-2" />
-            Login
-          </Button>
+            <Button as={Link} to="/login" variant="danger" className="px-4 fw-bold rounded-pill btn-login shadow-sm">
+              <FaUser className="me-2" />
+              Login
+            </Button>
           </Form>
         </Navbar.Collapse>
       </Container>
@@ -321,7 +318,7 @@ function NavScroll() {
           }
         `}
       </style>
-    </Navbar>
+    </Navbar >
   );
 }
 

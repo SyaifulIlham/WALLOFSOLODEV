@@ -19,7 +19,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import UserProtectedRoute from './components/UserProtectedRoute';
 import Checkout from './pages/user/Checkout';
 import ETicket  from './pages/user/ETicket';
-
+import RiwayatTransaksi from './pages/user/RiwayatTransaksi';
 
 
 function App() {
@@ -28,13 +28,15 @@ function App() {
       <Routes>
         {/* RUTE UNTUK HALAMAN USER */}
         <Route path="/" element={<Home />} />
-        <Route path="/movies" element={<Movies />} /> {/* <--- INI DITAMBAHIN */}
+        <Route path="/movies" element={<Movies />} /> 
         <Route path="/movie/:id" element={<DetailFilm />} />
         <Route path="/register" element={<Register />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/eticket"  element={<ETicket />} />    
+        <Route path="/eticket"  element={<ETicket />} />  
+        <Route path="/riwayat" element={<RiwayatTransaksi />} />
+  
 
-        {/* TAMBAHKAN BARIS INI */}
+        {/* Login & Pesan Tiket (protected) */}
         <Route path="/login" element={<Login />} />
         <Route
           path="/pesan/:id"

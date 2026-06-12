@@ -421,7 +421,7 @@ const DetailFilm = () => {
                             className={`date-pill ${selectedDate === date ? 'active' : ''}`}
                             onClick={() => setSelectedDate(date)}
                           >
-                            <div style={{ fontSize: '0.72rem', letterSpacing: '0.5px', textTransform: 'uppercase', color: selectedDate === date ? '#fff' : '#888', marginBottom: 2 }}>
+                            <div style={{ fontSize: '0.72rem', letterSpacing: '0.5px', color: selectedDate === date ? '#fff' : '#888', marginBottom: 2 }}>
                               {getDayName(date)}
                             </div>
                             <div style={{ fontWeight: 600, fontSize: '0.88rem' }}>
@@ -445,7 +445,7 @@ const DetailFilm = () => {
                                   <div>
                                     <p style={{ color: '#888', fontSize: '0.78rem', margin: '0 0 2px' }}>Jam Tayang</p>
                                     <p className="text-white fw-bold mb-0" style={{ fontSize: '1.6rem', lineHeight: 1.2 }}>
-                                      {schedule.jam_tayang}
+                                      {schedule.jam_tayang.slice(0, 5)}
                                     </p>
                                   </div>
                                   <div style={{ textAlign: 'right' }}>

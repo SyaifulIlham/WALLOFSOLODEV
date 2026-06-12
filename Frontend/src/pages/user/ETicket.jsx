@@ -2,6 +2,22 @@ import React from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import Navbar from '../../components/nav';
 
+const formatTanggalTayang = (dateStr) => {
+    if (!dateStr) return '-';
+    // Coba parse format DD-MM-YYYY dulu
+    const parts = dateStr.split('-');
+    let date;
+    if (parts.length === 3 && parts[0].length === 2) {
+        // DD-MM-YYYY
+        date = new Date(parts[2], parts[1] - 1, parts[0]);
+    } else {
+        // YYYY-MM-DD atau format lain
+        date = new Date(dateStr);
+    }
+    if (isNaN(date.getTime())) return dateStr;
+    return date.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+};
+
 const ETicket = () => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -105,8 +121,8 @@ const ETicket = () => {
                         {/* Grid info */}
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 24 }}>
                             {[
-                                { label: 'Tanggal Tayang', value: jadwal ? new Date(jadwal.tanggal_tayang).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : '-' },
-                                { label: 'Jam Tayang',     value: jadwal?.jam_tayang || '-' },
+                                { label: 'Tanggal Tayang', value: jadwal ? formatTanggalTayang(jadwal.tanggal_tayang) : '-' },
+                                { label: 'Jam Tayang',     value: jadwal?.jam_tayang?.slice(0, 5) || '-' },
                                 { label: 'Jumlah Kursi',   value: `${selectedSeats.length} Kursi` },
                                 { label: 'Harga / Kursi',  value: `Rp ${hargaPerKursi.toLocaleString('id-ID')}` },
                             ].map(({ label, value }) => (
