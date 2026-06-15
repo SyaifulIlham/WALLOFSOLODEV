@@ -51,17 +51,147 @@ const ETicket = () => {
                 .print-btn:hover { background: rgba(255,255,255,0.1) !important; }
                 .home-btn:hover { background: #1d4ed8 !important; }
                 @media print {
-                    .no-print { display: none !important; }
-                    body { background: #fff !important; color: #000 !important; }
-                    .ticket-body { background: #fff !important; color: #000 !important; border: 1px solid #ddd !important; }
+                    body * { visibility: hidden; }
+                    #print-ticket-eticket, #print-ticket-eticket * { visibility: visible; }
+                    #print-ticket-eticket {
+                        display: block !important;
+                        position: absolute; left: 0; top: 0; width: 100%;
+                        margin: 0; padding: 24px 40px;
+                        background: #fff !important;
+                        color: #000 !important;
+                        font-family: 'Inter', 'Segoe UI', sans-serif;
+                    }
+                    .screen-only { display: none !important; }
                 }
             `}</style>
 
-            <div className="no-print">
+            {/* ── Print-only white e-ticket (hidden on screen) ── */}
+            <div id="print-ticket-eticket" style={{ display: 'none' }}>
+                {/* Success header */}
+                <div style={{ textAlign: 'center', marginBottom: 28 }}>
+                    <div style={{
+                        width: 56, height: 56, borderRadius: '50%',
+                        backgroundColor: '#e0f7ea', border: '2px solid #4ade80',
+                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                        marginBottom: 12, fontSize: '1.5rem',
+                    }}>
+                        ✅
+                    </div>
+                    <h2 style={{ fontWeight: 800, color: '#1e293b', margin: '0 0 4px', fontSize: '1.2rem' }}>Pembayaran Berhasil!</h2>
+                    <p style={{ color: '#64748b', fontSize: '0.82rem', margin: 0 }}>
+                        Tiketmu sudah siap. Tunjukkan e-ticket ini saat masuk bioskop.
+                    </p>
+                </div>
+
+                {/* Ticket card */}
+                <div style={{ border: '1px solid #e2e8f0', borderRadius: 16, overflow: 'hidden', maxWidth: 480, margin: '0 auto' }}>
+                    {/* Header with poster */}
+                    <div style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 14, borderBottom: '1px solid #e2e8f0' }}>
+                        <img
+                            src={film.poster} alt={film.judul_film}
+                            style={{ width: 50, height: 72, objectFit: 'cover', borderRadius: 6, flexShrink: 0 }}
+                        />
+                        <div>
+                            <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 2px' }}>E-Ticket</p>
+                            <h4 style={{ fontWeight: 800, color: '#1e293b', margin: '0 0 6px', textTransform: 'uppercase', fontSize: '0.95rem' }}>
+                                {film.judul_film}
+                            </h4>
+                            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                                <span style={{ padding: '2px 8px', borderRadius: 16, backgroundColor: '#e0f2fe', color: '#0284c7', border: '1px solid #bae6fd', fontSize: '0.7rem', fontWeight: 600 }}>
+                                    {film.genre}
+                                </span>
+                                <span style={{ padding: '2px 8px', borderRadius: 16, backgroundColor: '#f1f5f9', color: '#64748b', border: '1px solid #e2e8f0', fontSize: '0.7rem' }}>
+                                    {film.durasi} Menit
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Body */}
+                    <div style={{ padding: '16px 20px' }}>
+                        {/* Info grid */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 16 }}>
+                            <div>
+                                <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px' }}>Tanggal Tayang</p>
+                                <p style={{ color: '#1e293b', fontWeight: 600, fontSize: '0.82rem', margin: 0 }}>
+                                    {jadwal ? formatTanggalTayang(jadwal.tanggal_tayang) : '-'}
+                                </p>
+                            </div>
+                            <div>
+                                <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px' }}>Jam Tayang</p>
+                                <p style={{ color: '#1e293b', fontWeight: 600, fontSize: '0.82rem', margin: 0 }}>
+                                    {jadwal?.jam_tayang?.slice(0, 5) || '-'}
+                                </p>
+                            </div>
+                            <div>
+                                <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px' }}>Jumlah Kursi</p>
+                                <p style={{ color: '#1e293b', fontWeight: 600, fontSize: '0.82rem', margin: 0 }}>{selectedSeats.length} Kursi</p>
+                            </div>
+                            <div>
+                                <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px' }}>Harga / Kursi</p>
+                                <p style={{ color: '#1e293b', fontWeight: 600, fontSize: '0.82rem', margin: 0 }}>
+                                    Rp {hargaPerKursi.toLocaleString('id-ID')}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Nomor kursi */}
+                        <div style={{ marginBottom: 16, paddingBottom: 16, borderBottom: '1px dashed #e2e8f0' }}>
+                            <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 8px' }}>Nomor Kursi</p>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                                {selectedSeats.map(s => (
+                                    <span key={s.id_seat} style={{
+                                        padding: '4px 12px', borderRadius: 16, fontWeight: 700, fontSize: '0.78rem',
+                                        backgroundColor: '#e0f2fe', color: '#0284c7', border: '1px solid #bae6fd',
+                                    }}>
+                                        {s.nomor_kursi}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Transaction info */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 16, paddingBottom: 16, borderBottom: '1px dashed #e2e8f0' }}>
+                            <div>
+                                <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px' }}>ID Transaksi</p>
+                                <p style={{ color: '#1e293b', fontWeight: 600, fontSize: '0.82rem', margin: 0, fontFamily: 'monospace' }}>{id_transaksi}</p>
+                            </div>
+                            <div>
+                                <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px' }}>Metode Bayar</p>
+                                <p style={{ color: '#1e293b', fontWeight: 600, fontSize: '0.82rem', margin: 0 }}>{metode?.nama || '-'}</p>
+                            </div>
+                            <div>
+                                <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px' }}>Tanggal Bayar</p>
+                                <p style={{ color: '#1e293b', fontWeight: 600, fontSize: '0.82rem', margin: 0 }}>{formatTanggal(tanggal_transaksi)}</p>
+                            </div>
+                            <div>
+                                <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px' }}>Status</p>
+                                <span style={{
+                                    padding: '2px 10px', borderRadius: 16, fontSize: '0.75rem', fontWeight: 700,
+                                    backgroundColor: '#dcfce7', color: '#16a34a', border: '1px solid #bbf7d0',
+                                }}>
+                                    ● Berhasil
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Total */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ color: '#64748b', fontWeight: 600, fontSize: '0.88rem' }}>Total Pembayaran</span>
+                            <span style={{ color: '#0f172a', fontWeight: 800, fontSize: '1.2rem' }}>
+                                Rp {totalHarga.toLocaleString('id-ID')}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* ── On-screen content (hidden on print) ── */}
+            <div className="screen-only">
                 <Navbar />
             </div>
 
-            <div style={{ maxWidth: 680, margin: '0 auto', padding: '40px 24px 80px' }}>
+            <div className="screen-only" style={{ maxWidth: 680, margin: '0 auto', padding: '40px 24px 80px' }}>
 
                 {/* Success header */}
                 <div style={{ textAlign: 'center', marginBottom: 40, animation: 'fadeUp .4s ease' }}>
@@ -83,7 +213,7 @@ const ETicket = () => {
                 </div>
 
                 {/* Tiket */}
-                <div className="ticket-container ticket-body" style={{
+                <div className="ticket-container" style={{
                     background: 'rgba(15,23,42,0.9)',
                     border: '1px solid rgba(255,255,255,0.1)',
                     borderRadius: 20,
@@ -181,7 +311,7 @@ const ETicket = () => {
                 </div>
 
                 {/* Tombol aksi */}
-                <div className="no-print" style={{ display: 'flex', gap: 12, marginTop: 24 }}>
+                <div style={{ display: 'flex', gap: 12, marginTop: 24 }}>
                     <button
                         className="print-btn"
                         onClick={() => window.print()}

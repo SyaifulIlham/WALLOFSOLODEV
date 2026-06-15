@@ -47,6 +47,8 @@ const Login = () => {
                     navigate('/admin', { replace: true });
                 } else {
                     sessionStorage.setItem('user', JSON.stringify(response.data.data));
+                    localStorage.setItem('id_user', response.data.data.id);
+                    localStorage.setItem('nama', response.data.data.nama);
                     navigate('/', { replace: true });
                 }
             }
