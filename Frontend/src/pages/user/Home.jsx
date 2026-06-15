@@ -268,18 +268,12 @@ const Home = () => {
                 ALL STYLES
             ══════════════════════════════════ */}
             <style>{`
-<<<<<<< HEAD
                 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
 
                 /* ── BASE ── */
                 .sf-root {
                     font-family: 'Outfit', sans-serif;
                     background: #0d0d0d;
-=======
-                .sf-root {
-                    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-                    background: #f0f4f8;
->>>>>>> a2a4741a0955b009b774553572fd95e95c06dfd2
                     min-height: 100vh;
                     color: #e8e8e8;
                 }
@@ -342,7 +336,6 @@ const Home = () => {
                     color: #666; display: flex; align-items: center; pointer-events: none;
                 }
                 .sf-search {
-<<<<<<< HEAD
                     width: 100%; padding: 15px 48px 15px 50px;
                     border: 1px solid rgba(255,255,255,.1);
                     border-radius: 50px;
@@ -357,14 +350,6 @@ const Home = () => {
                     border-color: rgba(229,9,20,.5);
                     background: rgba(255,255,255,.1);
                     box-shadow: 0 0 0 3px rgba(229,9,20,.12);
-=======
-                    width: 100%; padding: 15px 48px 15px 52px;
-                    border: none; border-radius: 50px;
-                    background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,.1);
-                    font-family: inherit;
-                    font-size: 1rem; color: #1a1a2e; outline: none;
-                    transition: box-shadow .2s;
->>>>>>> a2a4741a0955b009b774553572fd95e95c06dfd2
                 }
                 .sf-search-clear {
                     position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
@@ -463,13 +448,8 @@ const Home = () => {
                     display: flex; align-items: center; gap: 8px;
                     padding: 9px 20px; border-radius: 50px; border: none;
                     background: transparent;
-<<<<<<< HEAD
                     font-family: 'Outfit', sans-serif;
                     font-size: .875rem; font-weight: 600; color: #666;
-=======
-                    font-family: inherit;
-                    font-size: .875rem; font-weight: 600; color: #64748b;
->>>>>>> a2a4741a0955b009b774553572fd95e95c06dfd2
                     cursor: pointer; transition: all .2s; white-space: nowrap;
                 }
                 .sf-tab--active {
@@ -620,7 +600,6 @@ const Home = () => {
                 .sf-empty__title { font-weight:700; font-size:1.1rem; color:#e8e8e8; margin:0 0 6px; }
                 .sf-empty__sub   { font-size:.88rem; color:#666; margin:0 0 20px; }
                 .sf-empty__btn {
-<<<<<<< HEAD
                     background: #e50914; color:#fff; border:none;
                     padding:.65rem 1.6rem; border-radius:50px;
                     font-family:'Outfit',sans-serif;
@@ -630,13 +609,6 @@ const Home = () => {
                 .sf-empty__btn:hover {
                     background:#c8000f;
                     box-shadow: 0 4px 16px rgba(229,9,20,.35);
-=======
-                    background:#1a6fba; color:#fff; border:none;
-                    padding:.6rem 1.6rem; border-radius:50px;
-                    font-family: inherit;
-                    font-weight:600; font-size:.88rem; cursor:pointer;
-                    transition:background .2s;
->>>>>>> a2a4741a0955b009b774553572fd95e95c06dfd2
                 }
 
                 /* ── FOOTER ── */
@@ -649,14 +621,9 @@ const Home = () => {
                     justify-content:space-between; flex-wrap:wrap; gap:8px;
                 }
                 .sf-footer__brand {
-<<<<<<< HEAD
                     font-family:'Outfit',sans-serif;
                     font-size:1.25rem; font-weight:800; color:#fff;
                     letter-spacing: -.02em;
-=======
-                    font-family: inherit;
-                    font-size:1.2rem; font-weight:700; color:#1a1a2e;
->>>>>>> a2a4741a0955b009b774553572fd95e95c06dfd2
                 }
                 .sf-footer__copy { font-size:.78rem; color:#444; margin:0; }
 

@@ -130,28 +130,29 @@ function NavScroll() {
           <div className="nav-items d-flex align-items-center gap-3">
           </div>
 
-          <Link
-            to={loggedUserName ? '#' : '/login'}
-            onClick={(e) => loggedUserName && e.preventDefault()}
-            className="btn btn-danger px-4 fw-bold rounded-pill btn-login shadow-sm d-inline-flex align-items-center"
-            style={{ position: 'relative' }}
-            onMouseEnter={() => loggedUserName && setUserMenuOpen(true)}
-            onMouseLeave={() => setUserMenuOpen(false)}
-          >
-            <span className="me-2">{userRole === 'admin' ? '🛡️' : '👤'}</span>
-            {loggedUserName || 'Login'}
-            {userRole === 'admin' && <span className="badge bg-warning text-dark ms-2" style={{ fontSize: '0.65rem' }}>Admin</span>}
+          {loggedUserName ? (
+            <div
+              className="position-relative"
+              style={{ position: 'relative' }}
+              onMouseEnter={() => setUserMenuOpen(true)}
+              onMouseLeave={() => setUserMenuOpen(false)}
+            >
+              <button
+                type="button"
+                className="btn btn-danger px-4 fw-bold rounded-pill btn-login shadow-sm d-inline-flex align-items-center"
+                style={{ position: 'relative' }}
+              >
+                <span className="me-2">{userRole === 'admin' ? '🛡️' : '👤'}</span>
+                {loggedUserName}
+                {userRole === 'admin' && <span className="badge bg-warning text-dark ms-2" style={{ fontSize: '0.65rem' }}>Admin</span>}
+              </button>
 
-            {loggedUserName && (
               <div
                 className={`user-dropdown ${userMenuOpen ? 'show' : ''}`}
-                onMouseEnter={() => setUserMenuOpen(true)}
-                onMouseLeave={() => setUserMenuOpen(false)}
                 style={{
                   position: 'absolute',
                   top: '100%',
                   right: 0,
-                  marginTop: '8px',
                   backgroundColor: 'rgba(10, 11, 13, 0.95)',
                   border: '1px solid rgba(255,255,255,0.1)',
                   borderRadius: '8px',
@@ -163,6 +164,7 @@ function NavScroll() {
                 }}
               >
                 <button
+                  type="button"
                   onClick={handleLogout}
                   style={{
                     display: 'flex',
@@ -173,21 +175,28 @@ function NavScroll() {
                     backgroundColor: 'transparent',
                     border: 'none',
                     color: '#c9d1d9',
-                    textDecoration: 'none',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease',
                     fontSize: '0.9rem',
                     fontWeight: '500'
                   }}
-                  onMouseEnter={(e) => e.target.style.backgroundColor = '#dc3545'}
-                  onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#dc3545'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#0000'; }}
                   className="user-dropdown-item"
                 >
                   <span>🚪</span> Logout
                 </button>
               </div>
-            )}
-          </Link>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="btn btn-danger px-4 fw-bold rounded-pill btn-login shadow-sm d-inline-flex align-items-center"
+            >
+              <span className="me-2">👤</span>
+              Login
+            </Link>
+          )}
         </div>
       </div>
 
