@@ -12,6 +12,13 @@ const SeatsModel = {
         return rows[0];
     },
  
+    getBySchedule: async (id_jadwal) => {
+        const [rows] = await db.query(
+            'SELECT * FROM seats ORDER BY baris, nomor_kursi'
+        );
+        return rows;
+    },
+ 
     create: async ({ nomor_kursi, baris, status = 'tersedia' }) => {
         const [result] = await db.query(
             'INSERT INTO seats (nomor_kursi, baris, status) VALUES (?, ?, ?)',

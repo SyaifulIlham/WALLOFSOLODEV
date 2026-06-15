@@ -26,7 +26,7 @@ const SeatsController = {
     // GET /seats/:id/seats
     getSeatsBySchedule: async (req, res) => {
         try {
-            const seats = await SeatsModel.getAll();
+            const seats = await SeatsModel.getBySchedule(req.params.id);
             res.json({ success: true, data: seats });
         } catch (err) {
             res.status(500).json({ success: false, message: err.message });

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import Navbar from '../../components/nav';
+import axios from 'axios';
+import BASE_URL from '../../api';
 
 const METODE_BAYAR = [
     { id: 'transfer_bca',     kategori: 'Transfer Bank',       nama: 'BCA',            icon: '🏦', detail: 'Kode Virtual Account: 1234-5678-9012' },
@@ -20,6 +22,15 @@ const Section = ({ title, children }) => (
     </div>
 );
 
+const parseTanggal = (dateStr) => {
+    if (!dateStr) return new Date();
+    const parts = dateStr.split('-');
+    if (parts.length === 3 && parts[0].length === 2) {
+        return new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+    }
+    return new Date(dateStr);
+};
+
 const Checkout = () => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -28,6 +39,17 @@ const Checkout = () => {
     const [selectedMetode, setSelectedMetode] = useState(null);
     const [loading, setLoading]               = useState(false);
     const [error, setError]                   = useState(null);
+
+    const id_user = localStorage.getItem('id_user');
+
+    if (!id_user) {
+        return (
+            <div style={{ backgroundColor: '#0a0b0d', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
+                <p style={{ color: '#f87171' }}>Kamu harus login dulu untuk melanjutkan checkout.</p>
+                <Link to="/login" style={{ padding: '12px 24px', backgroundColor: '#dc3545', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: 600 }}>Login Dulu</Link>
+            </div>
+        );
+    }
 
     if (!state || !state.film) {
         return (
@@ -42,30 +64,51 @@ const Checkout = () => {
 
     const handleBayar = async () => {
         if (!selectedMetode) { setError('Pilih metode pembayaran dulu'); return; }
+        
+        const id_user = localStorage.getItem('id_user');
+        if (!id_user) {
+            setError('Kamu harus login dulu');
+            return;
+        }
+
         setError(null);
         setLoading(true);
         try {
-            // TODO: hit API transaksi setelah teman selesai
-            // const userId = localStorage.getItem('id_user');
-            // const res = await axios.post(`${BASE_URL}/transaksi`, {
-            //     id_user: userId,
-            //     id_jadwal: jadwal?.id_jadwal,
-            //     seats: selectedSeats.map(s => s.id_seat),
-            //     total_harga: totalHarga,
-            //     metode_bayar: selectedMetode,
-            // });
+            // Format tanggal dari DD-MM-YYYY ke YYYY-MM-DD untuk backend
+            let tglDB = jadwal.tanggal_tayang;
+            const parts = tglDB.split('-');
+            if (parts.length === 3 && parts[0].length === 2) {
+                tglDB = `${parts[2]}-${parts[1]}-${parts[0]}`;
+            }
 
-            await new Promise(r => setTimeout(r, 1500)); // simulasi delay
+            const body = {
+                id_user: id_user,
+                tikets: selectedSeats.map(s => ({
+                    id_film: film.id_film,
+                    id_seat: s.id_seat,
+                    jadwal_tayang: tglDB + ' ' + jadwal.jam_tayang,
+                    harga: hargaPerKursi
+                }))
+            };
+
+            const response = await axios.post(`${BASE_URL}/transaksi`, body);
+            const resData = response.data.data || response.data;
+
+            // Langsung update status ke berhasil
+            await axios.put(`${BASE_URL}/transaksi/${resData.id_transaksi}/status`, {
+                status_pembayaran: 'berhasil'
+            });
 
             navigate('/eticket', {
                 state: {
                     film, jadwal, selectedSeats, totalHarga, hargaPerKursi,
                     metode: METODE_BAYAR.find(m => m.id === selectedMetode),
-                    id_transaksi: `TRX-${Date.now()}`,
-                    tanggal_transaksi: new Date().toISOString(),
+                    id_transaksi: resData.id_transaksi || `TRX-${Date.now()}`,
+                    tanggal_transaksi: resData.tanggal_transaksi || new Date().toISOString(),
                 }
             });
-        } catch {
+        } catch (err) {
+            console.error('Error bayar:', err);
             setError('Gagal memproses pembayaran. Coba lagi.');
             setLoading(false);
         }
@@ -116,7 +159,7 @@ const Checkout = () => {
                             {jadwal && (
                                 <>
                                     <p style={{ margin: '0 0 2px', color: '#94a3b8', fontSize: '0.85rem' }}>
-                                        📅 {new Date(jadwal.tanggal_tayang).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+                                        📅 {parseTanggal(jadwal.tanggal_tayang).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
                                     </p>
                                     <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.85rem' }}>🕐 {jadwal.jam_tayang}</p>
                                 </>
@@ -196,7 +239,7 @@ const Checkout = () => {
                         {[
                             { label: 'Film',   value: film.judul_film },
                             { label: 'Kursi',  value: selectedSeats.map(s => s.nomor_kursi).join(', ') },
-                            jadwal && { label: 'Tanggal', value: new Date(jadwal.tanggal_tayang).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) },
+                            jadwal && { label: 'Tanggal', value: parseTanggal(jadwal.tanggal_tayang).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) },
                             jadwal && { label: 'Jam',     value: jadwal.jam_tayang.slice(0, 5) },
                             { label: 'Metode', value: selectedMetode ? METODE_BAYAR.find(m => m.id === selectedMetode)?.nama : 'Belum dipilih', highlight: !!selectedMetode },
                         ].filter(Boolean).map(({ label, value, highlight }) => (
