@@ -111,13 +111,6 @@ function NavScroll() {
           <span style={{ color: '#dc3545' }}>Solo</span><span className="text-white">Flixx</span>
         </Link>
 
-        <Link
-          to="/riwayat"
-          className="text-light nav-custom-hover"
-        >
-          Riwayat
-        </Link>
-
         <button
           className="mobile-menu-toggle border-0 bg-transparent text-white d-lg-none"
           onClick={toggleMobileMenu}
@@ -131,69 +124,34 @@ function NavScroll() {
           </div>
 
           {loggedUserName ? (
-            <div
-              className="position-relative"
-              style={{ position: 'relative' }}
-              onMouseEnter={() => setUserMenuOpen(true)}
-              onMouseLeave={() => setUserMenuOpen(false)}
-            >
-              <button
-                type="button"
-                className="btn btn-danger px-4 fw-bold rounded-pill btn-login shadow-sm d-inline-flex align-items-center"
-                style={{ position: 'relative' }}
+            <div className="d-flex align-items-center gap-4">
+              <Link
+                to="/riwayat"
+                className="text-decoration-none text-white fw-bold nav-text-link"
               >
-                <span className="me-2">{userRole === 'admin' ? '🛡️' : '👤'}</span>
+                Riwayat
+              </Link>
+              <div
+                className="text-white fw-bold d-inline-flex align-items-center"
+                style={{ cursor: 'default' }}
+              >
+                <span className="me-2" style={{ color: '#dc3545' }}>{userRole === 'admin' ? '' : ''}</span>
                 {loggedUserName}
                 {userRole === 'admin' && <span className="badge bg-warning text-dark ms-2" style={{ fontSize: '0.65rem' }}>Admin</span>}
-              </button>
-
-              <div
-                className={`user-dropdown ${userMenuOpen ? 'show' : ''}`}
-                style={{
-                  position: 'absolute',
-                  top: '100%',
-                  right: 0,
-                  backgroundColor: 'rgba(10, 11, 13, 0.95)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: '8px',
-                  backdropFilter: 'blur(10px)',
-                  display: userMenuOpen ? 'block' : 'none',
-                  minWidth: '180px',
-                  zIndex: 1050,
-                  padding: '8px 0'
-                }}
-              >
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    width: '100%',
-                    padding: '10px 16px',
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                    color: '#c9d1d9',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                    fontSize: '0.9rem',
-                    fontWeight: '500'
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#dc3545'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#0000'; }}
-                  className="user-dropdown-item"
-                >
-                  <span>🚪</span> Logout
-                </button>
               </div>
+              <button
+                onClick={handleLogout}
+                className="btn btn-link text-decoration-none fw-bold nav-text-link p-0 m-0"
+                style={{ color: '#94a3b8' }}
+              >
+                Logout
+              </button>
             </div>
           ) : (
             <Link
               to="/login"
-              className="btn btn-danger px-4 fw-bold rounded-pill btn-login shadow-sm d-inline-flex align-items-center"
+              className="text-decoration-none text-white fw-bold nav-text-link"
             >
-              <span className="me-2">👤</span>
               Login
             </Link>
           )}

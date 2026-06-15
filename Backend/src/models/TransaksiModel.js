@@ -42,6 +42,9 @@ const TransaksiModel = {
                 tk.jadwal_tayang,
                 tk.harga,
                 f.judul_film,
+                f.poster,
+                f.genre,
+                f.durasi,
                 s.nomor_kursi,
                 s.baris
             FROM tickets tk
@@ -71,6 +74,21 @@ const TransaksiModel = {
         const conn = await db.getConnection();
         try {
             await conn.beginTransaction();
+
+            for (const tiket of tikets) {
+                const [seatCheck] = await conn.query(
+                    'SELECT status FROM seats WHERE id_seat = ?',
+                    [tiket.id_seat]
+                );
+                if (!seatCheck[0]) {
+                    await conn.rollback();
+                    throw new Error(`Kursi tidak ditemukan`);
+                }
+                if (seatCheck[0].status === 'dipesan') {
+                    await conn.rollback();
+                    throw new Error(`Kursi ${tiket.id_seat} sudah dipesan oleh orang lain. Silakan pilih kursi lain.`);
+                }
+            }
 
             const total_harga = tikets.reduce((sum, t) => sum + Number(t.harga), 0);
             const tanggal_transaksi = new Date();

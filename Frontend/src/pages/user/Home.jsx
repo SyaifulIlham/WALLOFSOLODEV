@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import MainLayout from '../../layouts/MainLayout';
 
 /* ─────────────────────────────────────────────
@@ -111,6 +111,7 @@ const Home = () => {
     const [search, setSearch]       = useState('');
     const [activeTab, setActiveTab] = useState('now');
     const searchRef = useRef(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get('http://localhost:3000/films')
@@ -181,7 +182,9 @@ const Home = () => {
                         {/* Shortcut categories */}
                         <div className="sf-cats">
                             {categories.map((c, i) => (
-                                <button key={i} className="sf-cat">
+                                <button key={i} className="sf-cat" onClick={() => {
+                                    if (c.label === 'Film') navigate('/movies');
+                                }}>
                                     <span className="sf-cat__icon">{c.icon}</span>
                                     <span className="sf-cat__label">{c.label}</span>
                                 </button>
@@ -225,7 +228,7 @@ const Home = () => {
                                     {!loading && <span className="sf-tab__count">{akanDatang.length}</span>}
                                 </button>
                             </div>
-                            <Link to="/films" className="sf-see-all">Lihat semua ›</Link>
+                            <Link to="/movies" state={{ tab: activeTab === 'now' ? 'sedang-tayang' : 'akan-datang' }} className="sf-see-all">Lihat semua ›</Link>
                         </div>
 
                         {/* Empty search */}

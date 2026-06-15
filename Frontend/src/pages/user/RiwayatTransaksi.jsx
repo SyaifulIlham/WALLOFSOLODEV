@@ -28,25 +28,165 @@ const PrintModal = ({ transaksi, onClose }) => {
     const handlePrint = () => window.print();
 
     return (
-        <div style={{
-            position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            zIndex: 9999, padding: 24,
-        }} onClick={onClose}>
-            <div style={{
-                background: '#0f172a', border: '1px solid rgba(255,255,255,0.1)',
-                borderRadius: 20, width: '100%', maxWidth: 560,
-                maxHeight: '90vh', overflowY: 'auto',
-            }} onClick={e => e.stopPropagation()}>
-
+        <>
+            {/* ── Print-only e-ticket (hidden on screen, shown on print) ── */}
+            <div id="print-ticket" style={{ display: 'none' }}>
                 <style>{`
                     @media print {
-                        body > *:not(#print-ticket) { display: none !important; }
-                        #print-ticket { display: block !important; }
+                        body * { visibility: hidden; }
+                        #print-ticket, #print-ticket * { visibility: visible; }
+                        #print-ticket {
+                            display: block !important;
+                            position: absolute; left: 0; top: 0; width: 100%;
+                            margin: 0; padding: 24px 40px;
+                            background: #fff !important;
+                            color: #000 !important;
+                            font-family: 'Inter', 'Segoe UI', sans-serif;
+                        }
+                        .screen-only { display: none !important; }
                     }
                 `}</style>
 
-                <div id="print-ticket">
+                {/* Success header */}
+                <div style={{ textAlign: 'center', marginBottom: 28 }}>
+                    <div style={{
+                        width: 56, height: 56, borderRadius: '50%',
+                        backgroundColor: '#e0f7ea', border: '2px solid #4ade80',
+                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                        marginBottom: 12, fontSize: '1.5rem',
+                    }}>
+                        ✅
+                    </div>
+                    <h2 style={{ fontWeight: 800, color: '#1e293b', margin: '0 0 4px', fontSize: '1.2rem' }}>Pembayaran Berhasil!</h2>
+                    <p style={{ color: '#64748b', fontSize: '0.82rem', margin: 0 }}>
+                        Tiketmu sudah siap. Tunjukkan e-ticket ini saat masuk bioskop.
+                    </p>
+                </div>
+
+                {/* Ticket card */}
+                <div style={{ border: '1px solid #e2e8f0', borderRadius: 16, overflow: 'hidden', maxWidth: 480, margin: '0 auto' }}>
+                    {/* Header with poster */}
+                    <div style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 14, borderBottom: '1px solid #e2e8f0' }}>
+                        <img
+                            src={transaksi.tikets?.[0]?.poster}
+                            alt={transaksi.tikets?.[0]?.judul_film}
+                            style={{ width: 50, height: 72, objectFit: 'cover', borderRadius: 6, flexShrink: 0 }}
+                        />
+                        <div>
+                            <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 2px' }}>E-Ticket</p>
+                            <h4 style={{ fontWeight: 800, color: '#1e293b', margin: '0 0 6px', textTransform: 'uppercase', fontSize: '0.95rem' }}>
+                                {transaksi.tikets?.[0]?.judul_film || '-'}
+                            </h4>
+                            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                                {transaksi.tikets?.[0]?.genre && (
+                                    <span style={{ padding: '2px 8px', borderRadius: 16, backgroundColor: '#e0f2fe', color: '#0284c7', border: '1px solid #bae6fd', fontSize: '0.7rem', fontWeight: 600 }}>
+                                        {transaksi.tikets[0].genre}
+                                    </span>
+                                )}
+                                {transaksi.tikets?.[0]?.durasi && (
+                                    <span style={{ padding: '2px 8px', borderRadius: 16, backgroundColor: '#f1f5f9', color: '#64748b', border: '1px solid #e2e8f0', fontSize: '0.7rem' }}>
+                                        {transaksi.tikets[0].durasi} Menit
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Body */}
+                    <div style={{ padding: '16px 20px' }}>
+                        {/* Info grid */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 16 }}>
+                            <div>
+                                <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px' }}>Tanggal Tayang</p>
+                                <p style={{ color: '#1e293b', fontWeight: 600, fontSize: '0.82rem', margin: 0 }}>
+                                    {transaksi.tikets?.[0]?.jadwal_tayang ? new Date(transaksi.tikets[0].jadwal_tayang).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : '-'}
+                                </p>
+                            </div>
+                            <div>
+                                <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px' }}>Jam Tayang</p>
+                                <p style={{ color: '#1e293b', fontWeight: 600, fontSize: '0.82rem', margin: 0 }}>
+                                    {transaksi.tikets?.[0]?.jadwal_tayang ? new Date(transaksi.tikets[0].jadwal_tayang).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '-'}
+                                </p>
+                            </div>
+                            <div>
+                                <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px' }}>Jumlah Kursi</p>
+                                <p style={{ color: '#1e293b', fontWeight: 600, fontSize: '0.82rem', margin: 0 }}>{(transaksi.tikets || []).length} Kursi</p>
+                            </div>
+                            <div>
+                                <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px' }}>Harga / Kursi</p>
+                                <p style={{ color: '#1e293b', fontWeight: 600, fontSize: '0.82rem', margin: 0 }}>
+                                    {transaksi.tikets?.[0]?.harga ? `Rp ${Number(transaksi.tikets[0].harga).toLocaleString('id-ID')}` : '-'}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Nomor kursi */}
+                        <div style={{ marginBottom: 16, paddingBottom: 16, borderBottom: '1px dashed #e2e8f0' }}>
+                            <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 8px' }}>Nomor Kursi</p>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                                {(transaksi.tikets || []).map((t, i) => (
+                                    <span key={i} style={{
+                                        padding: '4px 12px', borderRadius: 16, fontWeight: 700, fontSize: '0.78rem',
+                                        backgroundColor: '#e0f2fe', color: '#0284c7', border: '1px solid #bae6fd',
+                                    }}>
+                                        {t.nomor_kursi || `Kursi ${i + 1}`}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Transaction info */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 16, paddingBottom: 16, borderBottom: '1px dashed #e2e8f0' }}>
+                            <div>
+                                <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px' }}>ID Transaksi</p>
+                                <p style={{ color: '#1e293b', fontWeight: 600, fontSize: '0.82rem', margin: 0, fontFamily: 'monospace' }}>{transaksi.id_transaksi}</p>
+                            </div>
+                            <div>
+                                <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px' }}>Metode Bayar</p>
+                                <p style={{ color: '#1e293b', fontWeight: 600, fontSize: '0.82rem', margin: 0 }}>{transaksi.metode_bayar || 'OVO'}</p>
+                            </div>
+                            <div>
+                                <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px' }}>Tanggal Bayar</p>
+                                <p style={{ color: '#1e293b', fontWeight: 600, fontSize: '0.82rem', margin: 0 }}>
+                                    {transaksi.tanggal_transaksi ? new Date(transaksi.tanggal_transaksi).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-'}
+                                </p>
+                            </div>
+                            <div>
+                                <p style={{ color: '#94a3b8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px' }}>Status</p>
+                                <span style={{
+                                    padding: '2px 10px', borderRadius: 16, fontSize: '0.75rem', fontWeight: 700,
+                                    backgroundColor: transaksi.status_pembayaran === 'berhasil' ? '#dcfce7' : '#fef9c3',
+                                    color: transaksi.status_pembayaran === 'berhasil' ? '#16a34a' : '#ca8a04',
+                                    border: `1px solid ${transaksi.status_pembayaran === 'berhasil' ? '#bbf7d0' : '#fde68a'}`,
+                                }}>
+                                    {transaksi.status_pembayaran === 'berhasil' ? '● Berhasil' : '● Pending'}
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Total */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ color: '#64748b', fontWeight: 600, fontSize: '0.88rem' }}>Total Pembayaran</span>
+                            <span style={{ color: '#0f172a', fontWeight: 800, fontSize: '1.2rem' }}>
+                                Rp {Number(transaksi.total_harga || 0).toLocaleString('id-ID')}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* ── On-screen dark modal (hidden on print) ── */}
+            <div className="screen-only" style={{
+                position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                zIndex: 9999, padding: 24,
+            }} onClick={onClose}>
+                <div style={{
+                    background: '#0f172a', border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: 20, width: '100%', maxWidth: 560,
+                    maxHeight: '90vh', overflowY: 'auto',
+                }} onClick={e => e.stopPropagation()}>
+
                     {/* Header modal */}
                     <div style={{
                         background: 'linear-gradient(135deg, #1e3a5f, #0f2744)',
@@ -54,15 +194,15 @@ const PrintModal = ({ transaksi, onClose }) => {
                         display: 'flex', alignItems: 'center', gap: 16,
                     }}>
                         <img
-                            src={transaksi.film?.poster}
-                            alt={transaksi.film?.judul_film}
+                            src={transaksi.tikets?.[0]?.poster}
+                            alt={transaksi.tikets?.[0]?.judul_film}
                             style={{ width: 56, height: 80, objectFit: 'cover', borderRadius: 8, flexShrink: 0 }}
                             onError={e => { e.target.onerror = null; e.target.src = 'https://placehold.co/56x80/111/333?text=?'; }}
                         />
                         <div>
                             <p style={{ color: '#64748b', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 4px' }}>E-Ticket</p>
                             <h5 style={{ fontWeight: 800, color: '#f1f5f9', margin: '0 0 6px', textTransform: 'uppercase', fontSize: '0.95rem' }}>
-                                {transaksi.film?.judul_film || '-'}
+                                {transaksi.tikets?.[0]?.judul_film || '-'}
                             </h5>
                             <span style={{
                                 padding: '3px 10px', borderRadius: 20, fontSize: '0.72rem', fontWeight: 700,
@@ -83,8 +223,8 @@ const PrintModal = ({ transaksi, onClose }) => {
                             {[
                                 { label: 'ID Transaksi',    value: transaksi.id_transaksi, mono: true },
                                 { label: 'Tanggal Bayar',   value: transaksi.tanggal_transaksi ? new Date(transaksi.tanggal_transaksi).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-' },
-                                { label: 'Jam Tayang',      value: transaksi.jadwal?.jam_tayang?.slice(0, 5) || '-' },
-                                { label: 'Tanggal Tayang',  value: transaksi.jadwal?.tanggal_tayang ? new Date(transaksi.jadwal.tanggal_tayang).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' }) : '-' },
+                                { label: 'Jam Tayang',      value: transaksi.tikets?.[0]?.jadwal_tayang ? new Date(transaksi.tikets[0].jadwal_tayang).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '-' },
+                                { label: 'Tanggal Tayang',  value: transaksi.tikets?.[0]?.jadwal_tayang ? new Date(transaksi.tikets[0].jadwal_tayang).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' }) : '-' },
                             ].map(({ label, value, mono }) => (
                                 <div key={label}>
                                     <p style={{ color: '#475569', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 4px' }}>{label}</p>
@@ -97,7 +237,7 @@ const PrintModal = ({ transaksi, onClose }) => {
                         <div style={{ marginBottom: 20, paddingBottom: 20, borderBottom: '1px dashed rgba(255,255,255,0.08)' }}>
                             <p style={{ color: '#475569', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 10px' }}>Nomor Kursi</p>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                                {(transaksi.tickets || []).map((t, i) => (
+                                {(transaksi.tikets || []).map((t, i) => (
                                     <span key={i} style={{
                                         padding: '5px 14px', borderRadius: 20, fontWeight: 700, fontSize: '0.85rem',
                                         backgroundColor: 'rgba(56,189,248,0.12)', color: '#38bdf8',
@@ -106,7 +246,7 @@ const PrintModal = ({ transaksi, onClose }) => {
                                         {t.nomor_kursi || `Kursi ${i + 1}`}
                                     </span>
                                 ))}
-                                {(!transaksi.tickets || transaksi.tickets.length === 0) && (
+                                {(!transaksi.tikets || transaksi.tikets.length === 0) && (
                                     <span style={{ color: '#475569', fontSize: '0.85rem' }}>-</span>
                                 )}
                             </div>
@@ -138,7 +278,7 @@ const PrintModal = ({ transaksi, onClose }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
@@ -154,34 +294,33 @@ const RiwayatTransaksi = () => {
 
     useEffect(() => {
         const fetchRiwayat = async () => {
-            try {
-                // TODO: ganti dengan endpoint riwayat transaksi setelah teman selesai
-                // const userId = localStorage.getItem('id_user');
-                // const res = await axios.get(`${BASE_URL}/transaksi/user/${userId}`);
-                // setTransaksiList(res.data.data || []);
+            const userId = localStorage.getItem('id_user');
+            if (!userId) {
+                setError('Kamu harus login untuk melihat riwayat');
+                setLoading(false);
+                return;
+            }
 
-                // ── Data dummy sementara ──
-                setTransaksiList([
-                    {
-                        id_transaksi: 'TRX-001',
-                        tanggal_transaksi: '2026-06-10T14:30:00',
-                        total_harga: 70000,
-                        status_pembayaran: 'berhasil',
-                        film: { judul_film: 'Avenjer 1', genre: 'Action', durasi: 120, poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSigKkKnGhKDu8Yds2sqgrJCFZGvX3qq2ZzZyXkkwUHmY6o5jvsneApr4RpkrDMayF3XUdI5UuogPel3j72pDALD63t-4vkH5u1iVX3FTse&s=10' },
-                        jadwal: { tanggal_tayang: '2026-06-15', jam_tayang: '14:00:00' },
-                        tickets: [{ nomor_kursi: 'C6' }, { nomor_kursi: 'C7' }],
-                    },
-                    {
-                        id_transaksi: 'TRX-002',
-                        tanggal_transaksi: '2026-06-09T10:00:00',
-                        total_harga: 35000,
-                        status_pembayaran: 'pending',
-                        film: { judul_film: 'Ready Or Not 2', genre: 'Action', durasi: 120, poster: 'https://nos.jkt-1.neo.id/media.cinema21.co.id/movie-images/26RN2H.jpg' },
-                        jadwal: { tanggal_tayang: '2026-06-16', jam_tayang: '20:00:00' },
-                        tickets: [{ nomor_kursi: 'A3' }],
-                    },
-                ]);
+            try {
+                const res = await axios.get(`${BASE_URL}/users/${userId}/transaksi`);
+                const transaksiListRes = res.data.data || [];
+                
+                // Fetch detail lengkap untuk tiap transaksi
+                const detailedTransaksi = await Promise.all(
+                    transaksiListRes.map(async (trx) => {
+                        try {
+                            const detailRes = await axios.get(`${BASE_URL}/transaksi/${trx.id_transaksi}`);
+                            return detailRes.data.data;
+                        } catch (detailErr) {
+                            console.error(`Gagal memuat detail trx ${trx.id_transaksi}`, detailErr);
+                            return trx; 
+                        }
+                    })
+                );
+
+                setTransaksiList(detailedTransaksi);
             } catch (err) {
+                console.error(err);
                 setError('Gagal memuat riwayat transaksi.');
             } finally {
                 setLoading(false);
@@ -266,8 +405,8 @@ const RiwayatTransaksi = () => {
 
                                     {/* Poster */}
                                     <img
-                                        src={trx.film?.poster}
-                                        alt={trx.film?.judul_film}
+                                        src={trx.tikets?.[0]?.poster}
+                                        alt={trx.tikets?.[0]?.judul_film}
                                         style={{ width: 52, height: 74, objectFit: 'cover', borderRadius: 8, flexShrink: 0 }}
                                         onError={e => { e.target.onerror = null; e.target.src = 'https://placehold.co/52x74/111/333?text=?'; }}
                                     />
@@ -276,7 +415,7 @@ const RiwayatTransaksi = () => {
                                     <div style={{ flex: 1, minWidth: 0 }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8, flexWrap: 'wrap', gap: 8 }}>
                                             <h6 style={{ margin: 0, fontWeight: 700, color: '#f1f5f9', fontSize: '0.95rem', textTransform: 'uppercase' }}>
-                                                {trx.film?.judul_film || '-'}
+                                                {trx.tikets?.[0]?.judul_film || '-'}
                                             </h6>
                                             <span style={{
                                                 padding: '3px 12px', borderRadius: 20, fontSize: '0.75rem', fontWeight: 700, flexShrink: 0,
@@ -291,9 +430,9 @@ const RiwayatTransaksi = () => {
                                         {/* Detail baris */}
                                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 20px', marginBottom: 12 }}>
                                             {[
-                                                { icon: '📅', val: trx.jadwal?.tanggal_tayang ? new Date(trx.jadwal.tanggal_tayang).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-' },
-                                                { icon: '🕐', val: trx.jadwal?.jam_tayang?.slice(0, 5) || '-' },
-                                                { icon: '🪑', val: (trx.tickets || []).map(t => t.nomor_kursi).join(', ') || '-' },
+                                                { icon: '📅', val: trx.tikets?.[0]?.jadwal_tayang ? new Date(trx.tikets[0].jadwal_tayang).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-' },
+                                                { icon: '🕐', val: trx.tikets?.[0]?.jadwal_tayang ? new Date(trx.tikets[0].jadwal_tayang).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '-' },
+                                                { icon: '🪑', val: (trx.tikets || []).map(t => t.nomor_kursi).join(', ') || '-' },
                                             ].map(({ icon, val }) => (
                                                 <span key={icon} style={{ color: '#64748b', fontSize: '0.82rem' }}>{icon} {val}</span>
                                             ))}

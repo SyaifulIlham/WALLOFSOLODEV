@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import BASE_URL from '../../api';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import MainLayout from '../../layouts/MainLayout';
 
 const Movies = () => {
     const [films, setFilms] = useState([]);
-    const [activeTab, setActiveTab] = useState('sedang-tayang');
+    const location = useLocation();
+    const [activeTab, setActiveTab] = useState(location.state?.tab || 'sedang-tayang');
 
     useEffect(() => {
         const fetchFilms = async () => {
