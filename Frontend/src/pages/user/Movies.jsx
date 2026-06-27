@@ -74,7 +74,7 @@ const Movies = () => {
                                             />
                                             <div className="overlay-grad"></div>
                                         </div>
-                                        <h6 className="fw-bold text-uppercase mb-1 text-white" style={{ fontSize: '0.9rem', lineHeight: '1.4' }}>
+                                        <h6 className="fw-bold text-uppercase mb-1 text-white" style={{ fontSize: '0.9rem', lineHeight: '1.4', minHeight: '2.8em', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                                             {f.judul_film}
                                         </h6>
                                     </div>
@@ -89,8 +89,13 @@ const Movies = () => {
                 </div>
             </div>
 
-            <footer className="text-center py-4 mt-5" style={{ backgroundColor: '#050505', borderTop: '1px solid #111' }}>
-                <p className="text-secondary small m-0">© 2026 SoloFlixx - Cinema Application</p>
+            <footer className="sf-footer">
+                <div className="container sf-footer__inner">
+                    <span className="sf-footer__brand">
+                        <span style={{ color: '#e50914' }}>Solo</span>Flixx
+                    </span>
+                    <p className="sf-footer__copy">© 2026 SoloFlixx · Cinema Application</p>
+                </div>
             </footer>
 
             <style>
@@ -131,6 +136,22 @@ const Movies = () => {
                     }
                     .film-card:hover .img-container { border-color: #dc3545 !important; box-shadow: 0 10px 25px rgba(220, 53, 69, 0.3) !important; }
                     .film-card:hover .overlay-grad { opacity: 1; }
+
+                    /* ── FOOTER ── */
+                    .sf-footer {
+                        background: #0a0a0a; border-top: 1px solid rgba(255,255,255,.07);
+                        padding: 24px 0; margin-top: 60px;
+                    }
+                    .sf-footer__inner {
+                        display:flex; align-items:center;
+                        justify-content:space-between; flex-wrap:wrap; gap:8px;
+                    }
+                    .sf-footer__brand {
+                        font-family:'Outfit',sans-serif;
+                        font-size:1.25rem; font-weight:800; color:#fff;
+                        letter-spacing: -.02em;
+                    }
+                    .sf-footer__copy { font-size:.78rem; color:#444; margin:0; }
                 `}
             </style>
         </MainLayout>

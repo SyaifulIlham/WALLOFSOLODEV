@@ -13,7 +13,7 @@ const getAllFilms = async (req, res, next) => {
 
 const addFilm = async (req, res, next) => {
   try {
-    const { judul_film, id_kategori, genre, durasi, deskripsi, poster, trailer_url, status } = req.body;
+    const { judul_film, id_kategori, genre, durasi, deskripsi, poster, trailer_url, status, created_by } = req.body;
     const values = {
       judul_film,
       id_kategori: id_kategori || 1,
@@ -22,7 +22,7 @@ const addFilm = async (req, res, next) => {
       deskripsi,
       poster,
       trailer_url: trailer_url || null,
-      created_by: req.user.id,
+      created_by: created_by || (req.user ? req.user.id : 1),
       status: status || 'Sedang Tayang'
     };
 
