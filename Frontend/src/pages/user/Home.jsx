@@ -495,12 +495,13 @@ const Home = () => {
                     to   { opacity:1; transform:translateY(0); }
                 }
 
-                .sf-card-link { text-decoration:none; color:inherit; display:block; }
+                .sf-card-link { text-decoration:none; color:inherit; display:block; height: 100%; }
                 .sf-card {
                     border-radius: 12px; overflow: hidden;
                     background: #161616;
                     border: 1px solid rgba(255,255,255,.07);
                     transition: transform .3s, box-shadow .3s, border-color .3s;
+                    display: flex; flex-direction: column; height: 100%;
                 }
                 .sf-card:hover {
                     transform: translateY(-6px) scale(1.01);
@@ -565,12 +566,13 @@ const Home = () => {
                 .sf-card:hover .sf-card__play { opacity: 1; }
                 .sf-card:hover .sf-card__play svg { transform: scale(1); }
 
-                .sf-card__body { padding: 11px 12px 14px; }
+                .sf-card__body { padding: 11px 12px 14px; flex-grow: 1; display: flex; flex-direction: column; }
                 .sf-card__title {
                     font-size: .83rem; font-weight: 700; color: #e8e8e8;
                     margin: 0 0 5px; line-height: 1.35;
                     display: -webkit-box; -webkit-line-clamp:2;
                     -webkit-box-orient:vertical; overflow:hidden;
+                    min-height: 2.7em;
                 }
                 .sf-card__genre {
                     font-size: .7rem; color: #555; margin:0; font-weight:500;
