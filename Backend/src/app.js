@@ -17,11 +17,6 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
-  next();
-});
-
 app.get('/health', (req, res) => {
   res.status(200).json({
     success: true,
@@ -49,9 +44,7 @@ app.use((req, res, next) => {
 app.use(errorMiddleware);
 
 if (require.main === module) {
-  app.listen(port, () => {
-    console.log(`Soloflixx server berjalan di http://localhost:${port}`);
-  });
+  app.listen(port);
 }
 
 module.exports = app;
