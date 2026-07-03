@@ -29,7 +29,7 @@ const AddFilm = () => {
         try {
             await axios.post(`${BASE_URL}/films`, film);
             alert('Film Berhasil Ditambahkan!');
-            navigate('/admin/Getfilms');
+            navigate('/admin/films');
         } catch (error) {
             console.error(error);
         }

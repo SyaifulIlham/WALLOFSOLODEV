@@ -96,25 +96,12 @@ const updateFilm = async (req, res, next) => {
   }
 };
 
-const getAdmin = async (req, res, next) => {
-  try {
-    const [rows] = await FilmModel.getAdmin();
-    if (rows.length > 0) {
-      res.json({ success: true, data: rows[0] });
-    } else {
-      res.json({ success: false, message: 'Admin tidak ditemukan' });
-    }
-  } catch (error) {
-    console.error('Error fetching admin:', error);
-    next(new ErrorHandler(500, 'Server error'));
-  }
-};
+
 
 module.exports = {
   getAllFilms,
   addFilm,
   deleteFilm,
   getFilmById,
-  updateFilm,
-  getAdmin
+  updateFilm
 };

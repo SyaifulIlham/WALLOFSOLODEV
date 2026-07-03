@@ -40,7 +40,7 @@ const EditFilm = () => {
         try {
             await axios.put(`${BASE_URL}/films/${id}`, film);
             alert('Perubahan Berhasil Disimpan!');
-            navigate('/admin/Getfilms');
+            navigate('/admin/films');
         } catch (error) {
             console.error("Error updating data:", error);
         }
