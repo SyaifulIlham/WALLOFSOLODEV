@@ -25,7 +25,16 @@ const TransaksiController = {
     getTransaksiByUser: async (req, res, next) => {
         try {
             const transaksi = await TransaksiModel.getByUserId(req.params.id_user);
-            res.json({ success: true, data: transaksi });
+            
+            // Ambil detail (termasuk tiket) untuk setiap transaksi
+            const detailTransaksi = await Promise.all(
+                transaksi.map(async (t) => {
+                    const detail = await TransaksiModel.getById(t.id_transaksi);
+                    return detail;
+                })
+            );
+
+            res.json({ success: true, data: detailTransaksi });
         } catch (err) {
             next(new ErrorHandler(500, err.message));
         }
