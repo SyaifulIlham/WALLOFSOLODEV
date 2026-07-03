@@ -13,9 +13,7 @@ const SeatsModel = {
     },
  
     getBySchedule: async (id_jadwal) => {
-        const [rows] = await db.query(
-            'SELECT * FROM seats ORDER BY baris, nomor_kursi'
-        );
+        const [rows] = await db.query('SELECT * FROM seats ORDER BY baris ASC, CAST(REGEXP_REPLACE(nomor_kursi, "[^0-9]", "") AS UNSIGNED) ASC');
         return rows;
     },
  

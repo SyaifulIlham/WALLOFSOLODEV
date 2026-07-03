@@ -99,7 +99,7 @@ const SeatsController = {
 
             // Validasi baris akhir >= baris awal
             const startCode = baris_awal.toUpperCase().charCodeAt(0);
-            const endCode   = baris_akhir.toUpperCase().charCodeAt(0);
+            const endCode = baris_akhir.toUpperCase().charCodeAt(0);
             if (endCode < startCode) {
                 return res.status(400).json({ success: false, message: 'Baris akhir harus sama atau lebih besar dari baris awal' });
             }
@@ -167,12 +167,10 @@ const SeatsController = {
                 return res.status(400).json({ success: false, message: 'Status harus tersedia atau dipesan' });
             }
 
-            // Cek duplikat (exclude kursi yang sedang diedit)
-            const allSeats = await SeatsModel.getAll();
-            const isDuplicate = allSeats.some(s =>
-                s.nomor_kursi.toUpperCase() === nomor_kursi.toUpperCase() &&
-                s.id_seat != id
-            );
+            // Cek duplikat nomor kursi
+            const existingSeats = await SeatsModel.getAll();
+            const isDuplicate = existingSeats.some(s => s.nomor_kursi.toUpperCase() === nomor_kursi.toUpperCase());
+
             if (isDuplicate) {
                 return res.status(400).json({ success: false, message: `Kursi ${nomor_kursi.toUpperCase()} sudah ada` });
             }

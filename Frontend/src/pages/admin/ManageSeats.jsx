@@ -97,7 +97,7 @@ const ManageSeats = () => {
     // ── Toast ──────────────────────────────────────────────────────────────────
     const showToast = (msg, type = 'success') => {
         setToast({ msg, type });
-        setTimeout(() => setToast(null), 3000);
+        setTimeout(() => setToast(null), 4000);
     };
 
     // ── Grid ───────────────────────────────────────────────────────────────────
