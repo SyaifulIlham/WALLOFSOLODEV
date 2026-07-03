@@ -377,7 +377,7 @@ const RiwayatTransaksi = () => {
                 {/* Content */}
                 {loading ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                        {[1, 2, 3].map(i => <SkeletonCard key={i} />)}
+                        {[1, 2, 3, 4].map(i => <SkeletonCard key={i} />)}
                     </div>
                 ) : error ? (
                     <div style={{ textAlign: 'center', padding: '48px 0', color: '#f87171' }}>
