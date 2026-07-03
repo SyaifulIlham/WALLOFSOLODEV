@@ -11,6 +11,7 @@ const METODE_BAYAR = [
     { id: 'ewallet_gopay',    kategori: 'E-Wallet',            nama: 'GoPay',          icon: '📱', detail: 'Scan QR atau masukkan nomor HP' },
     { id: 'ewallet_ovo',      kategori: 'E-Wallet',            nama: 'OVO',            icon: '📱', detail: 'Scan QR atau masukkan nomor HP' },
     { id: 'ewallet_dana',     kategori: 'E-Wallet',            nama: 'DANA',           icon: '📱', detail: 'Scan QR atau masukkan nomor HP' },
+    { id: 'ewallet_shopeepay', kategori: 'E-Wallet',           nama: 'ShopeePay',      icon: '📱', detail: 'Scan QR atau masukkan nomor HP' }
 ];
 
 const kategoriList = [...new Set(METODE_BAYAR.map(m => m.kategori))];
