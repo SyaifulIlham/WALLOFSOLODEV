@@ -4,7 +4,7 @@ import axios from 'axios';
 import BASE_URL from "../../api";
 import Navbar from '../../components/nav';
 
-const HOLD_DURATION = 10 * 60; // 10 menit dalam detik
+const HOLD_DURATION = 600; // 600 detik = 10 menit
 
 const formatTanggalTayang = (dateStr) => {
     if (!dateStr) return '-';
