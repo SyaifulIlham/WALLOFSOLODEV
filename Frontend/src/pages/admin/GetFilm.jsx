@@ -37,8 +37,8 @@ const GetFilm = () => {
     const filteredFilms = useMemo(() => {
         const query = searchQuery.toLowerCase();
         return films.filter((film) =>
-            film.judul_film.toLowerCase().includes(query) ||
-            film.genre.toLowerCase().includes(query)
+            film.judul_film?.toLowerCase().includes(query) ||
+            film.genre?.toLowerCase().includes(query)
         );
     }, [films, searchQuery]);
 

@@ -3,15 +3,15 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './styles/custom.css';
 import ProtectedRoute from './components/ProtectedRoute';
 import UserProtectedRoute from './components/UserProtectedRoute';
-import RiwayatTransaksi from './pages/user/RiwayatTransaksi';
+const RiwayatTransaksi = lazy(() => import('./pages/user/RiwayatTransaksi'));
 
 // Lazy load components
 const Home = lazy(() => import('./pages/user/Home'));
 const Movies = lazy(() => import('./pages/user/Movies'));
 const DetailFilm = lazy(() => import('./pages/user/DetailFilm'));
-const DashboardAdmin = lazy(() => import('./pages/admin/dashboardadmin'));
+const DashboardAdmin = lazy(() => import('./pages/admin/Dashboardadmin'));
 const ListFilm = lazy(() => import('./pages/admin/GetFilm'));
-const AddFilm = lazy(() => import('./pages/admin/Addfilm'));
+const AddFilm = lazy(() => import('./pages/admin/AddFilm'));
 const EditFilm = lazy(() => import('./pages/admin/EditFilm'));
 const ListSchedule = lazy(() => import('./pages/admin/ListSchedule'));
 const AddSchedule = lazy(() => import('./pages/admin/AddSchedule'));
@@ -95,14 +95,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/admin/Getfilms"
-            element={
-              <ProtectedRoute>
-                <ListFilm />
-              </ProtectedRoute>
-            }
-          />
+
           <Route
             path="/admin/edit/:id"
             element={
