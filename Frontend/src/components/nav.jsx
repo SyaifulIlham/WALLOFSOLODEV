@@ -25,7 +25,7 @@ function NavScroll() {
   // Handle active section based on scroll position
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['sedang-tayang', 'akan-datang', 'promo'];
+      const sections = ['sedang-tayang', 'akan-datang'];
       const current = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -111,13 +111,6 @@ function NavScroll() {
           <span style={{ color: '#dc3545' }}>Solo</span><span className="text-white">Flixx</span>
         </Link>
 
-        <Link
-          to="/riwayat"
-          className="text-light nav-custom-hover"
-        >
-          Riwayat
-        </Link>
-
         <button
           className="mobile-menu-toggle border-0 bg-transparent text-white d-lg-none"
           onClick={toggleMobileMenu}
@@ -128,112 +121,40 @@ function NavScroll() {
 
         <div className={`site-nav-links d-lg-flex align-items-center ${isMobileMenuOpen ? 'show' : ''}`}>
           <div className="nav-items d-flex align-items-center gap-3">
-            <div className={`nav-dropdown ${cityMenuOpen ? 'open' : ''}`}>
-              <button
-                type="button"
-                className="nav-link nav-custom-hover btn btn-link p-0 text-white"
-                onClick={toggleCityMenu}
-              >
-                Kota
-              </button>
-              <div className={`dropdown-menu ${cityMenuOpen ? 'show' : ''}`}>
-                <Link to="#jakarta" className="dropdown-item drop-hover city-item">
-                  <span className="city-icon">🏙️</span> Jakarta
-                </Link>
-                <Link to="#bandung" className="dropdown-item drop-hover city-item">
-                  <span className="city-icon">🏔️</span> Bandung
-                </Link>
-                <Link to="#surabaya" className="dropdown-item drop-hover city-item">
-                  <span className="city-icon">🌆</span> Surabaya
-                </Link>
-                <div className="dropdown-divider" />
-                <Link to="#all-cities" className="dropdown-item drop-hover view-all">
-                  🌍 Lihat Semua Kota
-                </Link>
-              </div>
-            </div>
-
-            <Link to="#promo" className={`nav-link nav-custom-hover text-white ${isActive('promo')}`}>
-              Promo
-            </Link>
-
-            {/* ADMIN MENU - Hanya tampil jika user adalah admin */}
-            {userRole === 'admin' && (
-              <>
-                <Link to="/admin" className="nav-link nav-custom-hover text-white">
-                  📊 Dashboard
-                </Link>
-                <Link to="/admin/films" className="nav-link nav-custom-hover text-white">
-                  🎬 Kelola Film
-                </Link>
-                <Link to="/admin/schedules" className="nav-link nav-custom-hover text-white">
-                  📅 Jadwal
-                </Link>
-                <Link to="/admin/seats" className="nav-link nav-custom-hover text-white">
-                  🎫 Kursi
-                </Link>
-              </>
-            )}
           </div>
 
-          <Link
-            to={loggedUserName ? '#' : '/login'}
-            onClick={(e) => loggedUserName && e.preventDefault()}
-            className="btn btn-danger px-4 fw-bold rounded-pill btn-login shadow-sm d-inline-flex align-items-center"
-            style={{ position: 'relative' }}
-            onMouseEnter={() => loggedUserName && setUserMenuOpen(true)}
-            onMouseLeave={() => setUserMenuOpen(false)}
-          >
-            <span className="me-2">{userRole === 'admin' ? '🛡️' : '👤'}</span>
-            {loggedUserName || 'Login'}
-            {userRole === 'admin' && <span className="badge bg-warning text-dark ms-2" style={{ fontSize: '0.65rem' }}>Admin</span>}
-
-            {loggedUserName && (
-              <div
-                className={`user-dropdown ${userMenuOpen ? 'show' : ''}`}
-                onMouseEnter={() => setUserMenuOpen(true)}
-                onMouseLeave={() => setUserMenuOpen(false)}
-                style={{
-                  position: 'absolute',
-                  top: '100%',
-                  right: 0,
-                  marginTop: '8px',
-                  backgroundColor: 'rgba(10, 11, 13, 0.95)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: '8px',
-                  backdropFilter: 'blur(10px)',
-                  display: userMenuOpen ? 'block' : 'none',
-                  minWidth: '180px',
-                  zIndex: 1050,
-                  padding: '8px 0'
-                }}
+          {loggedUserName ? (
+            <div className="d-flex align-items-center gap-4">
+              <Link
+                to="/riwayat"
+                className="text-decoration-none text-white fw-bold nav-text-link"
               >
-                <button
-                  onClick={handleLogout}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    width: '100%',
-                    padding: '10px 16px',
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                    color: '#c9d1d9',
-                    textDecoration: 'none',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                    fontSize: '0.9rem',
-                    fontWeight: '500'
-                  }}
-                  onMouseEnter={(e) => e.target.style.backgroundColor = '#dc3545'}
-                  onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                  className="user-dropdown-item"
-                >
-                  <span>🚪</span> Logout
-                </button>
+                Riwayat
+              </Link>
+              <div
+                className="text-white fw-bold d-inline-flex align-items-center"
+                style={{ cursor: 'default' }}
+              >
+                <span className="me-2" style={{ color: '#dc3545' }}>{userRole === 'admin' ? '' : ''}</span>
+                {loggedUserName}
+                {userRole === 'admin' && <span className="badge bg-warning text-dark ms-2" style={{ fontSize: '0.65rem' }}>Admin</span>}
               </div>
-            )}
-          </Link>
+              <button
+                onClick={handleLogout}
+                className="btn btn-link text-decoration-none fw-bold nav-text-link p-0 m-0"
+                style={{ color: '#94a3b8' }}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="text-decoration-none text-white fw-bold nav-text-link"
+            >
+              Login
+            </Link>
+          )}
         </div>
       </div>
 

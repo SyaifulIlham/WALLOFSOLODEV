@@ -55,7 +55,7 @@ const SeatPicker = () => {
         const fetchAll = async () => {
             try {
                 const [seatsRes, filmRes] = await Promise.all([
-                    axios.get(`${BASE_URL}/seats`),
+                    axios.get(jadwalId ? `${BASE_URL}/seats/${jadwalId}/seats` : `${BASE_URL}/seats`),
                     axios.get(`${BASE_URL}/films/${id}`),
                 ]);
                 setSeats(seatsRes.data.data || []);
@@ -305,7 +305,7 @@ const SeatPicker = () => {
                                 <h5 style={{ margin: 0, fontWeight: 700, color: '#f1f5f9' }}>{film.judul_film}</h5>
                                 {jadwal ? (
                                     <p style={{ margin: 0, fontSize: '0.85rem', color: '#64748b' }}>
-                                        📅 {new Date(jadwal.tanggal_tayang).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+                                        📅 {formatTanggalTayang(jadwal.tanggal_tayang)}
                                         &nbsp;·&nbsp;🕐 {jadwal.jam_tayang?.slice(0, 5)}
                                         &nbsp;·&nbsp;<span style={{ color: '#38bdf8', fontWeight: 600 }}>Rp {hargaPerKursi.toLocaleString('id-ID')}</span> / kursi
                                     </p>

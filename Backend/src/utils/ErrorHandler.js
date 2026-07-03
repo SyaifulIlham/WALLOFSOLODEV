@@ -8,14 +8,12 @@ class ErrorHandler extends Error {
 }
 
 const errorMiddleware = (err, req, res, next) => {
-  // Log the original error for debugging
-  console.error(err);
+  console.error(`[${req.method}] ${req.originalUrl} ->`, err.message || err);
 
   let statusCode = err.statusCode || 500;
   let message = err.message || 'Internal Server Error';
   const data = err.data || null;
 
-  // Handle database errors
   if (isDatabaseError(err)) {
     const dbErrorInfo = mapDatabaseError(err);
     statusCode = dbErrorInfo.statusCode;
@@ -24,6 +22,9 @@ const errorMiddleware = (err, req, res, next) => {
 
   const body = { success: false, message };
   if (data) body.data = data;
+  if (process.env.NODE_ENV !== 'production' && err.stack) {
+    body.stack = err.stack;
+  }
 
   res.status(statusCode).json(body);
 };

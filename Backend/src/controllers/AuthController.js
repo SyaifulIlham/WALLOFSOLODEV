@@ -3,6 +3,16 @@ const jwt = require('jsonwebtoken');
 const { ErrorHandler } = require('../utils/ErrorHandler');
 const AuthModel = require('../models/Authmodel');
 
+const normalizeInput = (value) => (typeof value === 'string' ? value.trim() : value);
+
+const comparePassword = async (providedPassword, storedPassword) => {
+  if (!providedPassword || !storedPassword) return false;
+  if (storedPassword.startsWith('$2') || storedPassword.startsWith('$2b')) {
+    return bcrypt.compare(providedPassword, storedPassword);
+  }
+  return providedPassword === storedPassword;
+};
+
 // Generate token
 const signToken = (id) => {
   if (!process.env.JWT_SECRET) {
@@ -11,13 +21,6 @@ const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || '1d',
   });
-  return jwt.sign(
-    { id },
-    process.env.JWT_SECRET || 'secret_key_fallback',
-    {
-      expiresIn: process.env.JWT_EXPIRES_IN || '1d',
-    }
-  );
 };
 
 const getuser = async (req, res, next) => {
@@ -41,7 +44,11 @@ const registerUser = async (req, res, next) => {
   const { nama, email, password, no_hp } = req.body;
 
   try {
-    const existingUser = await AuthModel.findUserByEmail(email);
+    const normalizedName = normalizeInput(nama);
+    const normalizedEmail = normalizeInput(email)?.toLowerCase();
+    const normalizedPhone = normalizeInput(no_hp);
+
+    const existingUser = await AuthModel.findUserByEmail(normalizedEmail);
 
     if (existingUser.length > 0) {
       return next(new ErrorHandler(400, 'Email sudah digunakan!'));
@@ -51,10 +58,10 @@ const registerUser = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     await AuthModel.createUser({
-      nama,
-      email,
+      nama: normalizedName,
+      email: normalizedEmail,
       password: hashedPassword,
-      no_hp
+      no_hp: normalizedPhone
     });
 
     res.status(201).json({
@@ -72,15 +79,15 @@ const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-    const userRows = await AuthModel.findUserByEmail(email);
+    const normalizedEmail = normalizeInput(email)?.toLowerCase();
+    const userRows = await AuthModel.findUserByEmail(normalizedEmail);
 
     if (userRows.length === 0) {
       return next(new ErrorHandler(401, 'Email atau password salah!'));
     }
 
     const user = userRows[0];
-
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await comparePassword(password, user.password);
 
     if (!isMatch) {
       return next(new ErrorHandler(401, 'Email atau password salah!'));
@@ -123,16 +130,15 @@ const loginAdmin = async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
-    const adminRows = await AuthModel.findAdminByUsername(username);
+    const normalizedUsername = normalizeInput(username);
+    const adminRows = await AuthModel.findAdminByUsername(normalizedUsername);
 
     if (adminRows.length === 0) {
       return next(new ErrorHandler(401, 'Username atau password salah!'));
     }
 
     const admin = adminRows[0];
-
-    // Plain text comparison — gunakan ini jika password di DB belum di-hash
-    const isMatch = password === admin.password;
+    const isMatch = await comparePassword(password, admin.password);
 
     if (!isMatch) {
       return next(new ErrorHandler(401, 'Username atau password salah!'));
